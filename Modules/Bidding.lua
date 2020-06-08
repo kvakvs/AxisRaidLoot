@@ -33,7 +33,7 @@ end
 local function Roll_OnEvent(self, event, arg1, ...)
   if event == "CHAT_MSG_SYSTEM" and core.BidInProgress then
 
-    if GetLocale() == 'deDE' then RANDOM_ROLL_RESULT = "%s w\195\188rfelt. Ergebnis: %d (%d-%d)" end  -- corrects roll pattern for german clients
+    if GetLocale() == 'deDE' then RANDOM_ROLL_RESULT = "%s w\195\188rfelt. Ergebnis: %d (%d-%d)" end -- corrects roll pattern for german clients
     local pattern = string.gsub(RANDOM_ROLL_RESULT, "[%(%)-]", "%%%1")
     pattern = string.gsub(pattern, "%%s", "(.+)")
     pattern = string.gsub(pattern, "%%d", "%(%%d+%)")
@@ -41,48 +41,48 @@ local function Roll_OnEvent(self, event, arg1, ...)
     for name, roll, low, high in string.gmatch(arg1, pattern) do
       local search = MonDKP:Table_Search(MonDKP_DKPTable, name)
       local minRoll;
-          local maxRoll;
+      local maxRoll;
 
-          if MonDKP_DB.modes.rolls.UsePerc then
-            if MonDKP_DB.modes.rolls.min == 0 or MonDKP_DB.modes.rolls.min == 1 then
-              minRoll = 1;
-            else
-              minRoll = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.min / 100);
-            end
-            maxRoll = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.max / 100) + MonDKP_DB.modes.rolls.AddToMax;
-          elseif not MonDKP_DB.modes.rolls.UsePerc then
-            minRoll = MonDKP_DB.modes.rolls.min;
+      if MonDKP_DB.modes.rolls.UsePerc then
+        if MonDKP_DB.modes.rolls.min == 0 or MonDKP_DB.modes.rolls.min == 1 then
+          minRoll = 1;
+        else
+          minRoll = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.min / 100);
+        end
+        maxRoll = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.max / 100) + MonDKP_DB.modes.rolls.AddToMax;
+      elseif not MonDKP_DB.modes.rolls.UsePerc then
+        minRoll = MonDKP_DB.modes.rolls.min;
 
-            if MonDKP_DB.modes.rolls.max == 0 then
-              maxRoll = MonDKP_DKPTable[search[1][1]].dkp + MonDKP_DB.modes.rolls.AddToMax;
-            else
-              maxRoll = MonDKP_DB.modes.rolls.max + MonDKP_DB.modes.rolls.AddToMax;
-            end
-          end
-          if tonumber(minRoll) < 1 then minRoll = 1 end
-          if tonumber(maxRoll) < 1 then maxRoll = 1 end
-          if tonumber(low) > tonumber(minRoll) or tonumber(high) > tonumber(maxRoll) then
-            SendChatMessage(L["ROLLDECLINED"].." "..math.floor(minRoll).."-"..math.floor(maxRoll)..".", "WHISPER", nil, name)
-            return;
-          end
+        if MonDKP_DB.modes.rolls.max == 0 then
+          maxRoll = MonDKP_DKPTable[search[1][1]].dkp + MonDKP_DB.modes.rolls.AddToMax;
+        else
+          maxRoll = MonDKP_DB.modes.rolls.max + MonDKP_DB.modes.rolls.AddToMax;
+        end
+      end
+      if tonumber(minRoll) < 1 then minRoll = 1 end
+      if tonumber(maxRoll) < 1 then maxRoll = 1 end
+      if tonumber(low) > tonumber(minRoll) or tonumber(high) > tonumber(maxRoll) then
+        SendChatMessage(L["ROLLDECLINED"] .. " " .. math.floor(minRoll) .. "-" .. math.floor(maxRoll) .. ".", "WHISPER", nil, name)
+        return;
+      end
 
-          --math.floor(minRoll).."-"..math.floor(maxRoll)
+      --math.floor(minRoll).."-"..math.floor(maxRoll)
 
       if search and mode == "Roll Based Bidding" and core.BiddingWindow.cost:GetNumber() > MonDKP_DKPTable[search[1][1]].dkp and not MonDKP_DB.modes.SubZeroBidding and MonDKP_DB.modes.costvalue ~= "Percent" then
-            SendChatMessage(L["ROLLNOTACCEPTED"].." "..MonDKP_DKPTable[search[1][1]].dkp.." "..L["DKP"]..".", "WHISPER", nil, name)
+        SendChatMessage(L["ROLLNOTACCEPTED"] .. " " .. MonDKP_DKPTable[search[1][1]].dkp .. " " .. L["DKP"] .. ".", "WHISPER", nil, name)
 
-            return;
-            end
+        return;
+      end
 
       if not MonDKP:Table_Search(Bids_Submitted, name) and search then
         if MonDKP_DB.modes.AnnounceBid and ((Bids_Submitted[1] and Bids_Submitted[1].roll < roll) or not Bids_Submitted[1]) then
           if not MonDKP_DB.modes.AnnounceBidName then
-            SendChatMessage(L["NEWHIGHROLL"].." "..roll.." ("..low.."-"..high..")", "RAID")
+            SendChatMessage(L["NEWHIGHROLL"] .. " " .. roll .. " (" .. low .. "-" .. high .. ")", "RAID")
           else
-            SendChatMessage(L["NEWHIGHROLLER"].." "..name..": "..roll.." ("..low.."-"..high..")", "RAID")
+            SendChatMessage(L["NEWHIGHROLLER"] .. " " .. name .. ": " .. roll .. " (" .. low .. "-" .. high .. ")", "RAID")
           end
         end
-        table.insert(Bids_Submitted, {player=name, roll=roll, range=" ("..low.."-"..high..")"})
+        table.insert(Bids_Submitted, { player = name, roll = roll, range = " (" .. low .. "-" .. high .. ")" })
         if MonDKP_DB.modes.BroadcastBids then
           MonDKP.Sync:SendData("MonDKPBidShare", Bids_Submitted)
         end
@@ -117,9 +117,9 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
   local response = L["ERRORPROCESSING"];
   mode = MonDKP_DB.modes.mode;
 
-  if string.find(name, "-") then          -- finds and removes server name from name if exists
+  if string.find(name, "-") then -- finds and removes server name from name if exists
     local dashPos = string.find(name, "-")
-    name = strsub(name, 1, dashPos-1)
+    name = strsub(name, 1, dashPos - 1)
   end
 
   if string.find(text, "!bid") == 1 and core.IsOfficer == true then
@@ -130,7 +130,7 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
       end
       if cmd == "cancel" and MonDKP_DB.modes.mode ~= "Roll Based Bidding" then
         local flagCanceled = false
-        for i=1, #Bids_Submitted do           -- !bid cancel will cancel their bid
+        for i = 1, #Bids_Submitted do -- !bid cancel will cancel their bid
           if Bids_Submitted[i] and Bids_Submitted[i].player == name then
             table.remove(Bids_Submitted, i)
             if MonDKP_DB.modes.BroadcastBids then
@@ -150,7 +150,7 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
         response = L["CANTCANCELROLL"]
       end
       dkp = tonumber(MonDKP:GetPlayerDKP(name))
-      if not dkp then    -- exits function if player is not on the DKP list
+      if not dkp then -- exits function if player is not on the DKP list
         SendChatMessage(L["INVALIDPLAYER"], "WHISPER", nil, name)
         return
       end
@@ -159,7 +159,7 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
         if dkp then
           if (cmd and cmd <= dkp) or (MonDKP_DB.modes.SubZeroBidding == true and dkp >= 0) or (MonDKP_DB.modes.SubZeroBidding == true and MonDKP_DB.modes.AllowNegativeBidders == true) or (mode == "Static Item Values" and dkp > 0 and (dkp > core.BiddingWindow.cost:GetNumber() or MonDKP_DB.modes.SubZeroBidding == true or MonDKP_DB.modes.costvalue == "Percent")) or ((mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") and not cmd) then
             if (cmd and core.BiddingWindow.minBid and tonumber(core.BiddingWindow.minBid:GetNumber()) <= cmd) or mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid" and cmd >= core.BiddingWindow.minBid:GetNumber()) then
-              for i=1, #Bids_Submitted do           -- checks if a bid was submitted, removes last bid if it was
+              for i = 1, #Bids_Submitted do -- checks if a bid was submitted, removes last bid if it was
                 if (not (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static")) and Bids_Submitted[i] and Bids_Submitted[i].player == name and Bids_Submitted[i].bid < cmd then
                   table.remove(Bids_Submitted, i)
                 elseif (not (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static")) and Bids_Submitted[i] and Bids_Submitted[i].player == name and Bids_Submitted[i].bid >= cmd then
@@ -170,59 +170,59 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
               if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
                 if MonDKP_DB.modes.AnnounceBid and ((Bids_Submitted[1] and Bids_Submitted[1].bid < cmd) or not Bids_Submitted[1]) then
                   if not MonDKP_DB.modes.AnnounceBidName then
-                    SendChatMessage(L["NEWHIGHBID"].." "..cmd.." DKP", "RAID")
+                    SendChatMessage(L["NEWHIGHBID"] .. " " .. cmd .. " DKP", "RAID")
                   else
-                    SendChatMessage(L["NEWHIGHBIDDER"].." "..name.." ("..cmd.." DKP)", "RAID")
+                    SendChatMessage(L["NEWHIGHBIDDER"] .. " " .. name .. " (" .. cmd .. " DKP)", "RAID")
                   end
                 end
-                if MonDKP_DB.modes.DeclineLowerBids and Bids_Submitted[1] and cmd <= Bids_Submitted[1].bid then   -- declines bids lower than highest bid
-                  response = "Bid Declined! Current highest bid is "..Bids_Submitted[1].bid;
+                if MonDKP_DB.modes.DeclineLowerBids and Bids_Submitted[1] and cmd <= Bids_Submitted[1].bid then -- declines bids lower than highest bid
+                  response = "Bid Declined! Current highest bid is " .. Bids_Submitted[1].bid;
                 else
-                  table.insert(Bids_Submitted, {player=name, bid=cmd})
-                  response = L["YOURBIDOF"].." "..cmd.." "..L["DKPWASACCEPTED"].."."
+                  table.insert(Bids_Submitted, { player = name, bid = cmd })
+                  response = L["YOURBIDOF"] .. " " .. cmd .. " " .. L["DKPWASACCEPTED"] .. "."
                 end
                 if MonDKP_DB.modes.BroadcastBids then
                   MonDKP.Sync:SendData("MonDKPBidShare", Bids_Submitted)
                 end
                 if Timer ~= 0 and Timer > (core.BiddingWindow.bidTimer:GetText() - 10) and MonDKP_DB.modes.AntiSnipe > 0 then
                   if core.BiddingWindow.maxBid:GetNumber() ~= 0 then
-                    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText().."{"..MonDKP_DB.modes.AntiSnipe, core.BiddingWindow.item:GetText().." Min Bid: "..core.BiddingWindow.minBid:GetText().." Max Bid: "..core.BiddingWindow.maxBid:GetText(), core.BiddingWindow.itemIcon:GetTexture());
+                    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText() .. "{" .. MonDKP_DB.modes.AntiSnipe, core.BiddingWindow.item:GetText() .. " Min Bid: " .. core.BiddingWindow.minBid:GetText() .. " Max Bid: " .. core.BiddingWindow.maxBid:GetText(), core.BiddingWindow.itemIcon:GetTexture());
                   else
-                    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText().."{"..MonDKP_DB.modes.AntiSnipe, core.BiddingWindow.item:GetText().." Min Bid: "..core.BiddingWindow.minBid:GetText(), core.BiddingWindow.itemIcon:GetTexture());
+                    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText() .. "{" .. MonDKP_DB.modes.AntiSnipe, core.BiddingWindow.item:GetText() .. " Min Bid: " .. core.BiddingWindow.minBid:GetText(), core.BiddingWindow.itemIcon:GetTexture());
                   end
                 end
               elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
                 if MonDKP_DB.modes.AnnounceBid and ((Bids_Submitted[1] and Bids_Submitted[1].dkp < dkp) or not Bids_Submitted[1]) then
                   if not MonDKP_DB.modes.AnnounceBidName then
-                    SendChatMessage(L["NEWHIGHBID"].." "..dkp.." DKP", "RAID")
+                    SendChatMessage(L["NEWHIGHBID"] .. " " .. dkp .. " DKP", "RAID")
                   else
-                    SendChatMessage(L["NEWHIGHBIDDER"].." "..name.." ("..dkp.." DKP)", "RAID")
+                    SendChatMessage(L["NEWHIGHBIDDER"] .. " " .. name .. " (" .. dkp .. " DKP)", "RAID")
                   end
                 end
-                table.insert(Bids_Submitted, {player=name, dkp=dkp})
+                table.insert(Bids_Submitted, { player = name, dkp = dkp })
                 if MonDKP_DB.modes.BroadcastBids then
                   MonDKP.Sync:SendData("MonDKPBidShare", Bids_Submitted)
                 end
                 response = L["BIDWASACCEPTED"]
                 if Timer ~= 0 and Timer > (core.BiddingWindow.bidTimer:GetText() - 10) and MonDKP_DB.modes.AntiSnipe > 0 then
-                  MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText().."{"..MonDKP_DB.modes.AntiSnipe, core.BiddingWindow.item:GetText().." Min Bid: "..core.BiddingWindow.minBid:GetText(), core.BiddingWindow.itemIcon:GetTexture());
+                  MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText() .. "{" .. MonDKP_DB.modes.AntiSnipe, core.BiddingWindow.item:GetText() .. " Min Bid: " .. core.BiddingWindow.minBid:GetText(), core.BiddingWindow.itemIcon:GetTexture());
                 end
               end
 
               BidScrollFrame_Update()
             else
-              response = L["BIDDENIEDMINBID"].." "..core.BiddingWindow.minBid:GetNumber().."!"
+              response = L["BIDDENIEDMINBID"] .. " " .. core.BiddingWindow.minBid:GetNumber() .. "!"
             end
           elseif MonDKP_DB.modes.SubZeroBidding == true and dkp < 0 then
-            response = L["BIDDENIEDNEGATIVE"].." ("..dkp.." "..L["DKP"]..")."
+            response = L["BIDDENIEDNEGATIVE"] .. " (" .. dkp .. " " .. L["DKP"] .. ")."
           else
-            response = L["BIDDENIEDONLYHAVE"].." "..dkp.." "..L["DKP"]
+            response = L["BIDDENIEDONLYHAVE"] .. " " .. dkp .. " " .. L["DKP"]
           end
         end
       elseif not cmd and (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) then
         response = L["BIDDENIEDNOVALUE"]
       elseif cmd ~= "cancel" and (tonumber(cmd) and tonumber(cmd) > core.BiddingWindow.maxBid:GetNumber()) then
-        response = L["BIDDENIEDEXCEEDMAX"].." "..core.BiddingWindow.maxBid:GetNumber().." "..L["DKP"].."."
+        response = L["BIDDENIEDEXCEEDMAX"] .. " " .. core.BiddingWindow.maxBid:GetNumber() .. " " .. L["DKP"] .. "."
       else
         if cmd ~= "cancel" then
           response = L["BIDDENIEDINVALID"]
@@ -236,15 +236,15 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
     cmd = tostring(BidCmd(text))
 
     if cmd and cmd:gsub("%d+", "") == "" then
-      return MonDKP_CHAT_MSG_WHISPER("!bid "..cmd, name)
-    elseif cmd and cmd:gsub("%s+", "") ~= "nil" and cmd:gsub("%s+", "") ~= "" then    -- allows command if it has content (removes empty spaces)
+      return MonDKP_CHAT_MSG_WHISPER("!bid " .. cmd, name)
+    elseif cmd and cmd:gsub("%s+", "") ~= "nil" and cmd:gsub("%s+", "") ~= "" then -- allows command if it has content (removes empty spaces)
       cmd = cmd:gsub("%s+", "") -- removes unintended spaces from string
       local search = MonDKP:Table_Search(MonDKP_DKPTable, cmd, "player")
 
       if search then
-        response = "MonolithDKP: "..MonDKP_DKPTable[search[1][1]].player.." "..L["CURRENTLYHAS"].." "..MonDKP_DKPTable[search[1][1]].dkp.." "..L["DKPAVAILABLE"].."."
+        response = "MonolithDKP: " .. MonDKP_DKPTable[search[1][1]].player .. " " .. L["CURRENTLYHAS"] .. " " .. MonDKP_DKPTable[search[1][1]].dkp .. " " .. L["DKPAVAILABLE"] .. "."
       else
-        response = "MonolithDKP: "..L["PLAYERNOTFOUND"]
+        response = "MonolithDKP: " .. L["PLAYERNOTFOUND"]
       end
     else
       local search = MonDKP:Table_Search(MonDKP_DKPTable, name)
@@ -256,38 +256,38 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
       if MonDKP_DB.modes.mode == "Roll Based Bidding" and search then
         if MonDKP_DB.modes.rolls.UsePerc then
           if MonDKP_DB.modes.rolls.min == 0 then
-                  minimum = 1;
-                else
-                  minimum = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.min / 100);
-                end
-
-              perc = " ("..MonDKP_DB.modes.rolls.min.."% - "..MonDKP_DB.modes.rolls.max.."%)";
-              maximum = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.max / 100) + MonDKP_DB.modes.rolls.AddToMax;
-            elseif not MonDKP_DB.modes.rolls.UsePerc then
-              minimum = MonDKP_DB.modes.rolls.min;
-
-              if MonDKP_DB.modes.rolls.max == 0 then
-                maximum = MonDKP_DKPTable[search[1][1]].dkp + MonDKP_DB.modes.rolls.AddToMax;
-              else
-                maximum = MonDKP_DB.modes.rolls.max + MonDKP_DB.modes.rolls.AddToMax;
-              end
-              if maximum < 0 then maximum = 0 end
-                if minimum < 0 then minimum = 0 end
-            end
-            range = range.." "..L["USE"].." /random "..MonDKP_round(minimum, 0).."-"..MonDKP_round(maximum, 0).." "..L["TOBID"].." "..perc..".";
+            minimum = 1;
+          else
+            minimum = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.min / 100);
           end
 
+          perc = " (" .. MonDKP_DB.modes.rolls.min .. "% - " .. MonDKP_DB.modes.rolls.max .. "%)";
+          maximum = MonDKP_DKPTable[search[1][1]].dkp * (MonDKP_DB.modes.rolls.max / 100) + MonDKP_DB.modes.rolls.AddToMax;
+        elseif not MonDKP_DB.modes.rolls.UsePerc then
+          minimum = MonDKP_DB.modes.rolls.min;
+
+          if MonDKP_DB.modes.rolls.max == 0 then
+            maximum = MonDKP_DKPTable[search[1][1]].dkp + MonDKP_DB.modes.rolls.AddToMax;
+          else
+            maximum = MonDKP_DB.modes.rolls.max + MonDKP_DB.modes.rolls.AddToMax;
+          end
+          if maximum < 0 then maximum = 0 end
+          if minimum < 0 then minimum = 0 end
+        end
+        range = range .. " " .. L["USE"] .. " /random " .. MonDKP_round(minimum, 0) .. "-" .. MonDKP_round(maximum, 0) .. " " .. L["TOBID"] .. " " .. perc .. ".";
+      end
+
       if search then
-        response = "MonolithDKP: "..L["YOUCURRENTLYHAVE"].." "..MonDKP_DKPTable[search[1][1]].dkp.." "..L["DKP"].."."..range;
+        response = "MonolithDKP: " .. L["YOUCURRENTLYHAVE"] .. " " .. MonDKP_DKPTable[search[1][1]].dkp .. " " .. L["DKP"] .. "." .. range;
       else
-        response = "MonolithDKP: "..L["PLAYERNOTFOUND"]
+        response = "MonolithDKP: " .. L["PLAYERNOTFOUND"]
       end
     end
 
     SendChatMessage(response, "WHISPER", nil, name)
   end
 
-  ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", function(self, event, msg, ...)      -- suppresses outgoing whisper responses to limit spam
+  ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", function(self, event, msg, ...) -- suppresses outgoing whisper responses to limit spam
     if core.BidInProgress and MonDKP_DB.defaults.SupressTells then
       if strfind(msg, L["YOURBIDOF"]) == 1 then
         return true
@@ -301,7 +301,7 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
         return true;
       elseif strfind(msg, L["ROLLNOTACCEPTED"]) == 1 then
         return true;
-      elseif strfind(msg, L["YOURBID"].." "..L["MANUALLYDENIED"]) == 1 then
+      elseif strfind(msg, L["YOURBID"] .. " " .. L["MANUALLYDENIED"]) == 1 then
         return true;
       elseif strfind(msg, L["CANTCANCELROLL"]) == 1 then
         return true;
@@ -317,7 +317,7 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
     end
   end)
 
-  ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(self, event, msg, ...)      -- suppresses incoming whisper responses to limit spam
+  ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(self, event, msg, ...) -- suppresses incoming whisper responses to limit spam
     if core.BidInProgress and MonDKP_DB.defaults.SupressTells then
       if strfind(msg, "!bid") == 1 then
         return true
@@ -331,7 +331,7 @@ function MonDKP_CHAT_MSG_WHISPER(text, ...)
 end
 
 function MonDKP:GetMinBid(itemLink)
-  local _,_,_,_,_,_,_,_,loc = GetItemInfo(itemLink);
+  local _, _, _, _, _, _, _, _, loc = GetItemInfo(itemLink);
 
   if loc == "INVTYPE_HEAD" then
     return MonDKP_DB.MinBidBySlot.Head
@@ -371,7 +371,7 @@ function MonDKP:GetMinBid(itemLink)
 end
 
 function MonDKP:GetMaxBid(itemLink)
-  local _,_,_,_,_,_,_,_,loc = GetItemInfo(itemLink);
+  local _, _, _, _, _, _, _, _, loc = GetItemInfo(itemLink);
 
   if loc == "INVTYPE_HEAD" then
     return MonDKP_DB.MaxBidBySlot.Head
@@ -417,35 +417,35 @@ function MonDKP:ToggleBidWindow(loot, lootIcon, itemName)
   if core.IsOfficer then
     core.BiddingWindow = core.BiddingWindow or MonDKP:CreateBidWindow();
 
-     if MonDKP_DB.bidpos then
-       core.BiddingWindow:ClearAllPoints()
+    if MonDKP_DB.bidpos then
+      core.BiddingWindow:ClearAllPoints()
       local a = MonDKP_DB.bidpos
       core.BiddingWindow:SetPoint(a.point, a.relativeTo, a.relativePoint, a.x, a.y)
     end
 
     core.BiddingWindow:SetShown(true)
-     core.BiddingWindow:SetFrameLevel(10)
+    core.BiddingWindow:SetFrameLevel(10)
 
-     if MonDKP_DB.modes.mode == "Zero Sum" then
-       core.ZeroSumBank = core.ZeroSumBank or MonDKP:ZeroSumBank_Create()
-       core.ZeroSumBank:SetShown(true)
-       core.ZeroSumBank:SetFrameLevel(10)
+    if MonDKP_DB.modes.mode == "Zero Sum" then
+      core.ZeroSumBank = core.ZeroSumBank or MonDKP:ZeroSumBank_Create()
+      core.ZeroSumBank:SetShown(true)
+      core.ZeroSumBank:SetFrameLevel(10)
 
-       MonDKP:ZeroSumBank_Update();
+      MonDKP:ZeroSumBank_Update();
     end
 
     if core.ModesWindow then core.ModesWindow:SetFrameLevel(6) end
     if MonDKP.UIConfig then MonDKP.UIConfig:SetFrameLevel(2) end
 
-     if loot then
-       Bids_Submitted = {}
-       if MonDKP_DB.modes.BroadcastBids then
+    if loot then
+      Bids_Submitted = {}
+      if MonDKP_DB.modes.BroadcastBids then
         MonDKP.Sync:SendData("MonDKPBidShare", Bids_Submitted)
       end
 
       CurrItemForBid = loot;
-       CurrItemIcon = lootIcon
-       CurZone = GetRealZoneText()
+      CurrItemIcon = lootIcon
+      CurZone = GetRealZoneText()
 
       -- Max bid values
       if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
@@ -502,24 +502,24 @@ function MonDKP:ToggleBidWindow(loot, lootIcon, itemName)
             end
           end)
         end
-       else
+      else
         minBid = MonDKP:GetMinBid(CurrItemForBid)
         core.BiddingWindow.CustomMinBid:Hide();
-       end
+      end
 
-       if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+      if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
         core.BiddingWindow.minBid:SetText(MonDKP_round(minBid, MonDKP_DB.modes.rounding))
         core.BiddingWindow.maxBid:SetText(MonDKP_round(maxBid, MonDKP_DB.modes.rounding))
-       end
+      end
 
-       core.BiddingWindow.cost:SetText(MonDKP_round(minBid, MonDKP_DB.modes.rounding))
-       core.BiddingWindow.itemName:SetText(itemName)
-       core.BiddingWindow.bidTimer:SetText(MonDKP_DB.DKPBonus.BidTimer)
-       core.BiddingWindow.boss:SetText(core.LastKilledBoss)
-       UpdateBidWindow()
-       core.BiddingWindow.ItemTooltipButton:SetSize(core.BiddingWindow.itemIcon:GetWidth() + core.BiddingWindow.item:GetStringWidth() + 10, core.BiddingWindow.item:GetHeight());
-       core.BiddingWindow.ItemTooltipButton:SetScript("OnEnter", function(self)
-         ActionButton_ShowOverlayGlow(core.BiddingWindow.ItemIconButton)
+      core.BiddingWindow.cost:SetText(MonDKP_round(minBid, MonDKP_DB.modes.rounding))
+      core.BiddingWindow.itemName:SetText(itemName)
+      core.BiddingWindow.bidTimer:SetText(MonDKP_DB.DKPBonus.BidTimer)
+      core.BiddingWindow.boss:SetText(core.LastKilledBoss)
+      UpdateBidWindow()
+      core.BiddingWindow.ItemTooltipButton:SetSize(core.BiddingWindow.itemIcon:GetWidth() + core.BiddingWindow.item:GetStringWidth() + 10, core.BiddingWindow.item:GetHeight());
+      core.BiddingWindow.ItemTooltipButton:SetScript("OnEnter", function(self)
+        ActionButton_ShowOverlayGlow(core.BiddingWindow.ItemIconButton)
         GameTooltip:SetOwner(self:GetParent(), "ANCHOR_BOTTOMRIGHT", 0, 500);
         GameTooltip:SetHyperlink(CurrItemForBid)
       end)
@@ -527,11 +527,11 @@ function MonDKP:ToggleBidWindow(loot, lootIcon, itemName)
         ActionButton_HideOverlayGlow(core.BiddingWindow.ItemIconButton)
         GameTooltip:Hide()
       end)
-     else
-       UpdateBidWindow()
-     end
+    else
+      UpdateBidWindow()
+    end
 
-     BidScrollFrame_Update()
+    BidScrollFrame_Update()
   else
     MonDKP:Print(L["NOPERMISSION"])
   end
@@ -545,14 +545,14 @@ local function StartBidding()
   if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
     core.BiddingWindow.cost:SetNumber(MonDKP_round(core.BiddingWindow.minBid:GetNumber(), MonDKP_DB.modes.rounding))
     if core.BiddingWindow.maxBid:GetNumber() ~= 0 then
-      MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText().." Min Bid: "..core.BiddingWindow.minBid:GetText().." Max Bid: "..core.BiddingWindow.maxBid:GetText(), CurrItemIcon)
+      MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText() .. " Min Bid: " .. core.BiddingWindow.minBid:GetText() .. " Max Bid: " .. core.BiddingWindow.maxBid:GetText(), CurrItemIcon)
     else
-      MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText().." Min Bid: "..core.BiddingWindow.minBid:GetText(), CurrItemIcon)
+      MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText() .. " Min Bid: " .. core.BiddingWindow.minBid:GetText(), CurrItemIcon)
     end
-    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo,"..core.BiddingWindow.item:GetText().."#"..core.BiddingWindow.minBid:GetText().."#"..CurrItemIcon.."#"..core.BiddingWindow.maxBid:GetText())
+    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo," .. core.BiddingWindow.item:GetText() .. "#" .. core.BiddingWindow.minBid:GetText() .. "#" .. CurrItemIcon .. "#" .. core.BiddingWindow.maxBid:GetText())
     MonDKP:CurrItem_Set(core.BiddingWindow.item:GetText(), core.BiddingWindow.minBid:GetText(), CurrItemIcon, core.BiddingWindow.maxBid:GetText())
 
-    if MonDKP_DB.defaults.AutoOpenBid then  -- toggles bid window if option is set to
+    if MonDKP_DB.defaults.AutoOpenBid then -- toggles bid window if option is set to
       MonDKP:BidInterface_Toggle()
     end
 
@@ -563,7 +563,7 @@ local function StartBidding()
 
     -- Min
     if not search_min and core.BiddingWindow.minBid:GetNumber() ~= tonumber(val_min) then
-      tinsert(MonDKP_MinBids, {item=core.BiddingWindow.itemName:GetText(), minbid=core.BiddingWindow.minBid:GetNumber()})
+      tinsert(MonDKP_MinBids, { item = core.BiddingWindow.itemName:GetText(), minbid = core.BiddingWindow.minBid:GetNumber() })
       core.BiddingWindow.CustomMinBid:SetShown(true);
       core.BiddingWindow.CustomMinBid:SetChecked(true);
     elseif search_min and core.BiddingWindow.minBid:GetNumber() ~= tonumber(val_min) and core.BiddingWindow.CustomMinBid:GetChecked() == true then
@@ -581,7 +581,7 @@ local function StartBidding()
 
     -- Max
     if not search_max and core.BiddingWindow.maxBid:GetNumber() ~= tonumber(val_max) then
-      tinsert(MonDKP_MaxBids, {item=core.BiddingWindow.itemName:GetText(), maxbid=core.BiddingWindow.maxBid:GetNumber()})
+      tinsert(MonDKP_MaxBids, { item = core.BiddingWindow.itemName:GetText(), maxbid = core.BiddingWindow.maxBid:GetNumber() })
       core.BiddingWindow.CustomMaxBid:SetShown(true);
       core.BiddingWindow.CustomMaxBid:SetChecked(true);
     elseif search_max and core.BiddingWindow.maxBid:GetNumber() ~= tonumber(val_max) and core.BiddingWindow.CustomMaxBid:GetChecked() == true then
@@ -598,10 +598,10 @@ local function StartBidding()
     end
   else
     if MonDKP_DB.modes.costvalue == "Percent" then perc = "%" else perc = " DKP" end;
-    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText().." Cost: "..core.BiddingWindow.cost:GetNumber()..perc, CurrItemIcon)
-    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo,"..core.BiddingWindow.item:GetText().."#"..core.BiddingWindow.cost:GetText()..perc.."#"..CurrItemIcon.."#0")
+    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText() .. " Cost: " .. core.BiddingWindow.cost:GetNumber() .. perc, CurrItemIcon)
+    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo," .. core.BiddingWindow.item:GetText() .. "#" .. core.BiddingWindow.cost:GetText() .. perc .. "#" .. CurrItemIcon .. "#0")
     MonDKP:BidInterface_Toggle()
-    MonDKP:CurrItem_Set(core.BiddingWindow.item:GetText(), core.BiddingWindow.cost:GetText()..perc, CurrItemIcon, 0)
+    MonDKP:CurrItem_Set(core.BiddingWindow.item:GetText(), core.BiddingWindow.cost:GetText() .. perc, CurrItemIcon, 0)
   end
 
   if mode == "Roll Based Bidding" then
@@ -617,33 +617,33 @@ local function StartBidding()
     if MonDKP_DB.modes.channels.guild then table.insert(channels, "/guild") end
     if MonDKP_DB.modes.channels.whisper then table.insert(channels, "/whisper") end
 
-    for i=1, #channels do
+    for i = 1, #channels do
       if #channels == 1 then
         channelText = channels[i]
       else
         if i == 1 then
           channelText = channels[i];
         elseif i == #channels then
-          channelText = channelText.." "..L["OR"].." "..channels[i]
+          channelText = channelText .. " " .. L["OR"] .. " " .. channels[i]
         else
-          channelText = channelText..", "..channels[i]
+          channelText = channelText .. ", " .. channels[i]
         end
       end
     end
 
     if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
       if core.BiddingWindow.maxBid:GetNumber() ~= 0 then
-        SendChatMessage(L["TAKINGBIDSON"].." "..core.BiddingWindow.item:GetText().." ("..core.BiddingWindow.minBid:GetText().." "..L["DKPMINBID"].." "..core.BiddingWindow.maxBid:GetText().." "..L["DKPMAXBID"]..")", "RAID_WARNING")
+        SendChatMessage(L["TAKINGBIDSON"] .. " " .. core.BiddingWindow.item:GetText() .. " (" .. core.BiddingWindow.minBid:GetText() .. " " .. L["DKPMINBID"] .. " " .. core.BiddingWindow.maxBid:GetText() .. " " .. L["DKPMAXBID"] .. ")", "RAID_WARNING")
       else
-        SendChatMessage(L["TAKINGBIDSON"].." "..core.BiddingWindow.item:GetText().." ("..core.BiddingWindow.minBid:GetText().." "..L["DKPMINBID"]..")", "RAID_WARNING")
+        SendChatMessage(L["TAKINGBIDSON"] .. " " .. core.BiddingWindow.item:GetText() .. " (" .. core.BiddingWindow.minBid:GetText() .. " " .. L["DKPMINBID"] .. ")", "RAID_WARNING")
       end
-      SendChatMessage(L["TOBIDUSE"].." "..channelText.." "..L["TOSEND"].." !bid <"..L["VALUE"].."> (ex: !bid "..core.BiddingWindow.minBid:GetText().."). "..L["OR"].." !bid cancel "..L["TOWITHDRAWBID"], "RAID_WARNING")
+      SendChatMessage(L["TOBIDUSE"] .. " " .. channelText .. " " .. L["TOSEND"] .. " !bid <" .. L["VALUE"] .. "> (ex: !bid " .. core.BiddingWindow.minBid:GetText() .. "). " .. L["OR"] .. " !bid cancel " .. L["TOWITHDRAWBID"], "RAID_WARNING")
     elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-      SendChatMessage(L["TAKINGBIDSON"].." "..core.BiddingWindow.item:GetText().." ("..core.BiddingWindow.cost:GetText()..perc..")", "RAID_WARNING")
-      SendChatMessage(L["TOBIDUSE"].." "..channelText.." "..L["TOSEND"].." !bid. "..L["OR"].." !bid cancel "..L["TOWITHDRAWBID"], "RAID_WARNING")
+      SendChatMessage(L["TAKINGBIDSON"] .. " " .. core.BiddingWindow.item:GetText() .. " (" .. core.BiddingWindow.cost:GetText() .. perc .. ")", "RAID_WARNING")
+      SendChatMessage(L["TOBIDUSE"] .. " " .. channelText .. " " .. L["TOSEND"] .. " !bid. " .. L["OR"] .. " !bid cancel " .. L["TOWITHDRAWBID"], "RAID_WARNING")
     elseif mode == "Roll Based Bidding" then
-      SendChatMessage(L["ROLLFOR"].." "..core.BiddingWindow.item:GetText().." ("..core.BiddingWindow.cost:GetText()..perc..")", "RAID_WARNING")
-      SendChatMessage(L["TOBIDROLLRANGE"].." "..channelText.." "..L["WITH"].." !dkp", "RAID_WARNING")
+      SendChatMessage(L["ROLLFOR"] .. " " .. core.BiddingWindow.item:GetText() .. " (" .. core.BiddingWindow.cost:GetText() .. perc .. ")", "RAID_WARNING")
+      SendChatMessage(L["TOBIDROLLRANGE"] .. " " .. channelText .. " " .. L["WITH"] .. " !dkp", "RAID_WARNING")
     end
   end
 end
@@ -682,13 +682,13 @@ function ClearBidWindow()
   core.BiddingWindow.cost:SetText("")
   core.BiddingWindow.CustomMinBid:Hide();
 
-  core.BiddingWindow.ItemTooltipButton:SetSize(0,0)
+  core.BiddingWindow.ItemTooltipButton:SetSize(0, 0)
   BidScrollFrame_Update()
   UpdateBidWindow()
   core.BidInProgress = false;
   core.BiddingWindow.boss:SetText("")
   _G["MonDKPBiddingStartBiddingButton"]:SetText(L["STARTBIDDING"])
-  _G["MonDKPBiddingStartBiddingButton"]:SetScript("OnClick", function (self)
+  _G["MonDKPBiddingStartBiddingButton"]:SetScript("OnClick", function(self)
     local pass, err = pcall(ToggleTimerBtn, self)
 
     if core.BiddingWindow.bidTimer then core.BiddingWindow.bidTimer:ClearFocus(); end
@@ -701,7 +701,7 @@ function ClearBidWindow()
     if not pass then
       core.BiddingWindow:SetShown(false)
       StaticPopupDialogs["SUGGEST_RELOAD"] = {
-        text = "|CFFFF0000"..L["WARNING"].."|r: "..L["MUSTRELOADUI"],
+        text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
         button1 = L["YES"],
         button2 = L["NO"],
         OnAccept = function()
@@ -712,7 +712,7 @@ function ClearBidWindow()
         hideOnEscape = true,
         preferredIndex = 3,
       }
-      StaticPopup_Show ("SUGGEST_RELOAD")
+      StaticPopup_Show("SUGGEST_RELOAD")
     end
   end)
   timerToggle = 0;
@@ -722,18 +722,18 @@ function ClearBidWindow()
     core.BiddingWindow.maxBid:ClearFocus();
     core.BiddingWindow.maxBid:SetText("")
   end
-  for i=1, numrows do
+  for i = 1, numrows do
     core.BiddingWindow.bidTable.Rows[i]:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
   end
 end
 
-function MonDKP:BroadcastBidTimer(seconds, title, itemIcon)       -- broadcasts timer and starts it natively
+function MonDKP:BroadcastBidTimer(seconds, title, itemIcon) -- broadcasts timer and starts it natively
   local title = title;
-  MonDKP.Sync:SendData("MonDKPCommand", "StartBidTimer,"..seconds..","..title..","..itemIcon)
+  MonDKP.Sync:SendData("MonDKPCommand", "StartBidTimer," .. seconds .. "," .. title .. "," .. itemIcon)
   MonDKP:StartBidTimer(seconds, title, itemIcon)
 
   if strfind(seconds, "{") then
-    MonDKP:Print("Bid timer extended by "..tonumber(strsub(seconds, strfind(seconds, "{")+1)).." seconds.")
+    MonDKP:Print("Bid timer extended by " .. tonumber(strsub(seconds, strfind(seconds, "{") + 1)) .. " seconds.")
   end
 end
 
@@ -743,27 +743,27 @@ function MonDKP:BroadcastStopBidTimer()
   MonDKP.Sync:SendData("MonDKPCommand", "StopBidTimer")
 end
 
-function MonDKP_Register_ShiftClickLootWindowHook()      -- hook function into LootFrame window. All slots on ElvUI. But only first 4 in default UI.
+function MonDKP_Register_ShiftClickLootWindowHook() -- hook function into LootFrame window. All slots on ElvUI. But only first 4 in default UI.
   local num = GetNumLootItems();
 
-  if getglobal("ElvLootSlot1") then       -- fixes hook for ElvUI loot frame
+  if getglobal("ElvLootSlot1") then -- fixes hook for ElvUI loot frame
     for i = 1, num do
-      local searchHook = MonDKP:Table_Search(hookedSlots, i)  -- blocks repeated hooking
+      local searchHook = MonDKP:Table_Search(hookedSlots, i) -- blocks repeated hooking
 
       if not searchHook then
-        getglobal("ElvLootSlot"..i):HookScript("OnClick", function()
-              if ( IsShiftKeyDown() and IsAltKeyDown() ) then
-                local pass, err = pcall(function()
-                  lootIcon, itemName, _, _, _ = GetLootSlotInfo(i)
-                  itemLink = GetLootSlotLink(i)
-                    MonDKP:ToggleBidWindow(itemLink, lootIcon, itemName)
-                end)
+        getglobal("ElvLootSlot" .. i):HookScript("OnClick", function()
+          if (IsShiftKeyDown() and IsAltKeyDown()) then
+            local pass, err = pcall(function()
+              lootIcon, itemName, _, _, _ = GetLootSlotInfo(i)
+              itemLink = GetLootSlotLink(i)
+              MonDKP:ToggleBidWindow(itemLink, lootIcon, itemName)
+            end)
 
             if not pass then
               MonDKP:Print(err)
               core.BiddingWindow:SetShown(false)
               StaticPopupDialogs["SUGGEST_RELOAD"] = {
-                text = "|CFFFF0000"..L["WARNING"].."|r: "..L["MUSTRELOADUI"],
+                text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
                 button1 = L["YES"],
                 button2 = L["NO"],
                 OnAccept = function()
@@ -774,9 +774,9 @@ function MonDKP_Register_ShiftClickLootWindowHook()      -- hook function into L
                 hideOnEscape = true,
                 preferredIndex = 3,
               }
-              StaticPopup_Show ("SUGGEST_RELOAD")
+              StaticPopup_Show("SUGGEST_RELOAD")
             end
-              end
+          end
         end)
         table.insert(hookedSlots, i)
       end
@@ -785,21 +785,21 @@ function MonDKP_Register_ShiftClickLootWindowHook()      -- hook function into L
     if num > 4 then num = 4 end
 
     for i = 1, num do
-      local searchHook = MonDKP:Table_Search(hookedSlots, i)  -- blocks repeated hooking
+      local searchHook = MonDKP:Table_Search(hookedSlots, i) -- blocks repeated hooking
 
       if not searchHook then
-        getglobal("LootButton"..i):HookScript("OnClick", function()
-              if ( IsShiftKeyDown() and IsAltKeyDown() ) then
-                local pass, err = pcall(function()
-                  lootIcon, itemName, _, _, _ = GetLootSlotInfo(i)
-                  itemLink = GetLootSlotLink(i)
-                    MonDKP:ToggleBidWindow(itemLink, lootIcon, itemName)
-                end)
+        getglobal("LootButton" .. i):HookScript("OnClick", function()
+          if (IsShiftKeyDown() and IsAltKeyDown()) then
+            local pass, err = pcall(function()
+              lootIcon, itemName, _, _, _ = GetLootSlotInfo(i)
+              itemLink = GetLootSlotLink(i)
+              MonDKP:ToggleBidWindow(itemLink, lootIcon, itemName)
+            end)
 
             if not pass then
               core.BiddingWindow:SetShown(false)
               StaticPopupDialogs["SUGGEST_RELOAD"] = {
-                text = "|CFFFF0000"..L["WARNING"].."|r: "..L["MUSTRELOADUI"],
+                text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
                 button1 = L["YES"],
                 button2 = L["NO"],
                 OnAccept = function()
@@ -810,9 +810,9 @@ function MonDKP_Register_ShiftClickLootWindowHook()      -- hook function into L
                 hideOnEscape = true,
                 preferredIndex = 3,
               }
-              StaticPopup_Show ("SUGGEST_RELOAD")
+              StaticPopup_Show("SUGGEST_RELOAD")
             end
-              end
+          end
         end)
         table.insert(hookedSlots, i)
       end
@@ -833,44 +833,44 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
     duration = tonumber(seconds);
   else
     if seconds ~= "seconds" then
-      timer = Timer - tonumber(strsub(seconds, strfind(seconds, "{")+1))
-      duration = tonumber(strsub(seconds, 1, strfind(seconds, "{")-1))          --strsub("30{10", strfind("30{10", "{")+1)
+      timer = Timer - tonumber(strsub(seconds, strfind(seconds, "{") + 1))
+      duration = tonumber(strsub(seconds, 1, strfind(seconds, "{") - 1)) --strsub("30{10", strfind("30{10", "{")+1)
       extend = true;
     end
   end
 
-  MonDKP.BidTimer = MonDKP.BidTimer or MonDKP:CreateTimer();    -- recycles bid timer frame so multiple instances aren't created
-  if not extend then MonDKP.BidTimer:SetShown(not MonDKP.BidTimer:IsShown()); end          -- shows if not shown
+  MonDKP.BidTimer = MonDKP.BidTimer or MonDKP:CreateTimer(); -- recycles bid timer frame so multiple instances aren't created
+  if not extend then MonDKP.BidTimer:SetShown(not MonDKP.BidTimer:IsShown()); end -- shows if not shown
   if core.BidInterface and core.BidInterface:IsShown() == false then MonDKP.BidTimer.OpenBid:Show() end
   MonDKP.BidTimer:SetMinMaxValues(0, duration or 20)
   MonDKP.BidTimer.timerTitle:SetText(title)
   MonDKP.BidTimer.itemIcon:SetTexture(itemIcon)
-    MonDKP.BidTimer:SetAlpha(1);
-    MonDKP.BidTimer:SetScale(MonDKP_DB.defaults.BidTimerSize);
+  MonDKP.BidTimer:SetAlpha(1);
+  MonDKP.BidTimer:SetScale(MonDKP_DB.defaults.BidTimerSize);
   MonDKP.BidTimer:SetScript("OnMouseDown", function(self, button)
-      if button == "RightButton" then
-        MonDKP.BidTimer:SetAlpha(0);
-        MonDKP.BidTimer:SetScale(0.1);
-      end
-    end)
+    if button == "RightButton" then
+      MonDKP.BidTimer:SetAlpha(0);
+      MonDKP.BidTimer:SetScale(0.1);
+    end
+  end)
   PlaySound(8959)
 
   if MonDKP_DB.timerpos then
-    local a = MonDKP_DB["timerpos"]                    -- retrieves timer's saved position from SavedVariables
+    local a = MonDKP_DB["timerpos"] -- retrieves timer's saved position from SavedVariables
     MonDKP.BidTimer:SetPoint(a.point, a.relativeTo, a.relativePoint, a.x, a.y)
   else
-    MonDKP.BidTimer:SetPoint("CENTER")                      -- sets to center if no position has been saved
+    MonDKP.BidTimer:SetPoint("CENTER") -- sets to center if no position has been saved
   end
 
   MonDKP.BidTimer:SetScript("OnUpdate", function(self, elapsed)
     timer = timer + elapsed
-    Timer = timer;       -- stores external copy of timer for extending
+    Timer = timer; -- stores external copy of timer for extending
     timerText = MonDKP_round(duration - timer, 1)
     if tonumber(timerText) > 60 then
       timerMinute = math.floor(tonumber(timerText) / 60, 0);
       modulo = bit.mod(tonumber(timerText), 60);
-      if tonumber(modulo) < 10 then modulo = "0"..modulo end
-      MonDKP.BidTimer.timertext:SetText(timerMinute..":"..modulo)
+      if tonumber(modulo) < 10 then modulo = "0" .. modulo end
+      MonDKP.BidTimer.timertext:SetText(timerMinute .. ":" .. modulo)
     else
       MonDKP.BidTimer.timertext:SetText(timerText)
     end
@@ -892,8 +892,8 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
 
     if tonumber(timerText) == 10 and messageSent[1] == false then
       if audioPlayed == false then
-            PlaySound(23639);
-          end
+        PlaySound(23639);
+      end
       MonDKP:Print(L["TENSECONDSTOBID"])
       messageSent[1] = true;
     end
@@ -926,7 +926,7 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
       core.BidInProgress = false;
       if _G["MonDKPBiddingStartBiddingButton"] then
         _G["MonDKPBiddingStartBiddingButton"]:SetText(L["STARTBIDDING"])
-        _G["MonDKPBiddingStartBiddingButton"]:SetScript("OnClick", function (self)
+        _G["MonDKPBiddingStartBiddingButton"]:SetScript("OnClick", function(self)
           local pass, err = pcall(ToggleTimerBtn, self)
 
           if core.BiddingWindow.minBid then core.BiddingWindow.minBid:ClearFocus(); end
@@ -936,7 +936,7 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
           if not pass then
             core.BiddingWindow:SetShown(false)
             StaticPopupDialogs["SUGGEST_RELOAD"] = {
-              text = "|CFFFF0000"..L["WARNING"].."|r: "..L["MUSTRELOADUI"],
+              text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
               button1 = L["YES"],
               button2 = L["NO"],
               OnAccept = function()
@@ -947,7 +947,7 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
               hideOnEscape = true,
               preferredIndex = 3,
             }
-            StaticPopup_Show ("SUGGEST_RELOAD")
+            StaticPopup_Show("SUGGEST_RELOAD")
           end
         end)
         timerToggle = 0;
@@ -956,7 +956,7 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
       MonDKP.BidTimer:SetScript("OnUpdate", nil)
       MonDKP.BidTimer:Hide();
       if #core.BidInterface.LootTableButtons > 0 then
-        for i=1, #core.BidInterface.LootTableButtons do
+        for i = 1, #core.BidInterface.LootTableButtons do
           ActionButton_HideOverlayGlow(core.BidInterface.LootTableButtons[i])
         end
       end
@@ -976,8 +976,9 @@ function MonDKP:CreateTimer()
   f:SetFrameStrata("DIALOG")
   f:SetFrameLevel(18)
   f:SetBackdrop({
-      bgFile   = "Interface\\ChatFrame\\ChatFrameBackground", tile = true,
-    });
+    bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+    tile = true,
+  });
   f:SetBackdropColor(0, 0, 0, 0.7)
   f:SetStatusBarTexture([[Interface\TargetingFrame\UI-TargetingFrame-BarFill]])
   f:SetMovable(true);
@@ -987,7 +988,7 @@ function MonDKP:CreateTimer()
   f:SetScript("OnDragStart", f.StartMoving);
   f:SetScript("OnDragStop", function()
     f:StopMovingOrSizing();
-    local point, _, relativePoint ,xOff,yOff = f:GetPoint(1)
+    local point, _, relativePoint, xOff, yOff = f:GetPoint(1)
     if not MonDKP_DB.timerpos then
       MonDKP_DB.timerpos = {}
     end
@@ -1002,12 +1003,15 @@ function MonDKP:CreateTimer()
   f.border:SetFrameStrata("DIALOG")
   f.border:SetFrameLevel(19)
   f.border:SetSize(300, 25);
-  f.border:SetBackdrop( {
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga", tile = true, tileSize = 1, edgeSize = 2,
+  f.border:SetBackdrop({
+    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    tile = true,
+    tileSize = 1,
+    edgeSize = 2,
     insets = { left = 0, right = 0, top = 0, bottom = 0 }
   });
-  f.border:SetBackdropColor(0,0,0,0);
-  f.border:SetBackdropBorderColor(1,1,1,1)
+  f.border:SetBackdropColor(0, 0, 0, 0);
+  f.border:SetBackdropBorderColor(1, 1, 1, 1)
 
   f.timerTitle = f:CreateFontString(nil, "OVERLAY")
   f.timerTitle:SetFontObject("MonDKPNormalOutlineLeft")
@@ -1023,14 +1027,14 @@ function MonDKP:CreateTimer()
   f.timertext:SetPoint("RIGHT", f, "RIGHT", -5, 0);
   f.timertext:SetText(nil);
 
-  f.itemIcon = f:CreateTexture(nil, "OVERLAY", nil);   -- Title Bar Texture
+  f.itemIcon = f:CreateTexture(nil, "OVERLAY", nil); -- Title Bar Texture
   f.itemIcon:SetPoint("RIGHT", f, "LEFT", 0, 0);
   f.itemIcon:SetColorTexture(0, 0, 0, 1)
   f.itemIcon:SetSize(25, 25);
 
   f.OpenBid = CreateFrame("Button", nil, f, "MonolithDKPButtonTemplate")
   f.OpenBid:SetPoint("RIGHT", f.itemIcon, "LEFT", -5, 0);
-  f.OpenBid:SetSize(40,25)
+  f.OpenBid:SetSize(40, 25)
   f.OpenBid:SetText(L["BID"]);
   f.OpenBid:GetFontString():SetTextColor(1, 1, 1, 1)
   f.OpenBid:SetNormalFontObject("MonDKPSmallCenter");
@@ -1045,175 +1049,179 @@ function MonDKP:CreateTimer()
 end
 
 local function BidRow_OnClick(self)
-  if SelectedBidder.player == strsub(self.Strings[1]:GetText(), 1, strfind(self.Strings[1]:GetText(), " ")-1) then
-    for i=1, numrows do
+  if SelectedBidder.player == strsub(self.Strings[1]:GetText(), 1, strfind(self.Strings[1]:GetText(), " ") - 1) then
+    for i = 1, numrows do
       core.BiddingWindow.bidTable.Rows[i]:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
       core.BiddingWindow.bidTable.Rows[i]:GetNormalTexture():SetAlpha(0.2)
     end
     SelectedBidder = {}
   else
-    for i=1, numrows do
+    for i = 1, numrows do
       core.BiddingWindow.bidTable.Rows[i]:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
       core.BiddingWindow.bidTable.Rows[i]:GetNormalTexture():SetAlpha(0.2)
     end
-      self:SetNormalTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\ListBox-Highlight");
-      self:GetNormalTexture():SetAlpha(0.7)
+    self:SetNormalTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\ListBox-Highlight");
+    self:GetNormalTexture():SetAlpha(0.7)
 
-      if MonDKP_DB.modes.costvalue == "Percent" then
-        SelectedBidder = {player=strsub(self.Strings[1]:GetText(), 1, strfind(self.Strings[1]:GetText(), " ")-1), dkp=tonumber(self.Strings[3]:GetText())}
-      else
-        SelectedBidder = {player=strsub(self.Strings[1]:GetText(), 1, strfind(self.Strings[1]:GetText(), " ")-1), bid=tonumber(self.Strings[2]:GetText())}
-      end
+    if MonDKP_DB.modes.costvalue == "Percent" then
+      SelectedBidder = { player = strsub(self.Strings[1]:GetText(), 1, strfind(self.Strings[1]:GetText(), " ") - 1), dkp = tonumber(self.Strings[3]:GetText()) }
+    else
+      SelectedBidder = { player = strsub(self.Strings[1]:GetText(), 1, strfind(self.Strings[1]:GetText(), " ") - 1), bid = tonumber(self.Strings[2]:GetText()) }
     end
+  end
 end
 
 local function RightClickMenu(self)
   local menu;
 
   menu = {
-    { text = L["REMOVEENTRY"], notCheckable = true, func = function()
-      if Bids_Submitted[self.index].bid then
-        SendChatMessage(L["YOURBIDOF"].." "..Bids_Submitted[self.index].bid.." "..L["DKP"].." "..L["MANUALLYDENIED"], "WHISPER", nil, Bids_Submitted[self.index].player)
-      else
-        SendChatMessage(L["YOURBID"].." "..L["MANUALLYDENIED"], "WHISPER", nil, Bids_Submitted[self.index].player)
+    {
+      text = L["REMOVEENTRY"],
+      notCheckable = true,
+      func = function()
+        if Bids_Submitted[self.index].bid then
+          SendChatMessage(L["YOURBIDOF"] .. " " .. Bids_Submitted[self.index].bid .. " " .. L["DKP"] .. " " .. L["MANUALLYDENIED"], "WHISPER", nil, Bids_Submitted[self.index].player)
+        else
+          SendChatMessage(L["YOURBID"] .. " " .. L["MANUALLYDENIED"], "WHISPER", nil, Bids_Submitted[self.index].player)
+        end
+        table.remove(Bids_Submitted, self.index)
+        if MonDKP_DB.modes.BroadcastBids then
+          MonDKP.Sync:SendData("MonDKPBidShare", Bids_Submitted)
+        end
+        SelectedBidder = {}
+        for i = 1, #core.BiddingWindow.bidTable.Rows do
+          core.BiddingWindow.bidTable.Rows[i]:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
+          core.BiddingWindow.bidTable.Rows[i]:GetNormalTexture():SetAlpha(0.2)
+        end
+        BidScrollFrame_Update()
       end
-      table.remove(Bids_Submitted, self.index)
-      if MonDKP_DB.modes.BroadcastBids then
-        MonDKP.Sync:SendData("MonDKPBidShare", Bids_Submitted)
-      end
-      SelectedBidder = {}
-      for i=1, #core.BiddingWindow.bidTable.Rows do
-        core.BiddingWindow.bidTable.Rows[i]:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
-        core.BiddingWindow.bidTable.Rows[i]:GetNormalTexture():SetAlpha(0.2)
-      end
-      BidScrollFrame_Update()
-    end },
+    },
   }
-  EasyMenu(menu, menuFrame, "cursor", 0 , 0, "MENU", 1);
+  EasyMenu(menu, menuFrame, "cursor", 0, 0, "MENU", 1);
 end
 
 local function BidWindowCreateRow(parent, id) -- Create 3 buttons for each row in the list
-    local f = CreateFrame("Button", "$parentLine"..id, parent)
-    f.Strings = {}
-    f:SetSize(width, height)
-    f:SetHighlightTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\ListBox-Highlight");
-    f:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
-    f:GetNormalTexture():SetAlpha(0.2)
-    f:SetScript("OnClick", BidRow_OnClick)
-    for i=1, 3 do
-        f.Strings[i] = f:CreateFontString(nil, "OVERLAY");
-        f.Strings[i]:SetTextColor(1, 1, 1, 1);
-        if i==1 then
-          f.Strings[i]:SetFontObject("MonDKPNormalLeft");
-        else
-          f.Strings[i]:SetFontObject("MonDKPNormalCenter");
-        end
+  local f = CreateFrame("Button", "$parentLine" .. id, parent)
+  f.Strings = {}
+  f:SetSize(width, height)
+  f:SetHighlightTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\ListBox-Highlight");
+  f:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
+  f:GetNormalTexture():SetAlpha(0.2)
+  f:SetScript("OnClick", BidRow_OnClick)
+  for i = 1, 3 do
+    f.Strings[i] = f:CreateFontString(nil, "OVERLAY");
+    f.Strings[i]:SetTextColor(1, 1, 1, 1);
+    if i == 1 then
+      f.Strings[i]:SetFontObject("MonDKPNormalLeft");
+    else
+      f.Strings[i]:SetFontObject("MonDKPNormalCenter");
     end
-    f.Strings[1].rowCounter = f:CreateFontString(nil, "OVERLAY");
+  end
+  f.Strings[1].rowCounter = f:CreateFontString(nil, "OVERLAY");
   f.Strings[1].rowCounter:SetFontObject("MonDKPSmallOutlineLeft")
   f.Strings[1].rowCounter:SetTextColor(1, 1, 1, 0.3);
   f.Strings[1].rowCounter:SetPoint("LEFT", f, "LEFT", 3, -1);
 
-    f.Strings[1]:SetWidth((width/2)-10)
-    f.Strings[2]:SetWidth(width/4)
-    f.Strings[3]:SetWidth(width/4)
-    f.Strings[1]:SetPoint("LEFT", f, "LEFT", 20, 0)
-    f.Strings[2]:SetPoint("LEFT", f.Strings[1], "RIGHT", -9, 0)
-    f.Strings[3]:SetPoint("RIGHT", 0, 0)
+  f.Strings[1]:SetWidth((width / 2) - 10)
+  f.Strings[2]:SetWidth(width / 4)
+  f.Strings[3]:SetWidth(width / 4)
+  f.Strings[1]:SetPoint("LEFT", f, "LEFT", 20, 0)
+  f.Strings[2]:SetPoint("LEFT", f.Strings[1], "RIGHT", -9, 0)
+  f.Strings[3]:SetPoint("RIGHT", 0, 0)
 
-    f:SetScript("OnMouseDown", function(self, button)
-      if button == "RightButton" then
-        RightClickMenu(self)
-      end
-    end)
+  f:SetScript("OnMouseDown", function(self, button)
+    if button == "RightButton" then
+      RightClickMenu(self)
+    end
+  end)
 
-    return f
+  return f
 end
 
-local function SortBidTable()             -- sorts the Loot History Table by date
+local function SortBidTable() -- sorts the Loot History Table by date
   mode = MonDKP_DB.modes.mode;
   table.sort(Bids_Submitted, function(a, b)
-      if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-        return a["bid"] > b["bid"]
-      elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-        return a["dkp"] > b["dkp"]
-      elseif mode == "Roll Based Bidding" then
-        return a["roll"] > b["roll"]
-      end
-    end)
+    if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+      return a["bid"] > b["bid"]
+    elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
+      return a["dkp"] > b["dkp"]
+    elseif mode == "Roll Based Bidding" then
+      return a["roll"] > b["roll"]
+    end
+  end)
 end
 
 function BidScrollFrame_Update()
   local numOptions = #Bids_Submitted;
   local index, row
-    local offset = FauxScrollFrame_GetOffset(core.BiddingWindow.bidTable) or 0
-    local rank;
-    local showRows = #Bids_Submitted
+  local offset = FauxScrollFrame_GetOffset(core.BiddingWindow.bidTable) or 0
+  local rank;
+  local showRows = #Bids_Submitted
 
-    if #Bids_Submitted > numrows then
-      showRows = numrows
-    end
+  if #Bids_Submitted > numrows then
+    showRows = numrows
+  end
 
-    SortBidTable()
-    for i=1, numrows do
-      row = core.BiddingWindow.bidTable.Rows[i]
+  SortBidTable()
+  for i = 1, numrows do
+    row = core.BiddingWindow.bidTable.Rows[i]
+    row:Hide()
+  end
+  for i = 1, showRows do
+    row = core.BiddingWindow.bidTable.Rows[i]
+    index = offset + i
+    local dkp_total = MonDKP:Table_Search(MonDKP_DKPTable, Bids_Submitted[i].player)
+    local c = MonDKP:GetCColors(MonDKP_DKPTable[dkp_total[1][1]].class)
+    rank = MonDKP:GetGuildRank(Bids_Submitted[i].player)
+    if Bids_Submitted[index] then
+      row:Show()
+      row.index = index
+      row.Strings[1]:SetText(Bids_Submitted[i].player .. " |cff666666(" .. rank .. ")|r")
+      row.Strings[1]:SetTextColor(c.r, c.g, c.b, 1)
+      row.Strings[1].rowCounter:SetText(index)
+      if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+        row.Strings[2]:SetText(Bids_Submitted[i].bid)
+        row.Strings[3]:SetText(MonDKP_round(MonDKP_DKPTable[dkp_total[1][1]].dkp, MonDKP_DB.modes.rounding))
+      elseif mode == "Roll Based Bidding" then
+        local minRoll;
+        local maxRoll;
+
+        if MonDKP_DB.modes.rolls.UsePerc then
+          if MonDKP_DB.modes.rolls.min == 0 or MonDKP_DB.modes.rolls.min == 1 then
+            minRoll = 1;
+          else
+            minRoll = MonDKP_DKPTable[dkp_total[1][1]].dkp * (MonDKP_DB.modes.rolls.min / 100);
+          end
+          maxRoll = MonDKP_DKPTable[dkp_total[1][1]].dkp * (MonDKP_DB.modes.rolls.max / 100) + MonDKP_DB.modes.rolls.AddToMax;
+        elseif not MonDKP_DB.modes.rolls.UsePerc then
+          minRoll = MonDKP_DB.modes.rolls.min;
+
+          if MonDKP_DB.modes.rolls.max == 0 then
+            maxRoll = MonDKP_DKPTable[dkp_total[1][1]].dkp + MonDKP_DB.modes.rolls.AddToMax;
+          else
+            maxRoll = MonDKP_DB.modes.rolls.max + MonDKP_DB.modes.rolls.AddToMax;
+          end
+        end
+        if tonumber(minRoll) < 1 then minRoll = 1 end
+        if tonumber(maxRoll) < 1 then maxRoll = 1 end
+
+        row.Strings[2]:SetText(Bids_Submitted[i].roll .. Bids_Submitted[i].range)
+        row.Strings[3]:SetText(math.floor(minRoll) .. "-" .. math.floor(maxRoll))
+      elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
+        row.Strings[3]:SetText(MonDKP_round(Bids_Submitted[i].dkp, MonDKP_DB.modes.rounding))
+      end
+    else
       row:Hide()
     end
-    for i=1, showRows do
-        row = core.BiddingWindow.bidTable.Rows[i]
-        index = offset + i
-        local dkp_total = MonDKP:Table_Search(MonDKP_DKPTable, Bids_Submitted[i].player)
-        local c = MonDKP:GetCColors(MonDKP_DKPTable[dkp_total[1][1]].class)
-        rank = MonDKP:GetGuildRank(Bids_Submitted[i].player)
-        if Bids_Submitted[index] then
-            row:Show()
-            row.index = index
-            row.Strings[1]:SetText(Bids_Submitted[i].player.." |cff666666("..rank..")|r")
-            row.Strings[1]:SetTextColor(c.r, c.g, c.b, 1)
-            row.Strings[1].rowCounter:SetText(index)
-            if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-              row.Strings[2]:SetText(Bids_Submitted[i].bid)
-              row.Strings[3]:SetText(MonDKP_round(MonDKP_DKPTable[dkp_total[1][1]].dkp, MonDKP_DB.modes.rounding))
-            elseif mode == "Roll Based Bidding" then
-              local minRoll;
-              local maxRoll;
-
-              if MonDKP_DB.modes.rolls.UsePerc then
-                if MonDKP_DB.modes.rolls.min == 0 or MonDKP_DB.modes.rolls.min == 1 then
-                  minRoll = 1;
-                else
-                  minRoll = MonDKP_DKPTable[dkp_total[1][1]].dkp * (MonDKP_DB.modes.rolls.min / 100);
-                end
-                maxRoll = MonDKP_DKPTable[dkp_total[1][1]].dkp * (MonDKP_DB.modes.rolls.max / 100) + MonDKP_DB.modes.rolls.AddToMax;
-              elseif not MonDKP_DB.modes.rolls.UsePerc then
-                minRoll = MonDKP_DB.modes.rolls.min;
-
-                if MonDKP_DB.modes.rolls.max == 0 then
-                  maxRoll = MonDKP_DKPTable[dkp_total[1][1]].dkp + MonDKP_DB.modes.rolls.AddToMax;
-                else
-                  maxRoll = MonDKP_DB.modes.rolls.max + MonDKP_DB.modes.rolls.AddToMax;
-                end
-              end
-              if tonumber(minRoll) < 1 then minRoll = 1 end
-              if tonumber(maxRoll) < 1 then maxRoll = 1 end
-
-              row.Strings[2]:SetText(Bids_Submitted[i].roll..Bids_Submitted[i].range)
-              row.Strings[3]:SetText(math.floor(minRoll).."-"..math.floor(maxRoll))
-            elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-              row.Strings[3]:SetText(MonDKP_round(Bids_Submitted[i].dkp, MonDKP_DB.modes.rounding))
-            end
-        else
-            row:Hide()
-        end
-    end
-    if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-      if MonDKP_DB.modes.CostSelection == "First Bidder" and Bids_Submitted[1] then
-        core.BiddingWindow.cost:SetText(Bids_Submitted[1].bid)
-      elseif MonDKP_DB.modes.CostSelection == "Second Bidder" and Bids_Submitted[2] then
-        core.BiddingWindow.cost:SetText(Bids_Submitted[2].bid)
-      end
   end
-    --FauxScrollFrame_Update(core.BiddingWindow.bidTable, numOptions, numrows, height, nil, nil, nil, nil, nil, nil, true) -- alwaysShowScrollBar= true to stop frame from hiding
+  if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+    if MonDKP_DB.modes.CostSelection == "First Bidder" and Bids_Submitted[1] then
+      core.BiddingWindow.cost:SetText(Bids_Submitted[1].bid)
+    elseif MonDKP_DB.modes.CostSelection == "Second Bidder" and Bids_Submitted[2] then
+      core.BiddingWindow.cost:SetText(Bids_Submitted[2].bid)
+    end
+  end
+  --FauxScrollFrame_Update(core.BiddingWindow.bidTable, numOptions, numrows, height, nil, nil, nil, nil, nil, nil, true) -- alwaysShowScrollBar= true to stop frame from hiding
 end
 
 function MonDKP:CreateBidWindow()
@@ -1223,13 +1231,17 @@ function MonDKP:CreateBidWindow()
   f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 300, -200);
   f:SetSize(400, 500);
   f:SetClampedToScreen(true)
-  f:SetBackdrop( {
-    bgFile = "Textures\\white.blp", tile = true,                -- White backdrop allows for black background with 1.0 alpha on low alpha containers
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga", tile = true, tileSize = 1, edgeSize = 3,
+  f:SetBackdrop({
+    bgFile = "Textures\\white.blp",
+    tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
+    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    tile = true,
+    tileSize = 1,
+    edgeSize = 3,
     insets = { left = 0, right = 0, top = 0, bottom = 0 }
   });
-  f:SetBackdropColor(0,0,0,0.9);
-  f:SetBackdropBorderColor(1,1,1,1)
+  f:SetBackdropColor(0, 0, 0, 0.9);
+  f:SetBackdropBorderColor(1, 1, 1, 1)
   f:SetFrameStrata("DIALOG")
   f:SetFrameLevel(5)
   f:SetMovable(true);
@@ -1238,7 +1250,7 @@ function MonDKP:CreateBidWindow()
   f:SetScript("OnDragStart", f.StartMoving);
   f:SetScript("OnDragStop", function()
     f:StopMovingOrSizing();
-    local point, relativeTo, relativePoint ,xOff,yOff = f:GetPoint(1)
+    local point, relativeTo, relativePoint, xOff, yOff = f:GetPoint(1)
     if not MonDKP_DB.bidpos then
       MonDKP_DB.bidpos = {}
     end
@@ -1248,7 +1260,7 @@ function MonDKP:CreateBidWindow()
     MonDKP_DB.bidpos.x = xOff;
     MonDKP_DB.bidpos.y = yOff;
   end);
-  f:SetScript("OnHide", function ()
+  f:SetScript("OnHide", function()
     if core.BidInProgress then
       MonDKP:Print(L["CLOSEDBIDINPROGRESS"])
     end
@@ -1260,15 +1272,19 @@ function MonDKP:CreateBidWindow()
   end)
   tinsert(UISpecialFrames, f:GetName()); -- Sets frame to close on "Escape"
 
-    -- Close Button
+  -- Close Button
   f.closeContainer = CreateFrame("Frame", "MonDKPBiddingWindowCloseButtonContainer", f)
   f.closeContainer:SetPoint("CENTER", f, "TOPRIGHT", -4, 0)
   f.closeContainer:SetBackdrop({
-    bgFile   = "Textures\\white.blp", tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga", tile = true, tileSize = 1, edgeSize = 2,
+    bgFile = "Textures\\white.blp",
+    tile = true,
+    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    tile = true,
+    tileSize = 1,
+    edgeSize = 2,
   });
-  f.closeContainer:SetBackdropColor(0,0,0,0.9)
-  f.closeContainer:SetBackdropBorderColor(1,1,1,0.2)
+  f.closeContainer:SetBackdropColor(0, 0, 0, 0.9)
+  f.closeContainer:SetBackdropBorderColor(1, 1, 1, 0.2)
   f.closeContainer:SetSize(28, 28)
 
   f.closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
@@ -1279,7 +1295,7 @@ function MonDKP:CreateBidWindow()
     f.bossHeader:SetFontObject("MonDKPLargeRight");
     f.bossHeader:SetScale(0.7)
     f.bossHeader:SetPoint("TOPLEFT", f, "TOPLEFT", 85, -25);
-    f.bossHeader:SetText(L["BOSS"]..":")
+    f.bossHeader:SetText(L["BOSS"] .. ":")
 
     f.boss = CreateFrame("EditBox", nil, f)
     f.boss:SetFontObject("MonDKPNormalLeft");
@@ -1287,23 +1303,27 @@ function MonDKP:CreateBidWindow()
     f.boss:SetMultiLine(false)
     f.boss:SetTextInsets(10, 15, 5, 5)
     f.boss:SetBackdrop({
-        bgFile   = "Textures\\white.blp", tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile", tile = true, tileSize = 32, edgeSize = 2,
+      bgFile = "Textures\\white.blp",
+      tile = true,
+      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      tile = true,
+      tileSize = 32,
+      edgeSize = 2,
     });
-    f.boss:SetBackdropColor(0,0,0,0.6)
-    f.boss:SetBackdropBorderColor(1,1,1,0.6)
+    f.boss:SetBackdropColor(0, 0, 0, 0.6)
+    f.boss:SetBackdropBorderColor(1, 1, 1, 0.6)
     f.boss:SetPoint("LEFT", f.bossHeader, "RIGHT", 9, 0);
     f.boss:SetSize(200, 28)
-    f.boss:SetScript("OnEscapePressed", function(self)    -- clears focus on esc
-      self:HighlightText(0,0)
+    f.boss:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+      self:HighlightText(0, 0)
       self:ClearFocus()
     end)
-    f.boss:SetScript("OnEnterPressed", function(self)    -- clears focus on esc
-      self:HighlightText(0,0)
+    f.boss:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+      self:HighlightText(0, 0)
       self:ClearFocus()
     end)
-    f.boss:SetScript("OnTabPressed", function(self)    -- clears focus on esc
-      self:HighlightText(0,0)
+    f.boss:SetScript("OnTabPressed", function(self) -- clears focus on esc
+      self:HighlightText(0, 0)
       self:ClearFocus()
     end)
 
@@ -1312,7 +1332,7 @@ function MonDKP:CreateBidWindow()
     f.itemHeader:SetFontObject("MonDKPLargeRight");
     f.itemHeader:SetScale(0.7)
     f.itemHeader:SetPoint("TOP", f.bossHeader, "BOTTOM", 0, -25);
-    f.itemHeader:SetText(L["ITEM"]..":")
+    f.itemHeader:SetText(L["ITEM"] .. ":")
 
     f.itemIcon = f:CreateTexture(nil, "OVERLAY", nil);
     f.itemIcon:SetPoint("LEFT", f.itemHeader, "RIGHT", 8, 0);
@@ -1331,7 +1351,7 @@ function MonDKP:CreateBidWindow()
     f.ItemTooltipButton = CreateFrame("Button", "MonDKPBiddingItemTooltipButtonButton", f)
     f.ItemTooltipButton:SetPoint("TOPLEFT", f.itemIcon, "TOPLEFT", 0, 0);
 
-    f.itemName = f:CreateFontString(nil, "OVERLAY")       -- hidden itemName field
+    f.itemName = f:CreateFontString(nil, "OVERLAY") -- hidden itemName field
     f.itemName:SetFontObject("MonDKPNormalLeft");
 
     f.minBidHeader = f:CreateFontString(nil, "OVERLAY")
@@ -1341,7 +1361,7 @@ function MonDKP:CreateBidWindow()
 
     if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
       -- Min Bid
-      f.minBidHeader:SetText(L["MINIMUMBID"]..": ")
+      f.minBidHeader:SetText(L["MINIMUMBID"] .. ": ")
 
       f.minBid = CreateFrame("EditBox", nil, f)
       f.minBid:SetPoint("LEFT", f.minBidHeader, "RIGHT", 8, 0)
@@ -1349,11 +1369,15 @@ function MonDKP:CreateBidWindow()
       f.minBid:SetMultiLine(false)
       f.minBid:SetSize(70, 28)
       f.minBid:SetBackdrop({
-        bgFile   = "Textures\\white.blp", tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile", tile = true, tileSize = 32, edgeSize = 2,
+        bgFile = "Textures\\white.blp",
+        tile = true,
+        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+        tile = true,
+        tileSize = 32,
+        edgeSize = 2,
       });
-      f.minBid:SetBackdropColor(0,0,0,0.6)
-      f.minBid:SetBackdropBorderColor(1,1,1,0.6)
+      f.minBid:SetBackdropColor(0, 0, 0, 0.6)
+      f.minBid:SetBackdropBorderColor(1, 1, 1, 0.6)
       f.minBid:SetMaxLetters(8)
       f.minBid:SetTextColor(1, 1, 1, 1)
       f.minBid:SetFontObject("MonDKPSmallRight")
@@ -1361,7 +1385,7 @@ function MonDKP:CreateBidWindow()
       f.minBid.tooltipText = L["MINIMUMBID"];
       f.minBid.tooltipDescription = L["MINBIDTTDESC"]
       f.minBid.tooltipWarning = L["MINBIDTTWARN"]
-      f.minBid:SetScript("OnEscapePressed", function(self)    -- clears focus on esc
+      f.minBid:SetScript("OnEscapePressed", function(self) -- clears focus on esc
         self:ClearFocus()
       end)
       f.minBid:SetScript("OnEnter", function(self)
@@ -1380,7 +1404,7 @@ function MonDKP:CreateBidWindow()
     f.CustomMinBid = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
     f.CustomMinBid:SetChecked(true)
     f.CustomMinBid:SetScale(0.6);
-    f.CustomMinBid.text:SetText("  |cff5151de"..L["CUSTOM"].."|r");
+    f.CustomMinBid.text:SetText("  |cff5151de" .. L["CUSTOM"] .. "|r");
     f.CustomMinBid.text:SetScale(1.5);
     f.CustomMinBid.text:SetFontObject("MonDKPSmallLeft")
     f.CustomMinBid.text:SetPoint("LEFT", f.CustomMinBid, "RIGHT", -10, 0)
@@ -1402,7 +1426,7 @@ function MonDKP:CreateBidWindow()
       f.maxBidHeader:SetFontObject("MonDKPLargeRight");
       f.maxBidHeader:SetScale(0.7)
       f.maxBidHeader:SetPoint("TOP", f.minBidHeader, "BOTTOM", -2, -25);
-      f.maxBidHeader:SetText(L["MAXIMUMBID"]..": ")
+      f.maxBidHeader:SetText(L["MAXIMUMBID"] .. ": ")
 
       f.maxBid = CreateFrame("EditBox", nil, f)
       f.maxBid:SetPoint("LEFT", f.maxBidHeader, "RIGHT", 8, 0)
@@ -1410,11 +1434,15 @@ function MonDKP:CreateBidWindow()
       f.maxBid:SetMultiLine(false)
       f.maxBid:SetSize(70, 28)
       f.maxBid:SetBackdrop({
-        bgFile   = "Textures\\white.blp", tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile", tile = true, tileSize = 32, edgeSize = 2,
+        bgFile = "Textures\\white.blp",
+        tile = true,
+        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+        tile = true,
+        tileSize = 32,
+        edgeSize = 2,
       });
-      f.maxBid:SetBackdropColor(0,0,0,0.6)
-      f.maxBid:SetBackdropBorderColor(1,1,1,0.6)
+      f.maxBid:SetBackdropColor(0, 0, 0, 0.6)
+      f.maxBid:SetBackdropBorderColor(1, 1, 1, 0.6)
       f.maxBid:SetMaxLetters(8)
       f.maxBid:SetTextColor(1, 1, 1, 1)
       f.maxBid:SetFontObject("MonDKPSmallRight")
@@ -1422,7 +1450,7 @@ function MonDKP:CreateBidWindow()
       f.maxBid.tooltipText = L["MAXIMUMBID"];
       f.maxBid.tooltipDescription = L["MAXBIDTTDESC"]
       f.maxBid.tooltipWarning = L["MAXBIDTTWARN"]
-      f.maxBid:SetScript("OnEscapePressed", function(self)    -- clears focus on esc
+      f.maxBid:SetScript("OnEscapePressed", function(self) -- clears focus on esc
         self:ClearFocus()
       end)
       f.maxBid:SetScript("OnEnter", function(self)
@@ -1437,61 +1465,65 @@ function MonDKP:CreateBidWindow()
         GameTooltip:Hide()
       end)
 
-    f.CustomMaxBid = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-    f.CustomMaxBid:SetChecked(true)
-    f.CustomMaxBid:SetScale(0.6);
-    f.CustomMaxBid.text:SetText("  |cff5151de"..L["CUSTOM"].."|r");
-    f.CustomMaxBid.text:SetScale(1.5);
-    f.CustomMaxBid.text:SetFontObject("MonDKPSmallLeft")
-    f.CustomMaxBid.text:SetPoint("LEFT", f.CustomMaxBid, "RIGHT", -10, 0)
-    f.CustomMaxBid:Hide();
-    f.CustomMaxBid:SetScript("OnEnter", function(self)
-      GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-      GameTooltip:SetText(L["CUSTOMMAXBID"], 0.25, 0.75, 0.90, 1, true);
-      GameTooltip:AddLine(L["CUSTOMMAXBIDTTDESC"], 1.0, 1.0, 1.0, true);
-      GameTooltip:AddLine(L["CUSTOMMAXBIDTTWARN"], 1.0, 0, 0, true);
-      GameTooltip:Show();
-    end)
-    f.CustomMaxBid:SetScript("OnLeave", function(self)
-      GameTooltip:Hide()
-    end)
-  end
+      f.CustomMaxBid = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
+      f.CustomMaxBid:SetChecked(true)
+      f.CustomMaxBid:SetScale(0.6);
+      f.CustomMaxBid.text:SetText("  |cff5151de" .. L["CUSTOM"] .. "|r");
+      f.CustomMaxBid.text:SetScale(1.5);
+      f.CustomMaxBid.text:SetFontObject("MonDKPSmallLeft")
+      f.CustomMaxBid.text:SetPoint("LEFT", f.CustomMaxBid, "RIGHT", -10, 0)
+      f.CustomMaxBid:Hide();
+      f.CustomMaxBid:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+        GameTooltip:SetText(L["CUSTOMMAXBID"], 0.25, 0.75, 0.90, 1, true);
+        GameTooltip:AddLine(L["CUSTOMMAXBIDTTDESC"], 1.0, 1.0, 1.0, true);
+        GameTooltip:AddLine(L["CUSTOMMAXBIDTTWARN"], 1.0, 0, 0, true);
+        GameTooltip:Show();
+      end)
+      f.CustomMaxBid:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+      end)
+    end
     -- Bid Timer
     f.bidTimerHeader = f:CreateFontString(nil, "OVERLAY")
     f.bidTimerHeader:SetFontObject("MonDKPLargeRight");
     f.bidTimerHeader:SetScale(0.7)
-  if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-    f.bidTimerHeader:SetPoint("TOP", f.maxBidHeader, "BOTTOM", 13, -25);
-  else
-    f.bidTimerHeader:SetPoint("TOP", f.minBidHeader, "BOTTOM", 13, -25);
-  end
-    f.bidTimerHeader:SetText(L["BIDTIMER"]..": ")
+    if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+      f.bidTimerHeader:SetPoint("TOP", f.maxBidHeader, "BOTTOM", 13, -25);
+    else
+      f.bidTimerHeader:SetPoint("TOP", f.minBidHeader, "BOTTOM", 13, -25);
+    end
+    f.bidTimerHeader:SetText(L["BIDTIMER"] .. ": ")
 
     f.bidTimer = CreateFrame("EditBox", nil, f)
     f.bidTimer:SetPoint("LEFT", f.bidTimerHeader, "RIGHT", 8, 0)
-      f.bidTimer:SetAutoFocus(false)
-      f.bidTimer:SetMultiLine(false)
-      f.bidTimer:SetSize(70, 28)
-      f.bidTimer:SetBackdrop({
-        bgFile   = "Textures\\white.blp", tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile", tile = true, tileSize = 32, edgeSize = 2,
-      });
-      f.bidTimer:SetBackdropColor(0,0,0,0.6)
-      f.bidTimer:SetBackdropBorderColor(1,1,1,0.6)
-      f.bidTimer:SetMaxLetters(4)
-      f.bidTimer:SetTextColor(1, 1, 1, 1)
-      f.bidTimer:SetFontObject("MonDKPSmallRight")
-      f.bidTimer:SetTextInsets(10, 10, 5, 5)
-      f.bidTimer.tooltipText = L["BIDTIMER"];
-      f.bidTimer.tooltipDescription = L["BIDTIMERTTDESC"]
-      f.bidTimer.tooltipWarning = L["BIDTIMERTTWARN"]
-      f.bidTimer:SetScript("OnEscapePressed", function(self)    -- clears focus on esc
-        self:ClearFocus()
-      end)
-      f.bidTimer:SetScript("OnEscapePressed", function(self)    -- clears focus on esc
-        self:ClearFocus()
-      end)
-      f.bidTimer:SetScript("OnEnter", function(self)
+    f.bidTimer:SetAutoFocus(false)
+    f.bidTimer:SetMultiLine(false)
+    f.bidTimer:SetSize(70, 28)
+    f.bidTimer:SetBackdrop({
+      bgFile = "Textures\\white.blp",
+      tile = true,
+      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      tile = true,
+      tileSize = 32,
+      edgeSize = 2,
+    });
+    f.bidTimer:SetBackdropColor(0, 0, 0, 0.6)
+    f.bidTimer:SetBackdropBorderColor(1, 1, 1, 0.6)
+    f.bidTimer:SetMaxLetters(4)
+    f.bidTimer:SetTextColor(1, 1, 1, 1)
+    f.bidTimer:SetFontObject("MonDKPSmallRight")
+    f.bidTimer:SetTextInsets(10, 10, 5, 5)
+    f.bidTimer.tooltipText = L["BIDTIMER"];
+    f.bidTimer.tooltipDescription = L["BIDTIMERTTDESC"]
+    f.bidTimer.tooltipWarning = L["BIDTIMERTTWARN"]
+    f.bidTimer:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+      self:ClearFocus()
+    end)
+    f.bidTimer:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+      self:ClearFocus()
+    end)
+    f.bidTimer:SetScript("OnEnter", function(self)
       if (self.tooltipText) then
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
         GameTooltip:SetText(self.tooltipText, 0.25, 0.75, 0.90, 1, true);
@@ -1521,7 +1553,7 @@ function MonDKP:CreateBidWindow()
     f.StartBidding:GetFontString():SetTextColor(1, 1, 1, 1)
     f.StartBidding:SetNormalFontObject("MonDKPSmallCenter");
     f.StartBidding:SetHighlightFontObject("MonDKPSmallCenter");
-    f.StartBidding:SetScript("OnClick", function (self)
+    f.StartBidding:SetScript("OnClick", function(self)
       local pass, err = pcall(ToggleTimerBtn, self)
 
       if f.minBid then f.minBid:ClearFocus(); end
@@ -1533,7 +1565,7 @@ function MonDKP:CreateBidWindow()
         MonDKP:Print(err)
         core.BiddingWindow:SetShown(false)
         StaticPopupDialogs["SUGGEST_RELOAD"] = {
-          text = "|CFFFF0000"..L["WARNING"].."|r: "..L["MUSTRELOADUI"],
+          text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
           button1 = L["YES"],
           button2 = L["NO"],
           OnAccept = function()
@@ -1544,7 +1576,7 @@ function MonDKP:CreateBidWindow()
           hideOnEscape = true,
           preferredIndex = 3,
         }
-        StaticPopup_Show ("SUGGEST_RELOAD")
+        StaticPopup_Show("SUGGEST_RELOAD")
       end
     end)
     f.StartBidding:SetScript("OnEnter", function(self)
@@ -1559,7 +1591,7 @@ function MonDKP:CreateBidWindow()
     end)
 
     f.ClearBidWindow = MonDKP:CreateButton("TOP", f.StartBidding, "BOTTOM", 0, -10, L["CLEARBIDWINDOW"]);
-    f.ClearBidWindow:SetSize(90,25)
+    f.ClearBidWindow:SetSize(90, 25)
     f.ClearBidWindow:SetScript("OnClick", ClearBidWindow)
     f.ClearBidWindow:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -1575,28 +1607,32 @@ function MonDKP:CreateBidWindow()
     --------------------------------------------------
     -- Bid Table
     --------------------------------------------------
-      f.bidTable = CreateFrame("ScrollFrame", "MonDKP_BidWindowTable", f, "FauxScrollFrameTemplate")
-      f.bidTable:SetSize(width, height*numrows+3)
+    f.bidTable = CreateFrame("ScrollFrame", "MonDKP_BidWindowTable", f, "FauxScrollFrameTemplate")
+    f.bidTable:SetSize(width, height * numrows + 3)
     f.bidTable:SetBackdrop({
-      bgFile   = "Textures\\white.blp", tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga", tile = true, tileSize = 1, edgeSize = 2,
+      bgFile = "Textures\\white.blp",
+      tile = true,
+      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      tile = true,
+      tileSize = 1,
+      edgeSize = 2,
     });
-    f.bidTable:SetBackdropColor(0,0,0,0.2)
-    f.bidTable:SetBackdropBorderColor(1,1,1,0.4)
-      f.bidTable.ScrollBar = FauxScrollFrame_GetChildFrames(f.bidTable)
-      f.bidTable.ScrollBar:Hide()
-      f.bidTable.Rows = {}
-      for i=1, numrows do
-          f.bidTable.Rows[i] = BidWindowCreateRow(f.bidTable, i)
-          if i==1 then
-            f.bidTable.Rows[i]:SetPoint("TOPLEFT", f.bidTable, "TOPLEFT", 0, -3)
-          else
-            f.bidTable.Rows[i]:SetPoint("TOPLEFT", f.bidTable.Rows[i-1], "BOTTOMLEFT")
-          end
+    f.bidTable:SetBackdropColor(0, 0, 0, 0.2)
+    f.bidTable:SetBackdropBorderColor(1, 1, 1, 0.4)
+    f.bidTable.ScrollBar = FauxScrollFrame_GetChildFrames(f.bidTable)
+    f.bidTable.ScrollBar:Hide()
+    f.bidTable.Rows = {}
+    for i = 1, numrows do
+      f.bidTable.Rows[i] = BidWindowCreateRow(f.bidTable, i)
+      if i == 1 then
+        f.bidTable.Rows[i]:SetPoint("TOPLEFT", f.bidTable, "TOPLEFT", 0, -3)
+      else
+        f.bidTable.Rows[i]:SetPoint("TOPLEFT", f.bidTable.Rows[i - 1], "BOTTOMLEFT")
       end
-      f.bidTable:SetScript("OnVerticalScroll", function(self, offset)
-          FauxScrollFrame_OnVerticalScroll(self, offset, height, BidScrollFrame_Update)
-      end)
+    end
+    f.bidTable:SetScript("OnVerticalScroll", function(self, offset)
+      FauxScrollFrame_OnVerticalScroll(self, offset, height, BidScrollFrame_Update)
+    end)
 
     ---------------------------------------
     -- Header Buttons
@@ -1608,11 +1644,15 @@ function MonDKP:CreateBidWindow()
     f.BidTable_Headers:SetSize(370, 22)
     f.BidTable_Headers:SetPoint("BOTTOMLEFT", f.bidTable, "TOPLEFT", 0, 1)
     f.BidTable_Headers:SetBackdrop({
-      bgFile   = "Textures\\white.blp", tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga", tile = true, tileSize = 1, edgeSize = 2,
+      bgFile = "Textures\\white.blp",
+      tile = true,
+      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      tile = true,
+      tileSize = 1,
+      edgeSize = 2,
     });
-    f.BidTable_Headers:SetBackdropColor(0,0,0,0.8);
-    f.BidTable_Headers:SetBackdropBorderColor(1,1,1,0.5)
+    f.BidTable_Headers:SetBackdropColor(0, 0, 0, 0.8);
+    f.BidTable_Headers:SetBackdropBorderColor(1, 1, 1, 0.5)
     f.bidTable:SetPoint("TOP", f, "TOP", 0, -205)
     f.BidTable_Headers:Show()
 
@@ -1628,21 +1668,20 @@ function MonDKP:CreateBidWindow()
       v:SetHighlightTexture("Interface\\BUTTONS\\BlueGrad64_faded.blp");
       if k == "player" then
         if mode == "Minimum Bid Values" or mode == "Roll Based Bidding" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-          v:SetSize((width/2)-1, height)
+          v:SetSize((width / 2) - 1, height)
         elseif mode == "Static Item Values" or mode == "Roll Based Bidding" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-          v:SetSize((width*0.75)-1, height)
+          v:SetSize((width * 0.75) - 1, height)
         end
       else
         if mode == "Minimum Bid Values" or mode == "Roll Based Bidding" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-          v:SetSize((width/4)-1, height)
+          v:SetSize((width / 4) - 1, height)
         elseif mode == "Static Item Values" or mode == "Roll Based Bidding" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
           if k == "bid" then
             v:Hide()
           else
-            v:SetSize((width/4)-1, height)
+            v:SetSize((width / 4) - 1, height)
           end
         end
-
       end
     end
 
@@ -1678,29 +1717,33 @@ function MonDKP:CreateBidWindow()
       headerButtons.dkp.t:SetText(L["EXPECTEDROLL"])
     end
 
-      ------------------------------------
-      --  AWARD ITEM
-      ------------------------------------
+    ------------------------------------
+    -- AWARD ITEM
+    ------------------------------------
 
-      f.cost = CreateFrame("EditBox", nil, f)
+    f.cost = CreateFrame("EditBox", nil, f)
     f.cost:SetPoint("TOPLEFT", f.bidTable, "BOTTOMLEFT", 71, -15)
-      f.cost:SetAutoFocus(false)
-      f.cost:SetMultiLine(false)
-      f.cost:SetSize(70, 28)
-      f.cost:SetTextInsets(10, 10, 5, 5)
-      f.cost:SetBackdrop({
-        bgFile   = "Textures\\white.blp", tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile", tile = true, tileSize = 32, edgeSize = 2,
-      });
-      f.cost:SetBackdropColor(0,0,0,0.6)
-      f.cost:SetBackdropBorderColor(1,1,1,0.6)
-      f.cost:SetMaxLetters(8)
-      f.cost:SetTextColor(1, 1, 1, 1)
-      f.cost:SetFontObject("MonDKPSmallRight")
-      f.cost:SetScript("OnEscapePressed", function(self)    -- clears focus on esc
-        self:ClearFocus()
-      end)
-      f.cost:SetScript("OnEnter", function(self)
+    f.cost:SetAutoFocus(false)
+    f.cost:SetMultiLine(false)
+    f.cost:SetSize(70, 28)
+    f.cost:SetTextInsets(10, 10, 5, 5)
+    f.cost:SetBackdrop({
+      bgFile = "Textures\\white.blp",
+      tile = true,
+      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      tile = true,
+      tileSize = 32,
+      edgeSize = 2,
+    });
+    f.cost:SetBackdropColor(0, 0, 0, 0.6)
+    f.cost:SetBackdropBorderColor(1, 1, 1, 0.6)
+    f.cost:SetMaxLetters(8)
+    f.cost:SetTextColor(1, 1, 1, 1)
+    f.cost:SetFontObject("MonDKPSmallRight")
+    f.cost:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+      self:ClearFocus()
+    end)
+    f.cost:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
       GameTooltip:SetText(L["ITEMCOST"], 0.25, 0.75, 0.90, 1, true);
       GameTooltip:AddLine(L["ITEMCOSTTTDESC"], 1.0, 1.0, 1.0, true);
@@ -1714,7 +1757,7 @@ function MonDKP:CreateBidWindow()
     f.costHeader:SetFontObject("MonDKPLargeRight");
     f.costHeader:SetScale(0.7)
     f.costHeader:SetPoint("RIGHT", f.cost, "LEFT", -7, 0);
-    f.costHeader:SetText(L["ITEMCOST"]..": ")
+    f.costHeader:SetText(L["ITEMCOST"] .. ": ")
 
     if MonDKP_DB.modes.costvalue == "Percent" then
       f.cost.perc = f.cost:CreateFontString(nil, "OVERLAY")
@@ -1732,10 +1775,10 @@ function MonDKP:CreateBidWindow()
     end
 
     f.StartBidding = MonDKP:CreateButton("LEFT", f.cost, "RIGHT", 80, 0, L["AWARDITEM"]);
-    f.StartBidding:SetSize(90,25)
-    f.StartBidding:SetScript("OnClick", function ()  -- confirmation dialog to remove user(s)
+    f.StartBidding:SetSize(90, 25)
+    f.StartBidding:SetScript("OnClick", function() -- confirmation dialog to remove user(s)
       if SelectedBidder["player"] then
-        if strlen(strtrim(core.BiddingWindow.boss:GetText(), " ")) < 1 then       -- verifies there is a boss name
+        if strlen(strtrim(core.BiddingWindow.boss:GetText(), " ")) < 1 then -- verifies there is a boss name
           StaticPopupDialogs["VALIDATE_BOSS"] = {
             text = L["INVALIDBOSSNAME"],
             button1 = L["OK"],
@@ -1744,7 +1787,7 @@ function MonDKP:CreateBidWindow()
             hideOnEscape = true,
             preferredIndex = 3,
           }
-          StaticPopup_Show ("VALIDATE_BOSS")
+          StaticPopup_Show("VALIDATE_BOSS")
           return;
         end
 
@@ -1760,23 +1803,23 @@ function MonDKP:CreateBidWindow()
           hideOnEscape = true,
           preferredIndex = 3,
         }
-        StaticPopup_Show ("CONFIRM_AWARD")
+        StaticPopup_Show("CONFIRM_AWARD")
       end
     end);
 
-    f:SetScript("OnMouseUp", function(self)    -- clears focus on esc
-      local item,_,link = GetCursorInfo();
+    f:SetScript("OnMouseUp", function(self) -- clears focus on esc
+      local item, _, link = GetCursorInfo();
 
       if item == "item" then
 
-        local itemName,_,_,_,_,_,_,_,_,itemIcon = GetItemInfo(link)
+        local itemName, _, _, _, _, _, _, _, _, itemIcon = GetItemInfo(link)
 
         CurrItemForBid = link
         CurrItemIcon = itemIcon
         MonDKP:ToggleBidWindow(CurrItemForBid, CurrItemIcon, itemName)
         ClearCursor()
       end
-      end)
+    end)
   end
 
   return f;

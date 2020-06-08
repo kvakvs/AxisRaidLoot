@@ -1,6 +1,6 @@
 --[[
   Usage so far:  MonDKP.Sync:SendData(prefix, core.WorkingTable)  --sends table through comm channel for updates
---]]  
+--]]
 
 local _, core = ...;
 local _G = _G;
@@ -14,14 +14,14 @@ local LibDeflate = LibStub:GetLibrary("LibDeflate")
 --local LibCompress = LibStub:GetLi7brary("LibCompress")
 --local LibCompressAddonEncodeTable = LibCompress:GetAddonEncodeTable()
 
-function MonDKP:ValidateSender(sender)                -- returns true if "sender" has permission to write officer notes. false if not or not found.
+function MonDKP:ValidateSender(sender) -- returns true if "sender" has permission to write officer notes. false if not or not found.
   local rankIndex = MonDKP:GetGuildRankIndex(sender);
 
-  if rankIndex == 1 then             -- automatically gives permissions above all settings if player is guild leader
+  if rankIndex == 1 then -- automatically gives permissions above all settings if player is guild leader
     return true;
   end
-  if #MonDKP_Whitelist > 0 then                  -- if a whitelist exists, checks that rather than officer note permissions
-    for i=1, #MonDKP_Whitelist do
+  if #MonDKP_Whitelist > 0 then -- if a whitelist exists, checks that rather than officer note permissions
+    for i = 1, #MonDKP_Whitelist do
       if MonDKP_Whitelist[i] == sender then
         return true;
       end
@@ -29,7 +29,7 @@ function MonDKP:ValidateSender(sender)                -- returns true if "sender
     return false;
   else
     if rankIndex then
-      return C_GuildInfo.GuildControlGetRankFlags(rankIndex)[12]    -- returns true/false if player can write to officer notes
+      return C_GuildInfo.GuildControlGetRankFlags(rankIndex)[12] -- returns true/false if player can write to officer notes
     else
       return false;
     end
@@ -39,33 +39,32 @@ end
 -------------------------------------------------
 -- Register Broadcast Prefixs
 -------------------------------------------------
-
 function MonDKP.Sync:OnEnable()
-  MonDKP.Sync:RegisterComm("MonDKPDelUsers", MonDKP.Sync:OnCommReceived())      -- Broadcasts deleted users (archived users not on the DKP table)
-  MonDKP.Sync:RegisterComm("MonDKPMerge", MonDKP.Sync:OnCommReceived())      -- Broadcasts 2 weeks of data from officers (for merging)
+  MonDKP.Sync:RegisterComm("MonDKPDelUsers", MonDKP.Sync:OnCommReceived()) -- Broadcasts deleted users (archived users not on the DKP table)
+  MonDKP.Sync:RegisterComm("MonDKPMerge", MonDKP.Sync:OnCommReceived()) -- Broadcasts 2 weeks of data from officers (for merging)
   -- Normal broadcast Prefixs
-  MonDKP.Sync:RegisterComm("MonDKPDecay", MonDKP.Sync:OnCommReceived())        -- Broadcasts a weekly decay adjustment
-  MonDKP.Sync:RegisterComm("MonDKPBCastMsg", MonDKP.Sync:OnCommReceived())      -- broadcasts a message that is printed as is
-  MonDKP.Sync:RegisterComm("MonDKPCommand", MonDKP.Sync:OnCommReceived())      -- broadcasts a command (ex. timers, bid timers, stop all timers etc.)
-  MonDKP.Sync:RegisterComm("MonDKPLootDist", MonDKP.Sync:OnCommReceived())      -- broadcasts individual loot award to loot table
-  MonDKP.Sync:RegisterComm("MonDKPDelLoot", MonDKP.Sync:OnCommReceived())      -- broadcasts deleted loot award entries
-  MonDKP.Sync:RegisterComm("MonDKPDelSync", MonDKP.Sync:OnCommReceived())      -- broadcasts deleated DKP history entries
-  MonDKP.Sync:RegisterComm("MonDKPDKPDist", MonDKP.Sync:OnCommReceived())      -- broadcasts individual DKP award to DKP history table
-  MonDKP.Sync:RegisterComm("MonDKPMinBid", MonDKP.Sync:OnCommReceived())      -- broadcasts minimum dkp values (set in Options tab or custom values in bid window)
-  MonDKP.Sync:RegisterComm("MonDKPMaxBid", MonDKP.Sync:OnCommReceived())      -- broadcasts maximum dkp values (set in Options tab or custom values in bid window)
-  MonDKP.Sync:RegisterComm("MonDKPWhitelist", MonDKP.Sync:OnCommReceived())      -- broadcasts whitelist
-  MonDKP.Sync:RegisterComm("MonDKPDKPModes", MonDKP.Sync:OnCommReceived())      -- broadcasts DKP Mode settings
-  MonDKP.Sync:RegisterComm("MonDKPStand", MonDKP.Sync:OnCommReceived())        -- broadcasts standby list
-  MonDKP.Sync:RegisterComm("MonDKPRaidTime", MonDKP.Sync:OnCommReceived())      -- broadcasts Raid Timer Commands
-  MonDKP.Sync:RegisterComm("MonDKPZSumBank", MonDKP.Sync:OnCommReceived())    -- broadcasts ZeroSum Bank
-  MonDKP.Sync:RegisterComm("MonDKPQuery", MonDKP.Sync:OnCommReceived())        -- Querys guild for spec/role data
-  MonDKP.Sync:RegisterComm("MonDKPBuild", MonDKP.Sync:OnCommReceived())        -- broadcasts Addon build number to inform others an update is available.
-  MonDKP.Sync:RegisterComm("MonDKPTalents", MonDKP.Sync:OnCommReceived())      -- broadcasts current spec
-  MonDKP.Sync:RegisterComm("MonDKPRoles", MonDKP.Sync:OnCommReceived())        -- broadcasts current role info
-  MonDKP.Sync:RegisterComm("MonDKPBossLoot", MonDKP.Sync:OnCommReceived())      -- broadcast current loot table
-  MonDKP.Sync:RegisterComm("MonDKPBidShare", MonDKP.Sync:OnCommReceived())      -- broadcast accepted bids
-  MonDKP.Sync:RegisterComm("MonDKPBidder", MonDKP.Sync:OnCommReceived())      -- Submit bids
-  MonDKP.Sync:RegisterComm("MonDKPAllTabs", MonDKP.Sync:OnCommReceived())      -- Full table broadcast
+  MonDKP.Sync:RegisterComm("MonDKPDecay", MonDKP.Sync:OnCommReceived()) -- Broadcasts a weekly decay adjustment
+  MonDKP.Sync:RegisterComm("MonDKPBCastMsg", MonDKP.Sync:OnCommReceived()) -- broadcasts a message that is printed as is
+  MonDKP.Sync:RegisterComm("MonDKPCommand", MonDKP.Sync:OnCommReceived()) -- broadcasts a command (ex. timers, bid timers, stop all timers etc.)
+  MonDKP.Sync:RegisterComm("MonDKPLootDist", MonDKP.Sync:OnCommReceived()) -- broadcasts individual loot award to loot table
+  MonDKP.Sync:RegisterComm("MonDKPDelLoot", MonDKP.Sync:OnCommReceived()) -- broadcasts deleted loot award entries
+  MonDKP.Sync:RegisterComm("MonDKPDelSync", MonDKP.Sync:OnCommReceived()) -- broadcasts deleated DKP history entries
+  MonDKP.Sync:RegisterComm("MonDKPDKPDist", MonDKP.Sync:OnCommReceived()) -- broadcasts individual DKP award to DKP history table
+  MonDKP.Sync:RegisterComm("MonDKPMinBid", MonDKP.Sync:OnCommReceived()) -- broadcasts minimum dkp values (set in Options tab or custom values in bid window)
+  MonDKP.Sync:RegisterComm("MonDKPMaxBid", MonDKP.Sync:OnCommReceived()) -- broadcasts maximum dkp values (set in Options tab or custom values in bid window)
+  MonDKP.Sync:RegisterComm("MonDKPWhitelist", MonDKP.Sync:OnCommReceived()) -- broadcasts whitelist
+  MonDKP.Sync:RegisterComm("MonDKPDKPModes", MonDKP.Sync:OnCommReceived()) -- broadcasts DKP Mode settings
+  MonDKP.Sync:RegisterComm("MonDKPStand", MonDKP.Sync:OnCommReceived()) -- broadcasts standby list
+  MonDKP.Sync:RegisterComm("MonDKPRaidTime", MonDKP.Sync:OnCommReceived()) -- broadcasts Raid Timer Commands
+  MonDKP.Sync:RegisterComm("MonDKPZSumBank", MonDKP.Sync:OnCommReceived()) -- broadcasts ZeroSum Bank
+  MonDKP.Sync:RegisterComm("MonDKPQuery", MonDKP.Sync:OnCommReceived()) -- Querys guild for spec/role data
+  MonDKP.Sync:RegisterComm("MonDKPBuild", MonDKP.Sync:OnCommReceived()) -- broadcasts Addon build number to inform others an update is available.
+  MonDKP.Sync:RegisterComm("MonDKPTalents", MonDKP.Sync:OnCommReceived()) -- broadcasts current spec
+  MonDKP.Sync:RegisterComm("MonDKPRoles", MonDKP.Sync:OnCommReceived()) -- broadcasts current role info
+  MonDKP.Sync:RegisterComm("MonDKPBossLoot", MonDKP.Sync:OnCommReceived()) -- broadcast current loot table
+  MonDKP.Sync:RegisterComm("MonDKPBidShare", MonDKP.Sync:OnCommReceived()) -- broadcast accepted bids
+  MonDKP.Sync:RegisterComm("MonDKPBidder", MonDKP.Sync:OnCommReceived()) -- Submit bids
+  MonDKP.Sync:RegisterComm("MonDKPAllTabs", MonDKP.Sync:OnCommReceived()) -- Full table broadcast
   --MonDKP.Sync:RegisterComm("MonDKPEditLoot", MonDKP.Sync:OnCommReceived())    -- not in use
   --MonDKP.Sync:RegisterComm("MonDKPDataSync", MonDKP.Sync:OnCommReceived())    -- not in use
   --MonDKP.Sync:RegisterComm("MonDKPDKPLogSync", MonDKP.Sync:OnCommReceived())  -- not in use
@@ -78,15 +77,15 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
     --if prefix ~= "MDKPProfile" then print("|cffff0000Received: "..prefix.." from "..sender.."|r") end
     if prefix == "MonDKPQuery" then
       -- set remote seed
-      if sender ~= UnitName("player") and message ~= "start" then  -- logs seed. Used to determine if the officer has entries required.
+      if sender ~= UnitName("player") and message ~= "start" then -- logs seed. Used to determine if the officer has entries required.
         local DKP, Loot = strsplit(",", message)
-        local off1,date1 = strsplit("-", DKP)
-        local off2,date2 = strsplit("-", Loot)
+        local off1, date1 = strsplit("-", DKP)
+        local off2, date2 = strsplit("-", Loot)
 
-        if MonDKP:ValidateSender(off1) and MonDKP:ValidateSender(off2) and tonumber(date1) > MonDKP_DB.defaults.installed210 and tonumber(date2) > MonDKP_DB.defaults.installed210 then  -- send only if posting officer validates and the post was made after 2.1s installation
+        if MonDKP:ValidateSender(off1) and MonDKP:ValidateSender(off2) and tonumber(date1) > MonDKP_DB.defaults.installed210 and tonumber(date2) > MonDKP_DB.defaults.installed210 then -- send only if posting officer validates and the post was made after 2.1s installation
           local search1 = MonDKP:Table_Search(MonDKP_DKPHistory, DKP, "index")
           local search2 = MonDKP:Table_Search(MonDKP_Loot, Loot, "index")
-          
+
           if not search1 then
             MonDKP_DKPHistory.seed = DKP
           end
@@ -96,17 +95,17 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
         end
       end
       -- talents check
-      local TalTrees={}; table.insert(TalTrees, {GetTalentTabInfo(1)}); table.insert(TalTrees, {GetTalentTabInfo(2)}); table.insert(TalTrees, {GetTalentTabInfo(3)}); 
-      local talBuild = "("..TalTrees[1][3].."/"..TalTrees[2][3].."/"..TalTrees[3][3]..")"
+      local TalTrees = {}; table.insert(TalTrees, { GetTalentTabInfo(1) }); table.insert(TalTrees, { GetTalentTabInfo(2) }); table.insert(TalTrees, { GetTalentTabInfo(3) });
+      local talBuild = "(" .. TalTrees[1][3] .. "/" .. TalTrees[2][3] .. "/" .. TalTrees[3][3] .. ")"
       local talRole;
 
       table.sort(TalTrees, function(a, b)
         return a[3] > b[3]
       end)
-      
-      talBuild = TalTrees[1][1].." "..talBuild;
+
+      talBuild = TalTrees[1][1] .. " " .. talBuild;
       talRole = TalTrees[1][4];
-      
+
       MonDKP.Sync:SendData("MonDKPTalents", talBuild)
       MonDKP.Sync:SendData("MonDKPRoles", talRole)
 
@@ -115,7 +114,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
     elseif prefix == "MonDKPBidder" then
       if core.BidInProgress and core.IsOfficer then
         if message == "pass" then
-          MonDKP:Print(sender.." has passed.")
+          MonDKP:Print(sender .. " has passed.")
           return
         else
           MonDKP_CHAT_MSG_WHISPER(message, sender)
@@ -139,9 +138,9 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
       if search then
         local curSelection = MonDKP_DKPTable[search[1][1]]
         curClass = MonDKP_DKPTable[search[1][1]].class
-      
+
         if curClass == "WARRIOR" then
-          local a,b,c = strsplit("/", message)
+          local a, b, c = strsplit("/", message)
           if strfind(message, "Protection") or (tonumber(c) and tonumber(strsub(c, 1, -2)) > 15) then
             curSelection.role = L["TANK"]
           else
@@ -193,19 +192,19 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
     elseif prefix == "MonDKPBuild" and sender ~= UnitName("player") then
       local LastVerCheck = time() - core.LastVerCheck;
 
-      if LastVerCheck > 900 then             -- limits the Out of Date message from firing more than every 15 minutes 
+      if LastVerCheck > 900 then -- limits the Out of Date message from firing more than every 15 minutes
         if tonumber(message) > core.BuildNumber then
           core.LastVerCheck = time();
           MonDKP:Print(L["OUTOFDATEANNOUNCE"])
         end
       end
 
-      if tonumber(message) < core.BuildNumber then   -- returns build number if receiving party has a newer version
+      if tonumber(message) < core.BuildNumber then -- returns build number if receiving party has a newer version
         MonDKP.Sync:SendData("MonDKPBuild", tostring(core.BuildNumber))
       end
       return;
     end
-    if MonDKP:ValidateSender(sender) then    -- validates sender as an officer. fail-safe to prevent addon alterations to manipulate DKP table
+    if MonDKP:ValidateSender(sender) then -- validates sender as an officer. fail-safe to prevent addon alterations to manipulate DKP table
       if (prefix == "MonDKPBCastMsg") and sender ~= UnitName("player") then
         MonDKP:Print(message)
       elseif (prefix == "MonDKPCommand") then
@@ -217,7 +216,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             MonDKP:StartBidTimer(arg1, arg2, arg3)
             core.BiddingInProgress = true;
             if strfind(arg1, "{") then
-              MonDKP:Print("Bid timer extended by "..tonumber(strsub(arg1, strfind(arg1, "{")+1)).." seconds.")
+              MonDKP:Print("Bid timer extended by " .. tonumber(strsub(arg1, strfind(arg1, "{") + 1)) .. " seconds.")
             end
           elseif command == "StopBidTimer" then
             if MonDKP.BidTimer then
@@ -226,7 +225,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               core.BiddingInProgress = false;
             end
             if core.BidInterface and #core.BidInterface.LootTableButtons > 0 then
-              for i=1, #core.BidInterface.LootTableButtons do
+              for i = 1, #core.BidInterface.LootTableButtons do
                 ActionButton_HideOverlayGlow(core.BidInterface.LootTableButtons[i])
               end
             end
@@ -237,13 +236,13 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             end)
           elseif command == "BidInfo" then
             if not core.BidInterface then
-              core.BidInterface = core.BidInterface or MonDKP:BidInterface_Create()  -- initiates bid window if it hasn't been created
+              core.BidInterface = core.BidInterface or MonDKP:BidInterface_Create() -- initiates bid window if it hasn't been created
             end
-            if MonDKP_DB.defaults.AutoOpenBid and not core.BidInterface:IsShown() then  -- toggles bid window if option is set to
+            if MonDKP_DB.defaults.AutoOpenBid and not core.BidInterface:IsShown() then -- toggles bid window if option is set to
               MonDKP:BidInterface_Toggle()
             end
             local subarg1, subarg2, subarg3, subarg4 = strsplit("#", arg1);
-            MonDKP:CurrItem_Set(subarg1, subarg2, subarg3, subarg4)  -- populates bid window
+            MonDKP:CurrItem_Set(subarg1, subarg2, subarg3, subarg4) -- populates bid window
           end
         end
       elseif prefix == "MonDKPRaidTime" and sender ~= UnitName("player") and core.IsOfficer and MonDKP.ConfigTab2 then
@@ -288,12 +287,12 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
       end
       if (sender ~= UnitName("player")) then
         if prefix == "MonDKPLootDist" or prefix == "MonDKPDKPDist" or prefix == "MonDKPDelLoot" or prefix == "MonDKPDelSync" or prefix == "MonDKPMinBid" or prefix == "MonDKPWhitelist"
-        or prefix == "MonDKPDKPModes" or prefix == "MonDKPStand" or prefix == "MonDKPZSumBank" or prefix == "MonDKPBossLoot" or prefix == "MonDKPDecay" or prefix == "MonDKPDelUsers" or
-        prefix == "MonDKPAllTabs" or prefix == "MonDKPBidShare" or prefix == "MonDKPMerge" then
+            or prefix == "MonDKPDKPModes" or prefix == "MonDKPStand" or prefix == "MonDKPZSumBank" or prefix == "MonDKPBossLoot" or prefix == "MonDKPDecay" or prefix == "MonDKPDelUsers" or
+            prefix == "MonDKPAllTabs" or prefix == "MonDKPBidShare" or prefix == "MonDKPMerge" then
           decoded = LibDeflate:DecompressDeflate(LibDeflate:DecodeForWoWAddonChannel(message))
           local success, deserialized = LibAceSerializer:Deserialize(decoded);
           if success then
-            if prefix == "MonDKPAllTabs" then   -- receives full table broadcast
+            if prefix == "MonDKPAllTabs" then -- receives full table broadcast
               table.sort(deserialized.Loot, function(a, b)
                 return a["date"] > b["date"]
               end)
@@ -302,20 +301,20 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               end)
 
               if (#MonDKP_DKPHistory > 0 and #MonDKP_Loot > 0) and (deserialized.DKP[1].date < MonDKP_DKPHistory[1].date or deserialized.Loot[1].date < MonDKP_Loot[1].date) then
-                local entry1 = "Loot: "..deserialized.Loot[1].loot.." |cff616ccf"..L["WONBY"].." "..deserialized.Loot[1].player.." ("..date("%b %d @ %H:%M:%S", deserialized.Loot[1].date)..") by "..strsub(deserialized.Loot[1].index, 1, strfind(deserialized.Loot[1].index, "-")-1).."|r"
-                local entry2 = "DKP: |cff616ccf"..deserialized.DKP[1].reason.." ("..date("%b %d @ %H:%M:%S", deserialized.DKP[1].date)..") - "..strsub(deserialized.DKP[1].index, 1, strfind(deserialized.DKP[1].index, "-")-1).."|r"
+                local entry1 = "Loot: " .. deserialized.Loot[1].loot .. " |cff616ccf" .. L["WONBY"] .. " " .. deserialized.Loot[1].player .. " (" .. date("%b %d @ %H:%M:%S", deserialized.Loot[1].date) .. ") by " .. strsub(deserialized.Loot[1].index, 1, strfind(deserialized.Loot[1].index, "-") - 1) .. "|r"
+                local entry2 = "DKP: |cff616ccf" .. deserialized.DKP[1].reason .. " (" .. date("%b %d @ %H:%M:%S", deserialized.DKP[1].date) .. ") - " .. strsub(deserialized.DKP[1].index, 1, strfind(deserialized.DKP[1].index, "-") - 1) .. "|r"
 
                 StaticPopupDialogs["FULL_TABS_ALERT"] = {
-                  text = "|CFFFF0000"..L["WARNING"].."|r: "..string.format(L["NEWERTABS1"], sender).."\n\n"..entry1.."\n\n"..entry2.."\n\n"..L["NEWERTABS2"],
+                  text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. string.format(L["NEWERTABS1"], sender) .. "\n\n" .. entry1 .. "\n\n" .. entry2 .. "\n\n" .. L["NEWERTABS2"],
                   button1 = L["YES"],
                   button2 = L["NO"],
                   OnAccept = function()
                     MonDKP_DKPTable = deserialized.DKPTable
                     MonDKP_DKPHistory = deserialized.DKP
                     MonDKP_Loot = deserialized.Loot
-                    
+
                     MonDKP_Archive = deserialized.Archive
-                    
+
                     if MonDKP.ConfigTab6 and MonDKP.ConfigTab6.history and MonDKP.ConfigTab6:IsShown() then
                       MonDKP:DKPHistory_Update(true)
                     elseif MonDKP.ConfigTab5 and MonDKP.ConfigTab5:IsShown() then
@@ -335,14 +334,14 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                   hideOnEscape = true,
                   preferredIndex = 3,
                 }
-                StaticPopup_Show ("FULL_TABS_ALERT")
+                StaticPopup_Show("FULL_TABS_ALERT")
               else
                 MonDKP_DKPTable = deserialized.DKPTable
                 MonDKP_DKPHistory = deserialized.DKP
                 MonDKP_Loot = deserialized.Loot
-                
+
                 MonDKP_Archive = deserialized.Archive
-                
+
                 if MonDKP.ConfigTab6 and MonDKP.ConfigTab6.history and MonDKP.ConfigTab6:IsShown() then
                   MonDKP:DKPHistory_Update(true)
                 elseif MonDKP.ConfigTab5 and MonDKP.ConfigTab5:IsShown() then
@@ -359,25 +358,25 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               end
               return
             elseif prefix == "MonDKPMerge" then
-              for i=1, #deserialized.DKP do
+              for i = 1, #deserialized.DKP do
                 local search = MonDKP:Table_Search(MonDKP_DKPHistory, deserialized.DKP[i].index, "index")
 
-                if not search and ((MonDKP_Archive.DKPMeta and MonDKP_Archive.DKPMeta < deserialized.DKP[i].date) or (not MonDKP_Archive.DKPMeta)) then   -- prevents adding entry if this entry has already been archived
-                  local players = {strsplit(",", strsub(deserialized.DKP[i].players, 1, -2))}
+                if not search and ((MonDKP_Archive.DKPMeta and MonDKP_Archive.DKPMeta < deserialized.DKP[i].date) or (not MonDKP_Archive.DKPMeta)) then -- prevents adding entry if this entry has already been archived
+                  local players = { strsplit(",", strsub(deserialized.DKP[i].players, 1, -2)) }
                   local dkp
 
                   if strfind(deserialized.DKP[i].dkp, "%-%d*%.?%d+%%") then
-                    dkp = {strsplit(",", deserialized.DKP[i].dkp)}
+                    dkp = { strsplit(",", deserialized.DKP[i].dkp) }
                   end
 
-                  if deserialized.DKP[i].deletes then      -- adds deletedby field to entry if the received table is a delete entry
+                  if deserialized.DKP[i].deletes then -- adds deletedby field to entry if the received table is a delete entry
                     local search_del = MonDKP:Table_Search(MonDKP_DKPHistory, deserialized.DKP[i].deletes, "index")
 
                     if search_del then
                       MonDKP_DKPHistory[search_del[1][1]].deletedby = deserialized.DKP[i].index
                     end
                   end
-                  
+
                   if not deserialized.DKP[i].deletedby then
                     local search_del = MonDKP:Table_Search(MonDKP_DKPHistory, deserialized.DKP[i].index, "deletes")
 
@@ -388,11 +387,11 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
 
                   table.insert(MonDKP_DKPHistory, deserialized.DKP[i])
 
-                  for j=1, #players do
+                  for j = 1, #players do
                     if players[j] then
                       local findEntry = MonDKP:Table_Search(MonDKP_DKPTable, players[j], "player")
 
-                      if strfind(deserialized.DKP[i].dkp, "%-%d*%.?%d+%%") then     -- handles decay entries
+                      if strfind(deserialized.DKP[i].dkp, "%-%d*%.?%d+%%") then -- handles decay entries
                         if findEntry then
                           MonDKP_DKPTable[findEntry[1][1]].dkp = MonDKP_DKPTable[findEntry[1][1]].dkp + tonumber(dkp[j])
                         else
@@ -404,7 +403,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                         if findEntry then
                           MonDKP_DKPTable[findEntry[1][1]].dkp = MonDKP_DKPTable[findEntry[1][1]].dkp + tonumber(deserialized.DKP[i].dkp)
                           if (tonumber(deserialized.DKP[i].dkp) > 0 and not deserialized.DKP[i].deletes) or (tonumber(deserialized.DKP[i].dkp) < 0 and deserialized.DKP[i].deletes) then -- adjust lifetime if it's a DKP gain or deleting a DKP gain 
-                            MonDKP_DKPTable[findEntry[1][1]].lifetime_gained = MonDKP_DKPTable[findEntry[1][1]].lifetime_gained + deserialized.DKP[i].dkp   -- NOT if it's a DKP penalty or deleteing a DKP penalty
+                            MonDKP_DKPTable[findEntry[1][1]].lifetime_gained = MonDKP_DKPTable[findEntry[1][1]].lifetime_gained + deserialized.DKP[i].dkp -- NOT if it's a DKP penalty or deleteing a DKP penalty
                           end
                         else
                           if not MonDKP_Archive[players[j]] or (MonDKP_Archive[players[j]] and MonDKP_Archive[players[j]].deleted ~= true) then
@@ -427,7 +426,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                 MonDKP:DKPHistory_Update(true)
               end
 
-              for i=1, #deserialized.Loot do
+              for i = 1, #deserialized.Loot do
                 local search = MonDKP:Table_Search(MonDKP_Loot, deserialized.Loot[i].index, "index")
 
                 if not search and ((MonDKP_Archive.LootMeta and MonDKP_Archive.LootMeta < deserialized.DKP[i].date) or (not MonDKP_Archive.LootMeta)) then -- prevents adding entry if this entry has already been archived
@@ -462,7 +461,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                 end
               end
 
-              for i=1, #MonDKP_DKPTable do
+              for i = 1, #MonDKP_DKPTable do
                 if MonDKP_DKPTable[i].class == "NONE" then
                   local search = MonDKP:Table_Search(deserialized.Profiles, MonDKP_DKPTable[i].player, "player")
 
@@ -494,12 +493,12 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               MonDKP:LootHistory_Update(L["NOFILTER"])
               MonDKP:FilterDKPTable(core.currentSort, "reset")
             elseif prefix == "MonDKPDKPDist" then
-              local players = {strsplit(",", strsub(deserialized.players, 1, -2))}
+              local players = { strsplit(",", strsub(deserialized.players, 1, -2)) }
               local dkp = deserialized.dkp
 
               tinsert(MonDKP_DKPHistory, 1, deserialized)
 
-              for i=1, #players do
+              for i = 1, #players do
                 local search = MonDKP:Table_Search(MonDKP_DKPTable, players[i], "player")
 
                 if search then
@@ -509,7 +508,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                   end
                 else
                   if not MonDKP_Archive[players[i]] or (MonDKP_Archive[players[i]] and MonDKP_Archive[players[i]].deleted ~= true) then
-                    MonDKP_Profile_Create(players[i], tonumber(dkp), tonumber(dkp));  -- creates temp profile for data and requests additional data from online officers (hidden until data received)
+                    MonDKP_Profile_Create(players[i], tonumber(dkp), tonumber(dkp)); -- creates temp profile for data and requests additional data from online officers (hidden until data received)
                   end
                 end
               end
@@ -519,19 +518,19 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               end
               MonDKP:FilterDKPTable(core.currentSort, "reset")
             elseif prefix == "MonDKPDecay" then
-              local players = {strsplit(",", strsub(deserialized.players, 1, -2))}
-              local dkp = {strsplit(",", deserialized.dkp)}
+              local players = { strsplit(",", strsub(deserialized.players, 1, -2)) }
+              local dkp = { strsplit(",", deserialized.dkp) }
 
               tinsert(MonDKP_DKPHistory, 1, deserialized)
-              
-              for i=1, #players do
+
+              for i = 1, #players do
                 local search = MonDKP:Table_Search(MonDKP_DKPTable, players[i], "player")
 
                 if search then
                   MonDKP_DKPTable[search[1][1]].dkp = MonDKP_DKPTable[search[1][1]].dkp + tonumber(dkp[i])
                 else
                   if not MonDKP_Archive[players[i]] or (MonDKP_Archive[players[i]] and MonDKP_Archive[players[i]].deleted ~= true) then
-                    MonDKP_Profile_Create(players[i], tonumber(dkp[i]));  -- creates temp profile for data and requests additional data from online officers (hidden until data received)
+                    MonDKP_Profile_Create(players[i], tonumber(dkp[i])); -- creates temp profile for data and requests additional data from online officers (hidden until data received)
                   end
                 end
               end
@@ -544,24 +543,24 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               local numPlayers = 0
               local removedUsers = ""
 
-              for i=1, #deserialized do
+              for i = 1, #deserialized do
                 local search = MonDKP:Table_Search(MonDKP_DKPTable, deserialized[i].player, "player")
 
                 if search and deserialized[i].deleted and deserialized[i].deleted ~= "Recovered" then
                   if (MonDKP_Archive[deserialized[i].player] and MonDKP_Archive[deserialized[i].player].edited < deserialized[i].edited) or not MonDKP_Archive[deserialized[i].player] then
                     --delete user, archive data
-                    if not MonDKP_Archive[deserialized[i].player] then    -- creates/adds to archive entry for user
-                      MonDKP_Archive[deserialized[i].player] = { dkp=0, lifetime_spent=0, lifetime_gained=0, deleted=deserialized[i].deleted, edited=deserialized[i].edited }
+                    if not MonDKP_Archive[deserialized[i].player] then -- creates/adds to archive entry for user
+                      MonDKP_Archive[deserialized[i].player] = { dkp = 0, lifetime_spent = 0, lifetime_gained = 0, deleted = deserialized[i].deleted, edited = deserialized[i].edited }
                     else
                       MonDKP_Archive[deserialized[i].player].deleted = deserialized[i].deleted
                       MonDKP_Archive[deserialized[i].player].edited = deserialized[i].edited
                     end
-                    
+
                     c = MonDKP:GetCColors(MonDKP_DKPTable[search[1][1]].class)
-                    if i==1 then
-                      removedUsers = "|cff"..c.hex..MonDKP_DKPTable[search[1][1]].player.."|r"
+                    if i == 1 then
+                      removedUsers = "|cff" .. c.hex .. MonDKP_DKPTable[search[1][1]].player .. "|r"
                     else
-                      removedUsers = removedUsers..", |cff"..c.hex..MonDKP_DKPTable[search[1][1]].player.."|r"
+                      removedUsers = removedUsers .. ", |cff" .. c.hex .. MonDKP_DKPTable[search[1][1]].player .. "|r"
                     end
                     numPlayers = numPlayers + 1
 
@@ -575,7 +574,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                   end
                 elseif not search and deserialized[i].deleted == "Recovered" then
                   if MonDKP_Archive[deserialized[i].player] and (MonDKP_Archive[deserialized[i].player].edited == nil or MonDKP_Archive[deserialized[i].player].edited < deserialized[i].edited) then
-                    MonDKP_Profile_Create(deserialized[i].player);  -- User was recovered, create/request profile as needed
+                    MonDKP_Profile_Create(deserialized[i].player); -- User was recovered, create/request profile as needed
                     MonDKP_Archive[deserialized[i].player].deleted = "Recovered"
                     MonDKP_Archive[deserialized[i].player].edited = deserialized[i].edited
                   end
@@ -583,7 +582,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               end
               if numPlayers > 0 then
                 MonDKP:FilterDKPTable(core.currentSort, "reset")
-                MonDKP:Print("Removed "..numPlayers.." player(s): "..removedUsers)
+                MonDKP:Print("Removed " .. numPlayers .. " player(s): " .. removedUsers)
               end
               return
             elseif prefix == "MonDKPDelLoot" then
@@ -596,11 +595,11 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               local search_player = MonDKP:Table_Search(MonDKP_DKPTable, deserialized.player, "player")
 
               if search_player then
-                MonDKP_DKPTable[search_player[1][1]].dkp = MonDKP_DKPTable[search_player[1][1]].dkp + deserialized.cost                  -- refund previous looter
-                MonDKP_DKPTable[search_player[1][1]].lifetime_spent = MonDKP_DKPTable[search_player[1][1]].lifetime_spent + deserialized.cost       -- remove from lifetime_spent
+                MonDKP_DKPTable[search_player[1][1]].dkp = MonDKP_DKPTable[search_player[1][1]].dkp + deserialized.cost -- refund previous looter
+                MonDKP_DKPTable[search_player[1][1]].lifetime_spent = MonDKP_DKPTable[search_player[1][1]].lifetime_spent + deserialized.cost -- remove from lifetime_spent
               else
                 if not MonDKP_Archive[deserialized.player] or (MonDKP_Archive[deserialized.player] and MonDKP_Archive[deserialized.player].deleted ~= true) then
-                  MonDKP_Profile_Create(deserialized.player, deserialized.cost, 0, deserialized.cost);  -- creates temp profile for data and requests additional data from online officers (hidden until data received)
+                  MonDKP_Profile_Create(deserialized.player, deserialized.cost, 0, deserialized.cost); -- creates temp profile for data and requests additional data from online officers (hidden until data received)
                 end
               end
 
@@ -611,18 +610,18 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               MonDKP:FilterDKPTable(core.currentSort, "reset")
             elseif prefix == "MonDKPDelSync" then
               local search = MonDKP:Table_Search(MonDKP_DKPHistory, deserialized.deletes, "index")
-              local players = {strsplit(",", strsub(deserialized.players, 1, -2))}   -- cuts off last "," from string to avoid creating an empty value
+              local players = { strsplit(",", strsub(deserialized.players, 1, -2)) } -- cuts off last "," from string to avoid creating an empty value
               local dkp, mod;
 
-              if strfind(deserialized.dkp, "%-%d*%.?%d+%%") then     -- determines if it's a mass decay
-                dkp = {strsplit(",", deserialized.dkp)}
+              if strfind(deserialized.dkp, "%-%d*%.?%d+%%") then -- determines if it's a mass decay
+                dkp = { strsplit(",", deserialized.dkp) }
                 mod = "perc";
               else
                 dkp = deserialized.dkp
                 mod = "whole"
               end
 
-              for i=1, #players do
+              for i = 1, #players do
                 if mod == "perc" then
                   local search2 = MonDKP:Table_Search(MonDKP_DKPTable, players[i], "player")
 
@@ -630,7 +629,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                     MonDKP_DKPTable[search2[1][1]].dkp = MonDKP_DKPTable[search2[1][1]].dkp + tonumber(dkp[i])
                   else
                     if not MonDKP_Archive[players[i]] or (MonDKP_Archive[players[i]] and MonDKP_Archive[players[i]].deleted ~= true) then
-                      MonDKP_Profile_Create(players[i], tonumber(dkp[i]));  -- creates temp profile for data and requests additional data from online officers (hidden until data received)
+                      MonDKP_Profile_Create(players[i], tonumber(dkp[i])); -- creates temp profile for data and requests additional data from online officers (hidden until data received)
                     end
                   end
                 else
@@ -647,14 +646,14 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
                       local gained;
                       if tonumber(dkp) < 0 then gained = tonumber(dkp) else gained = 0 end
 
-                      MonDKP_Profile_Create(players[i], tonumber(dkp), gained);  -- creates temp profile for data and requests additional data from online officers (hidden until data received)
+                      MonDKP_Profile_Create(players[i], tonumber(dkp), gained); -- creates temp profile for data and requests additional data from online officers (hidden until data received)
                     end
                   end
                 end
               end
 
               if search then
-                MonDKP_DKPHistory[search[1][1]].deletedby = deserialized.index;    -- adds deletedby field if the entry exists
+                MonDKP_DKPHistory[search[1][1]].deletedby = deserialized.index; -- adds deletedby field if the entry exists
               end
 
               table.insert(MonDKP_DKPHistory, 1, deserialized)
@@ -667,7 +666,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               if core.IsOfficer then
                 MonDKP_DB.MinBidBySlot = deserialized[1]
 
-                for i=1, #deserialized[2] do
+                for i = 1, #deserialized[2] do
                   local search = MonDKP:Table_Search(MonDKP_MinBids, deserialized[2][i].item)
                   if search then
                     MonDKP_MinBids[search[1][1]].minbid = deserialized[2][i].minbid
@@ -680,7 +679,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               if core.IsOfficer then
                 MonDKP_DB.MaxBidBySlot = deserialized[1]
 
-                for i=1, #deserialized[2] do
+                for i = 1, #deserialized[2] do
                   local search = MonDKP:Table_Search(MonDKP_MaxBids, deserialized[2][i].item)
                   if search then
                     MonDKP_MaxBids[search[1][1]].maxbid = deserialized[2][i].maxbid
@@ -718,19 +717,19 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             elseif prefix == "MonDKPBossLoot" then
               local lootList = {};
               MonDKP_DB.bossargs.LastKilledBoss = deserialized.boss;
-            
-              for i=1, #deserialized do
+
+              for i = 1, #deserialized do
                 local item = Item:CreateFromItemLink(deserialized[i]);
                 item:ContinueOnItemLoad(function()
                   local icon = item:GetItemIcon()
-                  table.insert(lootList, {icon=icon, link=item:GetItemLink()})
+                  table.insert(lootList, { icon = icon, link = item:GetItemLink() })
                 end);
               end
 
               MonDKP:LootTable_Set(lootList)
             end
           else
-            MonDKP:Print("Report the following error on Curse or Github: "..deserialized)  -- error reporting if string doesn't get deserialized correctly
+            MonDKP:Print("Report the following error on Curse or Github: " .. deserialized) -- error reporting if string doesn't get deserialized correctly
           end
         end
       end
@@ -747,7 +746,7 @@ function MonDKP.Sync:SendData(prefix, data, target)
     if prefix == "MonDKPQuery" or prefix == "MonDKPBuild" or prefix == "MonDKPTalents" or prefix == "MonDKPRoles" then
       MonDKP.Sync:SendCommMessage(prefix, data, "GUILD")
       return;
-    elseif prefix == "MonDKPBidder" then    -- bid submissions. Keep to raid.
+    elseif prefix == "MonDKPBidder" then -- bid submissions. Keep to raid.
       MonDKP.Sync:SendCommMessage(prefix, data, "RAID")
       return;
     end
@@ -766,19 +765,19 @@ function MonDKP.Sync:SendData(prefix, data, target)
     if prefix == "MonDKPBCastMsg" then
       MonDKP.Sync:SendCommMessage(prefix, data, "GUILD")
       return;
-    end  
-
-    if data then
-      serialized = LibAceSerializer:Serialize(data);  -- serializes tables to a string
     end
 
-    local compressed = LibDeflate:CompressDeflate(serialized, {level = 9})
+    if data then
+      serialized = LibAceSerializer:Serialize(data); -- serializes tables to a string
+    end
+
+    local compressed = LibDeflate:CompressDeflate(serialized, { level = 9 })
     if compressed then
       packet = LibDeflate:EncodeForWoWAddonChannel(compressed)
     end
 
     -- encoded
-    if (prefix == "MonDKPZSumBank" or prefix == "MonDKPBossLoot" or prefix == "MonDKPBidShare") then    -- Zero Sum bank/loot table/bid table data and bid submissions. Keep to raid.
+    if (prefix == "MonDKPZSumBank" or prefix == "MonDKPBossLoot" or prefix == "MonDKPBidShare") then -- Zero Sum bank/loot table/bid table data and bid submissions. Keep to raid.
       MonDKP.Sync:SendCommMessage(prefix, packet, "RAID")
       return;
     end
@@ -791,7 +790,7 @@ function MonDKP.Sync:SendData(prefix, data, target)
       end
       return
     end
-    
+
     if target then
       MonDKP.Sync:SendCommMessage(prefix, packet, "WHISPER", target)
     else
