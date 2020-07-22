@@ -92,7 +92,7 @@ core.EncounterList = {
 core.MonDKPUI = {} -- global storing entire Configuration UI to hide/show UI
 core.MonVersion = "Axis-1.0.220";
 core.BuildNumber = 100220;
-core.TableWidth, core.TableRowHeight, core.TableNumRows = 500, 18, 27; -- width, row height, number of rows
+core.TableWidth, core.TableRowHeight, core.TableNumRows = 300, 18, 27; -- width, row height, number of rows
 core.SelectedData = { player = "none" }; -- stores data of clicked row for manipulation.
 core.classFiltered = {}; -- tracks classes filtered out with checkboxes
 core.IsOfficer = nil;

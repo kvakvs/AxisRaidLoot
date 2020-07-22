@@ -221,10 +221,12 @@ function MonDKP:SortDKPTable(id, reset) -- reorganizes core.WorkingTable based o
   DKPTable_Update()
 end
 
+--- Create the main frame of /dkp user interface
 function MonDKP:CreateMenu()
-  MonDKP.UIConfig = CreateFrame("Frame", "MonDKPConfig", UIParent, "ShadowOverlaySmallTemplate") --UIPanelDialogueTemplate, ShadowOverlaySmallTemplate
+  --UIPanelDialogueTemplate, ShadowOverlaySmallTemplate
+  MonDKP.UIConfig = CreateFrame("Frame", "MonDKPConfig", UIParent, "ShadowOverlaySmallTemplate")
   MonDKP.UIConfig:SetPoint("CENTER", UIParent, "CENTER", -250, 100);
-  MonDKP.UIConfig:SetSize(550, 590);
+  MonDKP.UIConfig:SetSize(core.TableWidth + 50, 590);
   MonDKP.UIConfig:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
@@ -281,7 +283,7 @@ function MonDKP:CreateMenu()
   ---------------------------------------
 
   MonDKP.DKPTable_Headers = CreateFrame("Frame", "MonDKPDKPTableHeaders", MonDKP.UIConfig)
-  MonDKP.DKPTable_Headers:SetSize(500, 22)
+  MonDKP.DKPTable_Headers:SetSize(core.TableWidth, 22)
   MonDKP.DKPTable_Headers:SetPoint("BOTTOMLEFT", MonDKP.DKPTable, "TOPLEFT", 0, 1)
   MonDKP.DKPTable_Headers:SetBackdrop({
     bgFile = "Textures\\white.blp",
@@ -303,6 +305,10 @@ function MonDKP:CreateMenu()
   SortButtons.class = CreateFrame("Button", "$ParentSortButtonClass", MonDKP.DKPTable_Headers)
   SortButtons.dkp = CreateFrame("Button", "$ParentSortButtonDkp", MonDKP.DKPTable_Headers)
 
+  SortButtons.player:SetSize((core.TableWidth * 0.4) - 1, core.TableRowHeight)
+  SortButtons.class:SetSize((core.TableWidth * 0.2) - 1, core.TableRowHeight)
+  SortButtons.dkp:SetSize((core.TableWidth * 0.4) - 1, core.TableRowHeight)
+
   SortButtons.class:SetPoint("BOTTOM", MonDKP.DKPTable_Headers, "BOTTOM", 0, 2)
   SortButtons.player:SetPoint("RIGHT", SortButtons.class, "LEFT")
   SortButtons.dkp:SetPoint("LEFT", SortButtons.class, "RIGHT")
@@ -317,10 +323,6 @@ function MonDKP:CreateMenu()
       v:SetScript("OnClick", function(self) MonDKP:SortDKPTable(self.Id, "Clear") end)
     end
   end
-
-  SortButtons.player:SetSize((core.TableWidth * 0.4) - 1, core.TableRowHeight)
-  SortButtons.class:SetSize((core.TableWidth * 0.2) - 1, core.TableRowHeight)
-  SortButtons.dkp:SetSize((core.TableWidth * 0.4) - 1, core.TableRowHeight)
 
   SortButtons.player.t = SortButtons.player:CreateFontString(nil, "OVERLAY")
   SortButtons.player.t:SetFontObject("MonDKPNormal")
@@ -366,9 +368,13 @@ function MonDKP:CreateMenu()
     CloseDropDownMenus()
   end
 
+  -----------------------------------
+  -- Sort Buttons above the DKP table
+  -----------------------------------
   SortButtons.dkp.t = SortButtons.dkp:CreateFontString(nil, "OVERLAY")
   SortButtons.dkp.t:SetFontObject("MonDKPNormal")
   SortButtons.dkp.t:SetTextColor(1, 1, 1, 1);
+
   if MonDKP_DB.modes.mode == "Roll Based Bidding" then
     SortButtons.dkp.t:SetPoint("RIGHT", SortButtons.dkp, "RIGHT", -50, 0);
     SortButtons.dkp.t:SetText(L["TOTALDKP"]);
@@ -384,10 +390,12 @@ function MonDKP:CreateMenu()
     SortButtons.dkp.t:SetText(L["TOTALDKP"]);
   end
 
-  ----- Counter below DKP Table
+  ------------------------------
+  -- Counter below DKP Table
+  ------------------------------
   MonDKP.DKPTable.counter = CreateFrame("Frame", "MonDKPDisplayFrameCounter", MonDKP.UIConfig);
-  MonDKP.DKPTable.counter:SetPoint("TOP", MonDKP.DKPTable, "BOTTOM", 0, 0)
-  MonDKP.DKPTable.counter:SetSize(400, 30)
+  MonDKP.DKPTable.counter:SetPoint("TOP", MonDKP.DKPTable, "BOTTOM", core.TableWidth / 4, 0)
+  MonDKP.DKPTable.counter:SetSize(core.TableWidth / 2, 30)
 
   MonDKP.DKPTable.counter.t = MonDKP.DKPTable.counter:CreateFontString(nil, "OVERLAY")
   MonDKP.DKPTable.counter.t:SetFontObject("MonDKPNormal");
@@ -402,7 +410,6 @@ function MonDKP:CreateMenu()
   ------------------------------
   -- Search Box
   ------------------------------
-
   MonDKP.UIConfig.search = CreateFrame("EditBox", nil, MonDKP.UIConfig)
   MonDKP.UIConfig.search:SetPoint("BOTTOMLEFT", MonDKP.UIConfig, "BOTTOMLEFT", 50, 18)
   MonDKP.UIConfig.search:SetAutoFocus(false)
@@ -491,11 +498,11 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig.expand.trigger:SetPoint("CENTER", MonDKP.UIConfig.expand, "CENTER", 0, 0)
   MonDKP.UIConfig.expand.trigger:SetScript("OnClick", function(self)
     if core.ShowState == false then
-      MonDKP.UIConfig:SetWidth(1050)
+      MonDKP.UIConfig:SetWidth(core.TableWidth + 550)
       MonDKP.UIConfig.TabMenu:Show()
       MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\collapse-arrow");
     else
-      MonDKP.UIConfig:SetWidth(550)
+      MonDKP.UIConfig:SetWidth(core.TableWidth + 50)
       MonDKP.UIConfig.TabMenu:Hide()
       MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\expand-arrow");
     end
