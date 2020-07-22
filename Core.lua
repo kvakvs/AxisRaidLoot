@@ -90,8 +90,8 @@ core.EncounterList = {
 }
 
 core.MonDKPUI = {} -- global storing entire Configuration UI to hide/show UI
-core.MonVersion = "v2.1.2";
-core.BuildNumber = 20102;
+core.MonVersion = "v1.0.220";
+core.BuildNumber = 100220;
 core.TableWidth, core.TableRowHeight, core.TableNumRows = 500, 18, 27; -- width, row height, number of rows
 core.SelectedData = { player = "none" }; -- stores data of clicked row for manipulation.
 core.classFiltered = {}; -- tracks classes filtered out with checkboxes
@@ -330,7 +330,7 @@ end
 function MonDKP:Print(...) --print function to add "MonolithDKP:" to the beginning of print() outputs.
   if not MonDKP_DB.defaults.supressNotifications then
     local defaults = MonDKP:GetThemeColor();
-    local prefix = string.format("|cff%s%s|r|cff%s", defaults[1].hex:upper(), "MonolithDKP:", defaults[2].hex:upper());
+    local prefix = string.format("|cff%s%s|r|cff%s", defaults[1].hex:upper(), "AxisRaidLoot:", defaults[2].hex:upper());
     local suffix = "|r";
 
     for i = 1, NUM_CHAT_WINDOWS do

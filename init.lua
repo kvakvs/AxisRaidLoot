@@ -258,7 +258,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
         MonDKP:SortDKPHistoryTable()
         MonDKP:Print(L["VERSION"] .. " " .. core.MonVersion .. ", " .. L["CREATEDMAINTAIN"] .. " Roeshambo@Stalagg-PvP");
         MonDKP:Print(L["LOADED"] .. " " .. #MonDKP_DKPTable .. " " .. L["PLAYERRECORDS"] .. ", " .. #MonDKP_Loot .. " " .. L["LOOTHISTRECORDS"] .. " " .. #MonDKP_DKPHistory .. " " .. L["DKPHISTRECORDS"] .. ".");
-        MonDKP:Print(L["USE"] .. " /dkp ? " .. L["SUBMITBUGS"] .. " @ https://github.com/Roeshambo/MonolithDKP/issues");
+        MonDKP:Print(L["USE"] .. " /dkp ? " .. L["SUBMITBUGS"] .. " @ https://github.com/kvakvs/AxisRaidLoot/issues");
         MonDKP.Sync:SendData("MonDKPBuild", tostring(core.BuildNumber)) -- broadcasts build number to guild to check if a newer version is available
 
         if not MonDKP_DB.defaults.installed210 then
@@ -442,7 +442,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
 end
 
 function MonDKP:OnInitialize(event, name) -- This is the FIRST function to run on load triggered registered events at bottom of file
-  if (name ~= "MonolithDKP") then return end
+  if (name ~= "AxisRaidLoot") then return end
 
   -- allows using left and right buttons to move through chat 'edit' box
   --[[for i = 1, NUM_CHAT_WINDOWS do
@@ -452,9 +452,9 @@ function MonDKP:OnInitialize(event, name) -- This is the FIRST function to run o
   ----------------------------------
   -- Register Slash Commands
   ----------------------------------
-  SLASH_MonolithDKP1 = "/dkp";
-  SLASH_MonolithDKP2 = "/mondkp";
-  SlashCmdList.MonolithDKP = HandleSlashCommands;
+  SLASH_AxisRaidLoot1 = "/dkp";
+  SLASH_AxisRaidLoot2 = "/axis";
+  SlashCmdList.AxisRaidLoot = HandleSlashCommands;
 
   --[[SLASH_RELOADUI1 = "/rl"; -- new slash command for reloading UI 				-- for debugging
   SlashCmdList.RELOADUI = ReloadUI;--]]

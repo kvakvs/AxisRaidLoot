@@ -221,7 +221,7 @@ function MonDKP:ConfigMenuTabs()
   MonDKP.ConfigTab1.checkBtn[9]:SetPoint("BOTTOMRIGHT", MonDKP.ConfigTab1.checkBtn[2], "TOPLEFT", 50, 0);
   MonDKP.ConfigTab1.checkBtn[9].text:SetText("|cff5151de" .. L["ALLCLASSES"] .. "|r");
   MonDKP.ConfigTab1.checkBtn[10]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[5], "BOTTOMLEFT", 0, 0);
-  MonDKP.ConfigTab1.checkBtn[10].text:SetText("|cff5151de" .. L["INPARTYRAID"] .. "|r"); -- executed in filterDKPTable (MonolithDKP.lua)
+  MonDKP.ConfigTab1.checkBtn[10].text:SetText("|cff5151de" .. L["INPARTYRAID"] .. "|r"); -- executed in filterDKPTable (AxisRaidLoot.lua)
 
   MonDKP.ConfigTab1.checkBtn[11] = CreateFrame("CheckButton", nil, MonDKP.ConfigTab1, "UICheckButtonTemplate");
   MonDKP.ConfigTab1.checkBtn[11]:SetID(11)
