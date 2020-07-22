@@ -228,7 +228,7 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -256,7 +256,7 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig.closeContainer:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -286,7 +286,7 @@ function MonDKP:CreateMenu()
   MonDKP.DKPTable_Headers:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 2,
@@ -411,7 +411,7 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig.search:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -484,7 +484,7 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig.expandtab:SetColorTexture(0, 0, 0, 1)
   MonDKP.UIConfig.expandtab:SetPoint("CENTER", MonDKP.UIConfig.expand, "CENTER");
   MonDKP.UIConfig.expandtab:SetSize(15, 60);
-  MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\expand-arrow.tga");
+  MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\expand-arrow.tga");
 
   MonDKP.UIConfig.expand.trigger = CreateFrame("Button", "$ParentCollapseExpandButton", MonDKP.UIConfig.expand)
   MonDKP.UIConfig.expand.trigger:SetSize(15, 60)
@@ -493,11 +493,11 @@ function MonDKP:CreateMenu()
     if core.ShowState == false then
       MonDKP.UIConfig:SetWidth(1050)
       MonDKP.UIConfig.TabMenu:Show()
-      MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\collapse-arrow");
+      MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\collapse-arrow");
     else
       MonDKP.UIConfig:SetWidth(550)
       MonDKP.UIConfig.TabMenu:Hide()
-      MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\expand-arrow");
+      MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\expand-arrow");
     end
     PlaySound(62540)
     core.ShowState = not core.ShowState
@@ -509,7 +509,7 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig.TitleBar:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -522,7 +522,7 @@ function MonDKP:CreateMenu()
   MonDKP.UIConfig.Title:SetColorTexture(0, 0, 0, 1)
   MonDKP.UIConfig.Title:SetPoint("CENTER", MonDKP.UIConfig.TitleBar, "CENTER");
   MonDKP.UIConfig.Title:SetSize(160, 48);
-  MonDKP.UIConfig.Title:SetTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\mondkp-title-t.tga");
+  MonDKP.UIConfig.Title:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\mondkp-title-t.tga");
 
   ---------------------------------------
   -- CHANGE LOG WINDOW
@@ -535,7 +535,7 @@ function MonDKP:CreateMenu()
     MonDKP.ChangeLogDisplay:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 3,
@@ -582,7 +582,7 @@ function MonDKP:CreateMenu()
     MonDKP.ChangeLogDisplay.closeContainer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 3,

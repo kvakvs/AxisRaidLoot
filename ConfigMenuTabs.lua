@@ -123,7 +123,7 @@ function MonDKP:ConfigMenuTabs()
   MonDKP.UIConfig.TabMenu:SetPoint("TOPRIGHT", MonDKP.UIConfig, "TOPRIGHT", -25, -25);
   MonDKP.UIConfig.TabMenu:SetSize(477, 510);
   MonDKP.UIConfig.TabMenu:SetBackdrop({
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 2,
@@ -136,7 +136,7 @@ function MonDKP:ConfigMenuTabs()
   MonDKP.UIConfig.TabMenuBG:SetColorTexture(0, 0, 0, 1)
   MonDKP.UIConfig.TabMenuBG:SetPoint("TOPLEFT", MonDKP.UIConfig.TabMenu, "TOPLEFT", 2, -2);
   MonDKP.UIConfig.TabMenuBG:SetSize(478, 511);
-  MonDKP.UIConfig.TabMenuBG:SetTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\menu-bg");
+  MonDKP.UIConfig.TabMenuBG:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\menu-bg");
 
   -- TabMenu ScrollFrame and ScrollBar
   MonDKP.UIConfig.TabMenu.ScrollFrame = CreateFrame("ScrollFrame", nil, MonDKP.UIConfig.TabMenu, "UIPanelScrollFrameTemplate");

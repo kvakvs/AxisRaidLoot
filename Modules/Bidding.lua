@@ -1004,7 +1004,7 @@ function MonDKP:CreateTimer()
   f.border:SetFrameLevel(19)
   f.border:SetSize(300, 25);
   f.border:SetBackdrop({
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 2,
@@ -1060,7 +1060,7 @@ local function BidRow_OnClick(self)
       core.BiddingWindow.bidTable.Rows[i]:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
       core.BiddingWindow.bidTable.Rows[i]:GetNormalTexture():SetAlpha(0.2)
     end
-    self:SetNormalTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\ListBox-Highlight");
+    self:SetNormalTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\ListBox-Highlight");
     self:GetNormalTexture():SetAlpha(0.7)
 
     if MonDKP_DB.modes.costvalue == "Percent" then
@@ -1104,7 +1104,7 @@ local function BidWindowCreateRow(parent, id) -- Create 3 buttons for each row i
   local f = CreateFrame("Button", "$parentLine" .. id, parent)
   f.Strings = {}
   f:SetSize(width, height)
-  f:SetHighlightTexture("Interface\\AddOns\\MonolithDKP\\Media\\Textures\\ListBox-Highlight");
+  f:SetHighlightTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\ListBox-Highlight");
   f:SetNormalTexture("Interface\\COMMON\\talent-blue-glow")
   f:GetNormalTexture():SetAlpha(0.2)
   f:SetScript("OnClick", BidRow_OnClick)
@@ -1234,7 +1234,7 @@ function MonDKP:CreateBidWindow()
   f:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -1278,7 +1278,7 @@ function MonDKP:CreateBidWindow()
   f.closeContainer:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 2,
@@ -1305,7 +1305,7 @@ function MonDKP:CreateBidWindow()
     f.boss:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
       tile = true,
       tileSize = 32,
       edgeSize = 2,
@@ -1371,7 +1371,7 @@ function MonDKP:CreateBidWindow()
       f.minBid:SetBackdrop({
         bgFile = "Textures\\white.blp",
         tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+        edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
         tile = true,
         tileSize = 32,
         edgeSize = 2,
@@ -1436,7 +1436,7 @@ function MonDKP:CreateBidWindow()
       f.maxBid:SetBackdrop({
         bgFile = "Textures\\white.blp",
         tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+        edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
         tile = true,
         tileSize = 32,
         edgeSize = 2,
@@ -1503,7 +1503,7 @@ function MonDKP:CreateBidWindow()
     f.bidTimer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
       tile = true,
       tileSize = 32,
       edgeSize = 2,
@@ -1612,7 +1612,7 @@ function MonDKP:CreateBidWindow()
     f.bidTable:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 2,
@@ -1646,7 +1646,7 @@ function MonDKP:CreateBidWindow()
     f.BidTable_Headers:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 2,
@@ -1730,7 +1730,7 @@ function MonDKP:CreateBidWindow()
     f.cost:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
       tile = true,
       tileSize = 32,
       edgeSize = 2,

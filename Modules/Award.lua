@@ -179,7 +179,7 @@ local function AwardConfirm_Create()
   f:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,

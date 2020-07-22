@@ -141,7 +141,7 @@ local function RaidTimerPopout_Create()
     MonDKP.RaidTimerPopout:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 3,
@@ -163,7 +163,7 @@ local function RaidTimerPopout_Create()
     MonDKP.RaidTimerPopout.closeContainer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 3,
@@ -290,7 +290,7 @@ function MonDKP:AdjustDKPTab_Create()
   MonDKP.ConfigTab2.otherReason:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -402,7 +402,7 @@ function MonDKP:AdjustDKPTab_Create()
   MonDKP.ConfigTab2.addDKP:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -514,7 +514,7 @@ function MonDKP:AdjustDKPTab_Create()
   MonDKP.ConfigTab2.decayDKP:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -638,7 +638,7 @@ function MonDKP:AdjustDKPTab_Create()
   MonDKP.ConfigTab2.RaidTimerContainer:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -835,7 +835,7 @@ function MonDKP:AdjustDKPTab_Create()
   MonDKP.ConfigTab2.RaidTimerContainer.interval:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -902,7 +902,7 @@ function MonDKP:AdjustDKPTab_Create()
   MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,

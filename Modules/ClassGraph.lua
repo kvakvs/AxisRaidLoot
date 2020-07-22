@@ -50,7 +50,7 @@ function MonDKP:ClassGraph()
     graph.icons[i].bar:SetBackdropBorderColor(1, 1, 1, 0)
     graph.icons[i].bar:SetSize(BarWidth, perc_height[i])
     graph.icons[i].bar:SetBackdrop({
-      bgFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\graph-bar",
+      bgFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\graph-bar",
       tile = false,
       insets = { left = 1, right = 1, top = 1, bottom = 1 }
     });

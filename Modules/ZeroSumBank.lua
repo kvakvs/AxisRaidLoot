@@ -95,7 +95,7 @@ function MonDKP:ZeroSumBank_Create()
   f:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -118,7 +118,7 @@ function MonDKP:ZeroSumBank_Create()
   f.closeContainer:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,
@@ -154,7 +154,7 @@ function MonDKP:ZeroSumBank_Create()
   f.Balance:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\slider-border",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\slider-border",
     tile = true,
     tileSize = 1,
     edgeSize = 2,
@@ -250,7 +250,7 @@ function MonDKP:ZeroSumBank_Create()
   f.LootFrame:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 3,

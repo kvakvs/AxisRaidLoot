@@ -216,7 +216,7 @@ function MonDKPExportBox_Show(text)
     f.closeContainer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile.tga",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
       tile = true,
       tileSize = 1,
       edgeSize = 3,

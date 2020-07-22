@@ -103,7 +103,7 @@ function MonDKP:Options()
       MonDKP.ConfigTab4.default[i]:SetBackdrop({
         bgFile = "Textures\\white.blp",
         tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+        edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
         tile = true,
         tileSize = 32,
         edgeSize = 2,
@@ -273,7 +273,7 @@ function MonDKP:Options()
       MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetBackdrop({
         bgFile = "Textures\\white.blp",
         tile = true,
-        edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+        edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
         tile = true,
         tileSize = 32,
         edgeSize = 2,
@@ -541,7 +541,7 @@ function MonDKP:Options()
         MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetBackdrop({
           bgFile = "Textures\\white.blp",
           tile = true,
-          edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+          edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
           tile = true,
           tileSize = 32,
           edgeSize = 2,
@@ -795,7 +795,7 @@ function MonDKP:Options()
     MonDKP.ConfigTab4.bidTimer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
-      edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+      edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
       tile = true,
       tileSize = 32,
       edgeSize = 2,
@@ -850,7 +850,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.TooltipHistory:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -906,7 +906,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.history:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -957,7 +957,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.DKPHistory:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -1010,7 +1010,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.TimerSize:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
@@ -1062,7 +1062,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.UIScaleSize:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
-    edgeFile = "Interface\\AddOns\\MonolithDKP\\Media\\Textures\\edgefile",
+    edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
     tile = true,
     tileSize = 32,
     edgeSize = 2,
