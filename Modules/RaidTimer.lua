@@ -93,7 +93,7 @@ local function AwardRaid(amount, reason)
     MonDKP.Sync:SendData("MonDKPDKPDist", MonDKP_DKPHistory[1])
 
     MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDDKPADJUSTBY"] .. " " .. amount .. " " .. L["FORREASON"] .. ": " .. reason)
-    MonDKP:Print(L["RAIDDKPADJUSTBY"] .. " " .. amount .. " " .. L["FORREASON"] .. ": " .. reason)
+    MonDKP.Print(L["RAIDDKPADJUSTBY"] .. " " .. amount .. " " .. L["FORREASON"] .. ": " .. reason)
   end
 end
 

@@ -691,12 +691,12 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
   f.DKPModesMain.SubZeroBidding:SetScript("OnClick", function(self)
     if self:GetChecked() == true then
       MonDKP_DB.modes.SubZeroBidding = true;
-      MonDKP:Print("Sub Zero Bidding |cff00ff00"..L["ENABLED"].."|r")
+      MonDKP.Print("Sub Zero Bidding |cff00ff00"..L["ENABLED"].."|r")
       f.DKPModesMain.AllowNegativeBidders:Show()
       f.DKPModesMain.AllowNegativeBidders:SetChecked(MonDKP_DB.modes.AllowNegativeBidders)
     else
       MonDKP_DB.modes.SubZeroBidding = false;
-      MonDKP:Print("Sub Zero Bidding |cffff0000"..L["DISABLED"].."|r")
+      MonDKP.Print("Sub Zero Bidding |cffff0000"..L["DISABLED"].."|r")
       MonDKP_DB.modes.AllowNegativeBidders = false
       f.DKPModesMain.AllowNegativeBidders:Hide()
     end
@@ -726,10 +726,10 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
   f.DKPModesMain.AllowNegativeBidders:SetScript("OnClick", function(self)
     if self:GetChecked() == true then
       MonDKP_DB.modes.AllowNegativeBidders = true;
-      MonDKP:Print("Allow Negative Bidders |cff00ff00"..L["ENABLED"].."|r")
+      MonDKP.Print("Allow Negative Bidders |cff00ff00"..L["ENABLED"].."|r")
     else
       MonDKP_DB.modes.AllowNegativeBidders = false;
-      MonDKP:Print("Allow Negative Bidders |cffff0000"..L["DISABLED"].."|r")
+      MonDKP.Print("Allow Negative Bidders |cffff0000"..L["DISABLED"].."|r")
     end
     PlaySound(808);
   end)
@@ -1003,7 +1003,7 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
         table.insert(temptable1, MonDKP_DB.DKPBonus)
         table.insert(temptable1, MonDKP_DB.raiders)
         MonDKP.Sync:SendData("MonDKPDKPModes", temptable1)
-        MonDKP:Print(L["DKPMODESENTCONF"])
+        MonDKP.Print(L["DKPMODESENTCONF"])
         local temptable2 = {}
               table.insert(temptable2, MonDKP_DB.MinBidBySlot)
               table.insert(temptable2, MonDKP_MinBids)

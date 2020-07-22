@@ -218,12 +218,12 @@ function MonDKP_BroadcastFull_Init()
     local tempTable
 
     if core.Broadcast.mergeCheckbox:GetChecked() == false and core.Broadcast.fullCheckbox:GetChecked() == false then
-      MonDKP:Print(L["BROADCASTWHICHDATA"])
+      MonDKP.Print(L["BROADCASTWHICHDATA"])
       return
     end
 
     if core.Broadcast.playerCheckbox:GetChecked() == true and player == nil then
-      MonDKP:Print(L["PLAYERVALIDATE"])
+      MonDKP.Print(L["PLAYERVALIDATE"])
       return
     end
 

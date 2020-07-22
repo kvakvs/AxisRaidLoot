@@ -226,7 +226,7 @@ end
 
 function MonDKP:ViewLimited(raid, standby, raiders)
   if #MonDKP_Standby == 0 and standby and not raid and not raiders then
-    MonDKP:Print(L["NOPLAYERINSTANDBY"])
+    MonDKP.Print(L["NOPLAYERINSTANDBY"])
     core.CurView = "all"
     core.CurSubView = "all"
   elseif raid or standby or raiders then
@@ -234,7 +234,7 @@ function MonDKP:ViewLimited(raid, standby, raiders)
     local GroupType = "none"
 
     if (not IsInGroup() and not IsInRaid()) and raid then
-      MonDKP:Print(L["NOPARTYORRAID"])
+      MonDKP.Print(L["NOPARTYORRAID"])
       core.WorkingTable = CopyTable(MonDKP_DKPTable)
       core.CurView = "all"
       core.CurSubView = "all"
@@ -289,7 +289,7 @@ function MonDKP:ViewLimited(raid, standby, raiders)
         end
       end
       if #tempTable == 0 then
-        MonDKP:Print(L["NOCORERAIDTEAM"])
+        MonDKP.Print(L["NOCORERAIDTEAM"])
         return;
       end
     end
@@ -893,6 +893,7 @@ function DKPTable_Update()
         MonDKP.DKPTable.Rows[i]:GetNormalTexture():SetAlpha(0.7)
       end
       if core.WorkingTable[index].player == UnitName("player") then
+        row.DKPInfo[1]:SetText(row.DKPInfo[1]:GetText() .. " |cff00ff00(you)")
         row.DKPInfo[2]:SetText("|cff00ff00" .. row.DKPInfo[2]:GetText() .. "|r")
         row.DKPInfo[3]:SetText("|cff00ff00" .. MonDKP_round(core.WorkingTable[index].dkp, MonDKP_DB.modes.rounding) .. "|r")
         MonDKP.DKPTable.Rows[i]:GetNormalTexture():SetAlpha(0.8)

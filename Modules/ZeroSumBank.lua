@@ -52,7 +52,7 @@ local function ZeroSumDistribution()
 
     MonDKP.Sync:SendData("MonDKPDKPDist", MonDKP_DKPHistory[1])
     MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDDKPADJUSTBY"] .. " " .. distribution .. " " .. L["AMONG"] .. " " .. #VerifyTable .. " " .. L["PLAYERSFORREASON"] .. ": " .. reason)
-    MonDKP:Print("Raid DKP Adjusted by " .. distribution .. " " .. L["AMONG"] .. " " .. #VerifyTable .. " " .. L["PLAYERSFORREASON"] .. ": " .. reason)
+    MonDKP.Print("Raid DKP Adjusted by " .. distribution .. " " .. L["AMONG"] .. " " .. #VerifyTable .. " " .. L["PLAYERSFORREASON"] .. ": " .. reason)
 
     table.wipe(VerifyTable)
     table.wipe(MonDKP_DB.modes.ZeroSumBank)
@@ -63,7 +63,7 @@ local function ZeroSumDistribution()
     MonDKP:ZeroSumBank_Update()
     core.ZeroSumBank:Hide();
   else
-    MonDKP:Print(L["NOTINRAIDPARTY"])
+    MonDKP.Print(L["NOTINRAIDPARTY"])
   end
 end
 
@@ -207,7 +207,7 @@ function MonDKP:ZeroSumBank_Create()
       }
       StaticPopup_Show("CONFIRM_ADJUST1")
     else
-      MonDKP:Print(L["NOPOINTSTODISTRIBUTE"])
+      MonDKP.Print(L["NOPOINTSTODISTRIBUTE"])
     end
   end)
   f.Distribute:SetScript("OnEnter", function(self)

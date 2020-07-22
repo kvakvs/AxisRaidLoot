@@ -140,7 +140,7 @@ function MonDKP:ResetPosition()
   core.ShowState = false;
   MonDKP.BidTimer:ClearAllPoints()
   MonDKP.BidTimer:SetPoint("CENTER", UIParent)
-  MonDKP:Print(L["POSITIONRESET"])
+  MonDKP.Print(L["POSITIONRESET"])
 end
 
 function MonDKP:GetGuildRank(player)
@@ -327,7 +327,7 @@ function MonDKP:FormatTime(time)
   return str;
 end
 
-function MonDKP:Print(...) --print function to add "MonolithDKP:" to the beginning of print() outputs.
+MonDKP.Print = function(...) --print function to add "MonolithDKP:" to the beginning of print() outputs.
   if not MonDKP_DB.defaults.supressNotifications then
     local defaults = MonDKP:GetThemeColor();
     local prefix = string.format("|cff%s%s|r|cff%s", defaults[1].hex:upper(), "AxisRaidLoot:", defaults[2].hex:upper());
@@ -358,7 +358,7 @@ function MonDKP:BroadcastTimer(seconds, ...) -- broadcasts timer and starts it n
   if IsInRaid() and core.IsOfficer == true then
     local title = ...;
     if not tonumber(seconds) then -- cancels the function if the command was entered improperly (eg. no number for time)
-      MonDKP:Print(L["INVALIDTIMER"]);
+      MonDKP.Print(L["INVALIDTIMER"]);
       return;
     end
     MonDKP:StartTimer(seconds, ...)
@@ -402,7 +402,7 @@ function MonDKP:StartTimer(seconds, ...)
   local alpha = 1;
 
   if not tonumber(seconds) then -- cancels the function if the command was entered improperly (eg. no number for time)
-    MonDKP:Print(L["INVALIDTIMER"]);
+    MonDKP.Print(L["INVALIDTIMER"]);
     return;
   end
 

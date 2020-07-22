@@ -58,7 +58,7 @@ function MonDKP.Sync:OnEnable()
   MonDKP.Sync:RegisterComm("MonDKPRaidTime", MonDKP.Sync:OnCommReceived()) -- broadcasts Raid Timer Commands
   MonDKP.Sync:RegisterComm("MonDKPZSumBank", MonDKP.Sync:OnCommReceived()) -- broadcasts ZeroSum Bank
   MonDKP.Sync:RegisterComm("MonDKPQuery", MonDKP.Sync:OnCommReceived()) -- Querys guild for spec/role data
-  MonDKP.Sync:RegisterComm("MonDKPBuild", MonDKP.Sync:OnCommReceived()) -- broadcasts Addon build number to inform others an update is available.
+  MonDKP.Sync:RegisterComm(MonDKP.SYNCMSG_BUILD, MonDKP.Sync:OnCommReceived()) -- broadcasts Addon build number to inform others an update is available.
   MonDKP.Sync:RegisterComm("MonDKPTalents", MonDKP.Sync:OnCommReceived()) -- broadcasts current spec
   MonDKP.Sync:RegisterComm("MonDKPRoles", MonDKP.Sync:OnCommReceived()) -- broadcasts current role info
   MonDKP.Sync:RegisterComm("MonDKPBossLoot", MonDKP.Sync:OnCommReceived()) -- broadcast current loot table
@@ -114,7 +114,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
     elseif prefix == "MonDKPBidder" then
       if core.BidInProgress and core.IsOfficer then
         if message == "pass" then
-          MonDKP:Print(sender .. " has passed.")
+          MonDKP.Print(sender .. " has passed.")
           return
         else
           MonDKP_CHAT_MSG_WHISPER(message, sender)
@@ -189,24 +189,24 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
         end
       end
       return;
-    elseif prefix == "MonDKPBuild" and sender ~= UnitName("player") then
+    elseif prefix == MonDKP.SYNCMSG_BUILD and sender ~= UnitName("player") then
       local LastVerCheck = time() - core.LastVerCheck;
 
-      if LastVerCheck > 900 then -- limits the Out of Date message from firing more than every 15 minutes
+      if LastVerCheck > 3600 then -- limits the Out of Date message from firing more than every 1h
         if tonumber(message) > core.BuildNumber then
           core.LastVerCheck = time();
-          MonDKP:Print(L["OUTOFDATEANNOUNCE"])
+          MonDKP.Print(L["OUTOFDATEANNOUNCE"] .. ", have: " .. core.BuildNumber .. ", new: " .. message)
         end
       end
 
       if tonumber(message) < core.BuildNumber then -- returns build number if receiving party has a newer version
-        MonDKP.Sync:SendData("MonDKPBuild", tostring(core.BuildNumber))
+        MonDKP.Sync:SendData(MonDKP.SYNCMSG_BUILD, tostring(core.BuildNumber))
       end
       return;
     end
     if MonDKP:ValidateSender(sender) then -- validates sender as an officer. fail-safe to prevent addon alterations to manipulate DKP table
       if (prefix == "MonDKPBCastMsg") and sender ~= UnitName("player") then
-        MonDKP:Print(message)
+        MonDKP.Print(message)
       elseif (prefix == "MonDKPCommand") then
         local command, arg1, arg2, arg3, arg4 = strsplit(",", message);
         if sender ~= UnitName("player") then
@@ -216,7 +216,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             MonDKP:StartBidTimer(arg1, arg2, arg3)
             core.BiddingInProgress = true;
             if strfind(arg1, "{") then
-              MonDKP:Print("Bid timer extended by " .. tonumber(strsub(arg1, strfind(arg1, "{") + 1)) .. " seconds.")
+              MonDKP.Print("Bid timer extended by " .. tonumber(strsub(arg1, strfind(arg1, "{") + 1)) .. " seconds.")
             end
           elseif command == "StopBidTimer" then
             if MonDKP.BidTimer then
@@ -582,7 +582,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               end
               if numPlayers > 0 then
                 MonDKP:FilterDKPTable(core.currentSort, "reset")
-                MonDKP:Print("Removed " .. numPlayers .. " player(s): " .. removedUsers)
+                MonDKP.Print("Removed " .. numPlayers .. " player(s): " .. removedUsers)
               end
               return
             elseif prefix == "MonDKPDelLoot" then
@@ -704,7 +704,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               end
             elseif prefix == "MonDKPDKPModes" then
               if (MonDKP_DB.modes.mode ~= deserialized[1].mode) or (MonDKP_DB.modes.MaxBehavior ~= deserialized[1].MaxBehavior) then
-                MonDKP:Print(L["RECOMMENDRELOAD"])
+                MonDKP.Print(L["RECOMMENDRELOAD"])
               end
               MonDKP_DB.modes = deserialized[1]
               MonDKP_DB.DKPBonus = deserialized[2]
@@ -729,7 +729,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
               MonDKP:LootTable_Set(lootList)
             end
           else
-            MonDKP:Print("Report the following error on Curse or Github: " .. deserialized) -- error reporting if string doesn't get deserialized correctly
+            MonDKP.Print("Report the following error on Curse or Github: " .. deserialized) -- error reporting if string doesn't get deserialized correctly
           end
         end
       end
@@ -743,7 +743,7 @@ function MonDKP.Sync:SendData(prefix, data, target)
 
   -- non officers / not encoded
   if IsInGuild() then
-    if prefix == "MonDKPQuery" or prefix == "MonDKPBuild" or prefix == "MonDKPTalents" or prefix == "MonDKPRoles" then
+    if prefix == "MonDKPQuery" or prefix == MonDKP.SYNCMSG_BUILD or prefix == "MonDKPTalents" or prefix == "MonDKPRoles" then
       MonDKP.Sync:SendCommMessage(prefix, data, "GUILD")
       return;
     elseif prefix == "MonDKPBidder" then -- bid submissions. Keep to raid.

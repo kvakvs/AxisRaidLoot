@@ -499,7 +499,7 @@ function MonDKP:Options()
           table.insert(temptable, MonDKP_DB.MinBidBySlot)
           table.insert(temptable, MonDKP_MinBids)
           MonDKP.Sync:SendData("MonDKPMinBid", temptable)
-          MonDKP:Print(L["MINBIDVALUESSENT"])
+          MonDKP.Print(L["MINBIDVALUESSENT"])
         end,
         timeout = 0,
         whileDead = true,
@@ -744,7 +744,7 @@ function MonDKP:Options()
             table.insert(temptable, MonDKP_DB.MaxBidBySlot)
             table.insert(temptable, MonDKP_MaxBids)
             MonDKP.Sync:SendData("MonDKPMaxBid", temptable)
-            MonDKP:Print(L["MAXBIDVALUESSENT"])
+            MonDKP.Print(L["MAXBIDVALUESSENT"])
           end,
           timeout = 0,
           whileDead = true,
@@ -1104,11 +1104,11 @@ function MonDKP:Options()
   end)
   MonDKP.ConfigTab4.supressNotifications:SetScript("OnClick", function()
     if MonDKP.ConfigTab4.supressNotifications:GetChecked() then
-      MonDKP:Print(L["NOTIFICATIONSLIKETHIS"] .. " |cffff0000" .. L["HIDDEN"] .. "|r.")
+      MonDKP.Print(L["NOTIFICATIONSLIKETHIS"] .. " |cffff0000" .. L["HIDDEN"] .. "|r.")
       MonDKP_DB["defaults"]["supressNotifications"] = true;
     else
       MonDKP_DB["defaults"]["supressNotifications"] = false;
-      MonDKP:Print(L["NOTIFICATIONSLIKETHIS"] .. " |cff00ff00" .. L["VISIBLE"] .. "|r.")
+      MonDKP.Print(L["NOTIFICATIONSLIKETHIS"] .. " |cff00ff00" .. L["VISIBLE"] .. "|r.")
     end
     PlaySound(808)
   end)
@@ -1179,11 +1179,11 @@ function MonDKP:Options()
     end)
     MonDKP.ConfigTab4.supressTells:SetScript("OnClick", function()
       if MonDKP.ConfigTab4.supressTells:GetChecked() then
-        MonDKP:Print(L["BIDWHISPARENOW"] .. " |cffff0000" .. L["HIDDEN"] .. "|r.")
+        MonDKP.Print(L["BIDWHISPARENOW"] .. " |cffff0000" .. L["HIDDEN"] .. "|r.")
         MonDKP_DB["defaults"]["SupressTells"] = true;
       else
         MonDKP_DB["defaults"]["SupressTells"] = false;
-        MonDKP:Print(L["BIDWHISPARENOW"] .. " |cff00ff00" .. L["VISIBLE"] .. "|r.")
+        MonDKP.Print(L["BIDWHISPARENOW"] .. " |cff00ff00" .. L["VISIBLE"] .. "|r.")
       end
       PlaySound(808)
     end)
@@ -1229,7 +1229,7 @@ function MonDKP:Options()
     end
 
     SaveSettings()
-    MonDKP:Print(L["DEFAULTSETSAVED"])
+    MonDKP.Print(L["DEFAULTSETSAVED"])
   end)
 
   -- Chatframe Selection 

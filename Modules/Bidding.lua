@@ -533,7 +533,7 @@ function MonDKP:ToggleBidWindow(loot, lootIcon, itemName)
 
     BidScrollFrame_Update()
   else
-    MonDKP:Print(L["NOPERMISSION"])
+    MonDKP.Print(L["NOPERMISSION"])
   end
 end
 
@@ -652,11 +652,11 @@ local function ToggleTimerBtn(self)
   mode = MonDKP_DB.modes.mode;
 
   if timerToggle == 0 then
-    --if not IsInRaid() then MonDKP:Print("You are not in a raid.") return false end
-    if (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.minBid:GetText() == "" or core.BiddingWindow.maxBid:GetText() == "") then MonDKP:Print(L["NOMINBIDORITEM"]) return false end
-    if (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) and ((core.BiddingWindow.maxBid:GetNumber() ~= 0) and (core.BiddingWindow.minBid:GetNumber() > core.BiddingWindow.maxBid:GetNumber())) then MonDKP:Print(L["MAXGTMIN"]) return false end
-    if (mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static")) and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.cost:GetText() == "") then MonDKP:Print(L["NOITEMORITEMCOST"]) return false end
-    if mode == "Roll Based Bidding" and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.cost:GetText() == "") then MonDKP:Print(L["NOITEMORITEMCOST"]) return false end
+    --if not IsInRaid() then MonDKP.Print("You are not in a raid.") return false end
+    if (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.minBid:GetText() == "" or core.BiddingWindow.maxBid:GetText() == "") then MonDKP.Print(L["NOMINBIDORITEM"]) return false end
+    if (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) and ((core.BiddingWindow.maxBid:GetNumber() ~= 0) and (core.BiddingWindow.minBid:GetNumber() > core.BiddingWindow.maxBid:GetNumber())) then MonDKP.Print(L["MAXGTMIN"]) return false end
+    if (mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static")) and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.cost:GetText() == "") then MonDKP.Print(L["NOITEMORITEMCOST"]) return false end
+    if mode == "Roll Based Bidding" and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.cost:GetText() == "") then MonDKP.Print(L["NOITEMORITEMCOST"]) return false end
 
     timerToggle = 1;
     self:SetText(L["ENDBIDDING"])
@@ -733,7 +733,7 @@ function MonDKP:BroadcastBidTimer(seconds, title, itemIcon) -- broadcasts timer 
   MonDKP:StartBidTimer(seconds, title, itemIcon)
 
   if strfind(seconds, "{") then
-    MonDKP:Print("Bid timer extended by " .. tonumber(strsub(seconds, strfind(seconds, "{") + 1)) .. " seconds.")
+    MonDKP.Print("Bid timer extended by " .. tonumber(strsub(seconds, strfind(seconds, "{") + 1)) .. " seconds.")
   end
 end
 
@@ -760,7 +760,7 @@ function MonDKP_Register_ShiftClickLootWindowHook() -- hook function into LootFr
             end)
 
             if not pass then
-              MonDKP:Print(err)
+              MonDKP.Print(err)
               core.BiddingWindow:SetShown(false)
               StaticPopupDialogs["SUGGEST_RELOAD"] = {
                 text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
@@ -894,27 +894,27 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
       if audioPlayed == false then
         PlaySound(23639);
       end
-      MonDKP:Print(L["TENSECONDSTOBID"])
+      MonDKP.Print(L["TENSECONDSTOBID"])
       messageSent[1] = true;
     end
     if tonumber(timerText) == 5 and messageSent[2] == false then
-      MonDKP:Print("5")
+      MonDKP.Print("5")
       messageSent[2] = true;
     end
     if tonumber(timerText) == 4 and messageSent[3] == false then
-      MonDKP:Print("4")
+      MonDKP.Print("4")
       messageSent[3] = true;
     end
     if tonumber(timerText) == 3 and messageSent[4] == false then
-      MonDKP:Print("3")
+      MonDKP.Print("3")
       messageSent[4] = true;
     end
     if tonumber(timerText) == 2 and messageSent[5] == false then
-      MonDKP:Print("2")
+      MonDKP.Print("2")
       messageSent[5] = true;
     end
     if tonumber(timerText) == 1 and messageSent[6] == false then
-      MonDKP:Print("1")
+      MonDKP.Print("1")
       messageSent[6] = true;
     end
     self:SetValue(timer)
@@ -1262,7 +1262,7 @@ function MonDKP:CreateBidWindow()
   end);
   f:SetScript("OnHide", function()
     if core.BidInProgress then
-      MonDKP:Print(L["CLOSEDBIDINPROGRESS"])
+      MonDKP.Print(L["CLOSEDBIDINPROGRESS"])
     end
   end)
   f:SetScript("OnMouseDown", function(self)
@@ -1562,7 +1562,7 @@ function MonDKP:CreateBidWindow()
       f.boss:ClearFocus()
       f.cost:ClearFocus()
       if not pass then
-        MonDKP:Print(err)
+        MonDKP.Print(err)
         core.BiddingWindow:SetShown(false)
         StaticPopupDialogs["SUGGEST_RELOAD"] = {
           text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],

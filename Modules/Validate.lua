@@ -174,9 +174,9 @@ function MonDKP:ValidateDKPTable_Final()
       ValidateTimer:SetScript("OnUpdate", nil)
       timer = 0
       if rectified == 0 then
-        MonDKP:Print(L["VALIDATIONCOMPLETE1"])
+        MonDKP.Print(L["VALIDATIONCOMPLETE1"])
       else
-        MonDKP:Print(string.format(L["VALIDATIONCOMPLETE2"], rectified))
+        MonDKP.Print(string.format(L["VALIDATIONCOMPLETE2"], rectified))
       end
       ValInProgress = false
       table.wipe(DKPTableTemp)
@@ -228,7 +228,7 @@ end
 
 function MonDKP:ValidateLootTable() -- validation starts here
   if ValInProgress then
-    MonDKP:Print(L["VALIDATEINPROG"])
+    MonDKP.Print(L["VALIDATEINPROG"])
     return
   end
   local deleted_entries = 0
@@ -238,7 +238,7 @@ function MonDKP:ValidateLootTable() -- validation starts here
   local processing = false
   ValInProgress = true
 
-  MonDKP:Print(L["VALIDATINGTABLES"])
+  MonDKP.Print(L["VALIDATINGTABLES"])
   local ValidateTimer = ValidateTimer or CreateFrame("StatusBar", nil, UIParent)
   ValidateTimer:SetScript("OnUpdate", function(self, elapsed)
     timer = timer + elapsed

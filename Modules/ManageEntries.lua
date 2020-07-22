@@ -59,7 +59,7 @@ local function Remove_Entries()
   table.wipe(core.SelectedData)
   MonDKPSelectionCount_Update()
   MonDKP:FilterDKPTable(core.currentSort, "reset")
-  MonDKP:Print("Removed " .. numPlayers .. " player(s): " .. removedUsers)
+  MonDKP.Print("Removed " .. numPlayers .. " player(s): " .. removedUsers)
   MonDKP:ClassGraph_Update()
   if #deleted > 0 then
     MonDKP.Sync:SendData("MonDKPDelUsers", deleted)
@@ -132,7 +132,7 @@ function AddRaidToDKPTable()
       InGuild = false;
     end
     if addedUsers then
-      MonDKP:Print(L["ADDED"] .. " " .. numPlayers .. " " .. L["PLAYERS"] .. ": " .. addedUsers)
+      MonDKP.Print(L["ADDED"] .. " " .. numPlayers .. " " .. L["PLAYERS"] .. ": " .. addedUsers)
     end
     if core.ClassGraph then
       MonDKP:ClassGraph_Update()
@@ -140,11 +140,11 @@ function AddRaidToDKPTable()
       MonDKP:ClassGraph()
     end
     if FlagRecovery then
-      MonDKP:Print(L["YOUHAVERECOVERED"])
+      MonDKP.Print(L["YOUHAVERECOVERED"])
     end
     MonDKP:FilterDKPTable(core.currentSort, "reset")
   else
-    MonDKP:Print(L["NOPARTYORRAID"])
+    MonDKP.Print(L["NOPARTYORRAID"])
   end
 end
 
@@ -189,10 +189,10 @@ local function AddGuildToDKPTable(rank, level)
   end
   MonDKP:FilterDKPTable(core.currentSort, "reset")
   if addedUsers then
-    MonDKP:Print(L["ADDED"] .. " " .. numPlayers .. " " .. L["PLAYERS"] .. ": " .. addedUsers)
+    MonDKP.Print(L["ADDED"] .. " " .. numPlayers .. " " .. L["PLAYERS"] .. ": " .. addedUsers)
   end
   if FlagRecovery then
-    MonDKP:Print(L["YOUHAVERECOVERED"])
+    MonDKP.Print(L["YOUHAVERECOVERED"])
   end
   if core.ClassGraph then
     MonDKP:ClassGraph_Update()
@@ -225,7 +225,7 @@ local function AddTargetToDKPTable()
 
     MonDKP:FilterDKPTable(core.currentSort, "reset")
     c = MonDKP:GetCColors(class)
-    MonDKP:Print(L["ADDED"] .. " |cff" .. c.hex .. name .. "|r")
+    MonDKP.Print(L["ADDED"] .. " |cff" .. c.hex .. name .. "|r")
 
     if core.ClassGraph then
       MonDKP:ClassGraph_Update()
@@ -235,7 +235,7 @@ local function AddTargetToDKPTable()
     if MonDKP_Archive[name] and MonDKP_Archive[name].deleted then
       MonDKP_Archive[name].deleted = "Recovered"
       MonDKP_Archive[name].edited = curTime
-      MonDKP:Print(L["YOUHAVERECOVERED"])
+      MonDKP.Print(L["YOUHAVERECOVERED"])
     end
   end
 end
@@ -297,7 +297,7 @@ local function UpdateWhitelist()
     table.wipe(MonDKP_Whitelist)
   end
   MonDKP.Sync:SendData("MonDKPWhitelist", MonDKP_Whitelist)
-  MonDKP:Print(L["WHITELISTBROADCASTED"])
+  MonDKP.Print(L["WHITELISTBROADCASTED"])
 end
 
 local function ViewWhitelist()
@@ -401,7 +401,7 @@ function MonDKP:ManageEntries()
       }
       StaticPopup_Show("REMOVE_ENTRIES")
     else
-      MonDKP:Print(L["NOENTRIESSELECTED"])
+      MonDKP.Print(L["NOENTRIESSELECTED"])
     end
   end);
 
@@ -608,8 +608,8 @@ function MonDKP:ManageEntries()
           end
         end
         if count > 0 then
-          MonDKP:Print(L["PURGELIST"] .. " (" .. count .. "):")
-          MonDKP:Print(purgeString)
+          MonDKP.Print(L["PURGELIST"] .. " (" .. count .. "):")
+          MonDKP.Print(purgeString)
           MonDKP:FilterDKPTable(core.currentSort, "reset")
         end
       end,
@@ -723,7 +723,7 @@ function MonDKP:ManageEntries()
   end)
   MonDKP.ConfigTab3.WhitelistContainer.SendWhitelistButton:SetScript("OnClick", function() -- confirmation dialog to add user(s)
     MonDKP.Sync:SendData("MonDKPWhitelist", MonDKP_Whitelist)
-    MonDKP:Print(L["WHITELISTBROADCASTED"])
+    MonDKP.Print(L["WHITELISTBROADCASTED"])
   end);
 
   local CheckLeader = MonDKP:GetGuildRankIndex(UnitName("player"))

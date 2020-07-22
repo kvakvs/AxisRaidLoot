@@ -850,7 +850,7 @@ function MonDKP:BidInterface_Create()
 
   f:SetScript("OnHide", function()
     if core.BiddingInProgress then
-      MonDKP:Print(L["CLOSEDBIDINPROGRESS"])
+      MonDKP.Print(L["CLOSEDBIDINPROGRESS"])
     end
     if MonDKP.BidTimer:IsShown() then
       MonDKP.BidTimer.OpenBid:Show()

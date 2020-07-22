@@ -151,7 +151,7 @@ local function ConsolidateTables(keepDKP)
       MonDKP_Loot.seed = MonDKP_Loot[1].index
       MonDKP:FilterDKPTable(core.currentSort, "reset")
       ValInProgress = false
-      MonDKP:Print(L["REPAIRCOMP"])
+      MonDKP.Print(L["REPAIRCOMP"])
     end
   end)
 end
@@ -199,7 +199,7 @@ end
 
 function MonDKP:RepairTables(keepDKP) -- Repair starts
   if ValInProgress then
-    MonDKP:Print(L["VALIDATEINPROG"])
+    MonDKP.Print(L["VALIDATEINPROG"])
     return
   end
 
@@ -209,12 +209,12 @@ function MonDKP:RepairTables(keepDKP) -- Repair starts
   local processing = false
   ValInProgress = true
 
-  MonDKP:Print(L["REPAIRSTART"])
+  MonDKP.Print(L["REPAIRSTART"])
 
   if keepDKP then
-    MonDKP:Print("Keep DKP: true")
+    MonDKP.Print("Keep DKP: true")
   else
-    MonDKP:Print("Keep DKP: false")
+    MonDKP.Print("Keep DKP: false")
   end
 
   local ValidateTimer = ValidateTimer or CreateFrame("StatusBar", nil, UIParent)

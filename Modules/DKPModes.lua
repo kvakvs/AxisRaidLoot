@@ -17,7 +17,7 @@ function MonDKP:ToggleDKPModesWindow()
     if core.BiddingWindow then core.BiddingWindow:SetFrameLevel(6) end
     if MonDKP.UIConfig then MonDKP.UIConfig:SetFrameLevel(2) end
   else
-    MonDKP:Print(L["NOPERMISSION"])
+    MonDKP.Print(L["NOPERMISSION"])
   end
 end
 
@@ -27,7 +27,7 @@ function MonDKP:DKPModesFrame_Create()
   local ActiveCostType = MonDKP_DB.modes.costvalue;
 
   if not core.IsOfficer then
-    MonDKP:Print(L["NOPERMISSION"])
+    MonDKP.Print(L["NOPERMISSION"])
     return
   end
 

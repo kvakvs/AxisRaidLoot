@@ -5,6 +5,8 @@ local L = core.L;
 
 local lockouts = CreateFrame("Frame", "LockoutsFrame");
 
+MonDKP.SYNCMSG_BUILD = "AxisRLBuild"
+
 --------------------------------------
 -- Slash Command
 --------------------------------------
@@ -14,7 +16,7 @@ MonDKP.Commands = {
       local pass, err = pcall(MonDKP.Toggle)
 
       if not pass then
-        MonDKP:Print(err)
+        MonDKP.Print(err)
         core.MonDKPUI:SetShown(false)
         StaticPopupDialogs["SUGGEST_RELOAD"] = {
           text = "|CFFFF0000" .. L["WARNING"] .. "|r: " .. L["MUSTRELOADUI"],
@@ -31,7 +33,7 @@ MonDKP.Commands = {
         StaticPopup_Show("SUGGEST_RELOAD")
       end
     else
-      MonDKP:Print("Monolith DKP has not completed initialization.")
+      MonDKP.Print("Monolith DKP has not completed initialization.")
     end
   end,
   ["reset"] = MonDKP.ResetPosition,
@@ -46,13 +48,13 @@ MonDKP.Commands = {
           MonDKP.ToggleBidWindow()
         else
           local itemName, _, _, _, _, _, _, _, _, itemIcon = GetItemInfo(item)
-          MonDKP:Print("Opening Bid Window for: " .. item)
+          MonDKP.Print("Opening Bid Window for: " .. item)
           MonDKP:ToggleBidWindow(item, itemIcon, itemName)
         end
       end
       MonDKP:BidInterface_Toggle()
     else
-      MonDKP:Print("Monolith DKP has not completed initialization.")
+      MonDKP.Print("Monolith DKP has not completed initialization.")
     end
   end,
   ["repairtables"] = function(...) -- test new features
@@ -70,7 +72,7 @@ MonDKP.Commands = {
       MonDKP:StatusVerify_Update()
 
       if not name or not strfind(name, ":::::") then
-        MonDKP:Print(L["AWARDWARNING"])
+        MonDKP.Print(L["AWARDWARNING"])
         return
       end
       local item = strjoin(" ", ...)
@@ -79,7 +81,7 @@ MonDKP.Commands = {
 
       MonDKP:AwardConfirm(nil, 0, MonDKP_DB.bossargs.LastKilledBoss, MonDKP_DB.bossargs.CurrentRaidZone, item)
     else
-      MonDKP:Print(L["NOPERMISSION"])
+      MonDKP.Print(L["NOPERMISSION"])
     end
   end,
   ["lockouts"] = function()
@@ -104,29 +106,29 @@ MonDKP.Commands = {
       if core.IsOfficer then
         MonDKP:ToggleDKPModesWindow()
       else
-        MonDKP:Print(L["NOPERMISSION"])
+        MonDKP.Print(L["NOPERMISSION"])
       end
     else
-      MonDKP:Print("Monolith DKP has not completed initialization.")
+      MonDKP.Print("Monolith DKP has not completed initialization.")
     end
   end,
   ["help"] = function()
-    MonDKP:Print(" ");
-    MonDKP:Print(L["SLASHCOMMANDLIST"] .. ":")
-    MonDKP:Print("|cff00cc66/dkp|r - " .. L["DKPLAUNCH"]);
-    MonDKP:Print("|cff00cc66/dkp ?|r - " .. L["HELPINFO"]);
-    MonDKP:Print("|cff00cc66/dkp reset|r - " .. L["DKPRESETPOS"]);
-    MonDKP:Print("|cff00cc66/dkp lockouts|r - " .. L["DKPLOCKOUT"]);
-    MonDKP:Print("|cff00cc66/dkp timer|r - " .. L["CREATERAIDTIMER"]);
-    MonDKP:Print("|cff00cc66/dkp bid|r - " .. L["OPENBIDWINDOWHELP"]);
-    MonDKP:Print("|cff00cc66/dkp bid [itemlink]|r - " .. L["OPENAUCWINHELP"]);
-    MonDKP:Print("|cff00cc66/dkp award [item link]|r - " .. L["DKPAWARDHELP"]);
-    MonDKP:Print("|cff00cc66/dkp modes|r - " .. L["DKPMODESHELP"]);
-    MonDKP:Print("|cff00cc66/dkp export|r - " .. L["DKPEXPORTHELP"]);
-    MonDKP:Print(" ");
-    MonDKP:Print(L["WHISPERCMDSHELP"]);
-    MonDKP:Print("|cff00cc66!bid (or !bid <" .. L["VALUE"] .. ">)|r - " .. L["BIDHELP"]);
-    MonDKP:Print("|cff00cc66!dkp (or !dkp <" .. L["PLAYERNAME"] .. ">)|r - " .. L["DKPCMDHELP"]);
+    MonDKP.Print(" ");
+    MonDKP.Print(L["SLASHCOMMANDLIST"] .. ":")
+    MonDKP.Print("|cff00cc66/dkp|r - " .. L["DKPLAUNCH"]);
+    MonDKP.Print("|cff00cc66/dkp ?|r - " .. L["HELPINFO"]);
+    MonDKP.Print("|cff00cc66/dkp reset|r - " .. L["DKPRESETPOS"]);
+    MonDKP.Print("|cff00cc66/dkp lockouts|r - " .. L["DKPLOCKOUT"]);
+    MonDKP.Print("|cff00cc66/dkp timer|r - " .. L["CREATERAIDTIMER"]);
+    MonDKP.Print("|cff00cc66/dkp bid|r - " .. L["OPENBIDWINDOWHELP"]);
+    MonDKP.Print("|cff00cc66/dkp bid [itemlink]|r - " .. L["OPENAUCWINHELP"]);
+    MonDKP.Print("|cff00cc66/dkp award [item link]|r - " .. L["DKPAWARDHELP"]);
+    MonDKP.Print("|cff00cc66/dkp modes|r - " .. L["DKPMODESHELP"]);
+    MonDKP.Print("|cff00cc66/dkp export|r - " .. L["DKPEXPORTHELP"]);
+    MonDKP.Print(" ");
+    MonDKP.Print(L["WHISPERCMDSHELP"]);
+    MonDKP.Print("|cff00cc66!bid (or !bid <" .. L["VALUE"] .. ">)|r - " .. L["BIDHELP"]);
+    MonDKP.Print("|cff00cc66!dkp (or !dkp <" .. L["PLAYERNAME"] .. ">)|r - " .. L["DKPCMDHELP"]);
   end,
 };
 
@@ -203,7 +205,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
           end
         end
       else
-        MonDKP:Print("Event ID: " .. arg1 .. " - > " .. boss_name .. " Killed. Please report this Event ID at https://www.curseforge.com/wow/addons/monolith-dkp to update raid event handlers.")
+        MonDKP.Print("Event ID: " .. arg1 .. " - > " .. boss_name .. " Killed. Please report this Event ID at https://www.curseforge.com/wow/addons/monolith-dkp to update raid event handlers.")
       end
     elseif IsInRaid() then
       MonDKP_DB.bossargs.LastKilledBoss = ...;
@@ -212,7 +214,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
     if MonDKP_DB.defaults.AutoLog and IsInRaid() then
       if not LoggingCombat() then
         LoggingCombat(1)
-        MonDKP:Print(L["NOWLOGGINGCOMBAT"])
+        MonDKP.Print(L["NOWLOGGINGCOMBAT"])
       end
     end
   elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then -- logs 15 recent zones entered while in a raid party
@@ -231,7 +233,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
       if MonDKP_DB.defaults.AutoLog and MonDKP:Table_Search(core.ZoneList, GetRealZoneText()) then
         if not LoggingCombat() then
           LoggingCombat(1)
-          MonDKP:Print(L["NOWLOGGINGCOMBAT"])
+          MonDKP.Print(L["NOWLOGGINGCOMBAT"])
         end
       end
     end
@@ -256,10 +258,10 @@ function MonDKP_OnEvent(self, event, arg1, ...)
         MonDKP:CheckOfficer()
         MonDKP:SortLootTable()
         MonDKP:SortDKPHistoryTable()
-        MonDKP:Print(L["VERSION"] .. " " .. core.MonVersion .. ", " .. L["CREATEDMAINTAIN2"] .. " Narran@HydraxianWaterlords");
-        MonDKP:Print(L["LOADED"] .. " " .. #MonDKP_DKPTable .. " " .. L["PLAYERRECORDS"] .. ", " .. #MonDKP_Loot .. " " .. L["LOOTHISTRECORDS"] .. " " .. #MonDKP_DKPHistory .. " " .. L["DKPHISTRECORDS"] .. ".");
-        MonDKP:Print(L["USE"] .. " /dkp ? " .. L["SUBMITBUGS"] .. " @ https://github.com/kvakvs/AxisRaidLoot/issues");
-        MonDKP.Sync:SendData("MonDKPBuild", tostring(core.BuildNumber)) -- broadcasts build number to guild to check if a newer version is available
+        MonDKP.Print(L["VERSION"] .. " " .. core.MonVersion .. ", " .. L["CREATEDMAINTAIN2"] .. " Narran@HydraxianWaterlords");
+        MonDKP.Print(L["LOADED"] .. " " .. #MonDKP_DKPTable .. " " .. L["PLAYERRECORDS"] .. ", " .. #MonDKP_Loot .. " " .. L["LOOTHISTRECORDS"] .. " " .. #MonDKP_DKPHistory .. " " .. L["DKPHISTRECORDS"] .. ".");
+        MonDKP.Print(L["USE"] .. " /dkp ? " .. L["SUBMITBUGS"] .. " @ https://github.com/kvakvs/AxisRaidLoot/issues");
+        MonDKP.Sync:SendData(MonDKP.SYNCMSG_BUILD, tostring(core.BuildNumber)) -- broadcasts build number to guild to check if a newer version is available
 
         if not MonDKP_DB.defaults.installed210 then
           MonDKP_DB.defaults.installed210 = time(); -- identifies when 2.1.0 was installed to block earlier posts from broadcasting in sync (for now)
@@ -334,7 +336,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
       end
 
       if k ~= "Three" then -- remove when three day raid lockouts are added
-        MonDKP:Print(raidString .. " " .. L["RESETSIN"] .. days .. hours .. mins .. " (" .. date("%A @ %H:%M:%S%p", v) .. ")")
+        MonDKP.Print(raidString .. " " .. L["RESETSIN"] .. days .. hours .. mins .. " (" .. date("%A @ %H:%M:%S%p", v) .. ")")
       end
     end
 
