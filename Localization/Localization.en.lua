@@ -167,6 +167,7 @@ core.L = {
   COSTAUTOUPDATETTDESC = "Select what you'd like the item cost to be automatically updated to during a bid session.\n\n|CFFFF0000First Bidder|r: This will update the cost of the item at the bottom of the bid window to the highest bidder.\n\n|CFFFF0000Second Bidder|r: This will update the cost of the item at the bottom of the bid window to either the second highest bidder or, if there is only one bidder, the minimum bid value.\n\nFor each, the cost is always editable on the fly.",
   COSTAUTOUPDATEVALUE = "Cost Auto Update Value",
   CREATEDMAINTAIN = "created and maintained by",
+  CREATEDMAINTAIN2 = "created by Roeshambo@Stalagg-PvP and maintained by",
   CREATERAIDTIMER = "Creates Raid Timer (Officers Only) (eg. /dkp timer 120 Pizza Break!)",
   CURRENTLYHAS = "currently has",
   CURRENTLYSYNCING = "You are currently syncing tables. Please wait until completed to continue.",

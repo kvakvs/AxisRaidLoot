@@ -256,7 +256,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
         MonDKP:CheckOfficer()
         MonDKP:SortLootTable()
         MonDKP:SortDKPHistoryTable()
-        MonDKP:Print(L["VERSION"] .. " " .. core.MonVersion .. ", " .. L["CREATEDMAINTAIN"] .. " Roeshambo@Stalagg-PvP");
+        MonDKP:Print(L["VERSION"] .. " " .. core.MonVersion .. ", " .. L["CREATEDMAINTAIN2"] .. " Narran@HydraxianWaterlords");
         MonDKP:Print(L["LOADED"] .. " " .. #MonDKP_DKPTable .. " " .. L["PLAYERRECORDS"] .. ", " .. #MonDKP_Loot .. " " .. L["LOOTHISTRECORDS"] .. " " .. #MonDKP_DKPHistory .. " " .. L["DKPHISTRECORDS"] .. ".");
         MonDKP:Print(L["USE"] .. " /dkp ? " .. L["SUBMITBUGS"] .. " @ https://github.com/kvakvs/AxisRaidLoot/issues");
         MonDKP.Sync:SendData("MonDKPBuild", tostring(core.BuildNumber)) -- broadcasts build number to guild to check if a newer version is available
