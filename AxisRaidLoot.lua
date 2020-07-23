@@ -29,11 +29,10 @@ function MonDKP:Toggle() -- toggles IsShown() state of MonDKP.UIConfig, the enti
   if core.BiddingWindow then core.BiddingWindow:SetFrameLevel(6) end
   if core.ModesWindow then core.ModesWindow:SetFrameLevel(2) end
 
-  if core.IsOfficer == nil then
-    MonDKP:CheckOfficer()
-  end
+  local isOfficer = MonDKP.IsOfficer();
+
   --core.IsOfficer = C_GuildInfo.CanEditOfficerNote()  -- seemingly removed from classic API
-  if core.IsOfficer == false then
+  if isOfficer == false then
     for i = 2, 3 do
       _G["MonDKPMonDKP.ConfigTabMenuTab" .. i]:Hide();
     end
@@ -47,8 +46,13 @@ function MonDKP:Toggle() -- toggles IsShown() state of MonDKP.UIConfig, the enti
     OptionsLoaded = true;
   end
 
-  if #MonDKP_Whitelist > 0 and core.IsOfficer then -- broadcasts whitelist any time the window is opened if one exists (help ensure everyone has the information even if they were offline when it was created)
-    MonDKP.Sync:SendData("MonDKPWhitelist", MonDKP_Whitelist) -- Only officers propagate the whitelist, and it is only accepted by players that are NOT the GM (prevents overwriting new Whitelist set by GM, if any.)
+  -- broadcasts whitelist any time the window is opened if one exists
+  -- (help ensure everyone has the information even if they were offline when
+  -- it was created)
+  if #MonDKP_Whitelist > 0 and isOfficer then
+    -- Only officers propagate the whitelist, and it is only accepted by players
+    -- that are NOT the GM (prevents overwriting new Whitelist set by GM, if any.)
+    MonDKP.Sync:SendData("MonDKPWhitelist", MonDKP_Whitelist)
   end
 
   if core.CurSubView == "raid" then

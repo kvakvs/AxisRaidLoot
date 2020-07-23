@@ -4,12 +4,17 @@ local MonDKP = core.MonDKP;
 local L = core.L;
 
 local lootTable = {};
+local BidderWindow = {}; -- bidinterface "class"
 
---[[["132744"] = "|cffa335ee|Hitem:12895::::::::60:::::|h[Breastplate of the Chromatic Flight]|h|r",
-["132585"] = "|cffa335ee|Hitem:16862::::::::60:::::|h[Sabatons of Might]|h|r",
-["133066"] = "|cffff8000|Hitem:17182::::::::60:::::|h[Sulfuras, Hand of Ragnaros]|h|r",
-["133173"] = "|cffa335ee|Hitem:16963::::::::60:::::|h[Helm of Wrath]|h|r",
-["135065"] = "|cffa335ee|Hitem:16961::::::::60:::::|h[Pauldrons of Wrath]|h|r",--]]
+--[[
+lootTable = {
+  ["132744"] = "|cffa335ee|Hitem:12895::::::::60:::::|h[Breastplate of the Chromatic Flight]|h|r",
+  ["132585"] = "|cffa335ee|Hitem:16862::::::::60:::::|h[Sabatons of Might]|h|r",
+  ["133066"] = "|cffff8000|Hitem:17182::::::::60:::::|h[Sulfuras, Hand of Ragnaros]|h|r",
+  ["133173"] = "|cffa335ee|Hitem:16963::::::::60:::::|h[Helm of Wrath]|h|r",
+  ["135065"] = "|cffa335ee|Hitem:16961::::::::60:::::|h[Pauldrons of Wrath]|h|r",
+}
+--]]
 
 local width, height, numrows = 370, 18, 13
 local Bids_Submitted = {};
@@ -23,7 +28,7 @@ function MonDKP:LootTable_Set(lootList)
 end
 
 local function SortBidTable()
-  mode = MonDKP_DB.modes.mode;
+  local mode = MonDKP_DB.modes.mode;
   table.sort(Bids_Submitted, function(a, b)
     if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
       return a["bid"] > b["bid"]
@@ -444,7 +449,8 @@ function MonDKP:Bids_Set(entry)
   end
 end
 
-function MonDKP:BidInterface_Create()
+--- Creates Bidder Window
+BidderWindow.NewWindow = function()
   local f = CreateFrame("Frame", "MonDKP_BidderWindow", UIParent, "ShadowOverlaySmallTemplate");
   local mode = MonDKP_DB.modes.mode;
   f:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 700, -200);
@@ -490,7 +496,11 @@ function MonDKP:BidInterface_Create()
   end)
   tinsert(UISpecialFrames, f:GetName()); -- Sets frame to close on "Escape"
 
-  -- Close Button
+  return f
+end
+
+--- Create close button on the BIDDER frame
+BidderWindow.AddCloseButton = function(f)
   f.closeContainer = CreateFrame("Frame", "MonDKPBidderWindowCloseButtonContainer", f)
   f.closeContainer:SetPoint("CENTER", f, "TOPRIGHT", -4, 0)
   f.closeContainer:SetBackdrop({
@@ -507,6 +517,12 @@ function MonDKP:BidInterface_Create()
 
   f.closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
   f.closeBtn:SetPoint("CENTER", f.closeContainer, "TOPRIGHT", -14, -14)
+end
+
+function MonDKP:BidInterface_Create()
+  local f = BidderWindow.NewWindow()
+  BidderWindow.AddCloseButton(f)
+  local mode = MonDKP_DB.modes.mode;
 
   f.LootTableIcons = {}
   f.LootTableButtons = {}
@@ -795,7 +811,7 @@ function MonDKP:BidInterface_Create()
   -- Header Buttons
   ---------------------------------------
   f.headerButtons = {}
-  mode = MonDKP_DB.modes.mode;
+  local mode = MonDKP_DB.modes.mode;
 
   f.BidTable_Headers = CreateFrame("Frame", "MonDKPBidderTableHeaders", f.bidTable)
   f.BidTable_Headers:SetSize(370, 22)

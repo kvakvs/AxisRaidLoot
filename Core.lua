@@ -177,14 +177,22 @@ function MonDKP:GetGuildRankIndex(player)
   end
 end
 
-function MonDKP:CheckOfficer() -- checks if user is an officer IF core.IsOfficer is empty. Use before checks against core.IsOfficer
-  if not core.InitStart then return end
-  if core.IsOfficer == nil then -- used as a redundency as it should be set on load in init.lua GUILD_ROSTER_UPDATE event
-    if MonDKP:GetGuildRankIndex(UnitName("player")) == 1 then -- automatically gives permissions above all settings if player is guild leader
+--- checks if user is an officer IF core.IsOfficer is empty.
+-- Use before checks against core.IsOfficer
+MonDKP.IsOfficer = function()
+  if not core.InitStart then
+    return nil
+  end
+
+  -- used as a redundency as it should be set on load in init.lua GUILD_ROSTER_UPDATE event
+  if core.IsOfficer == nil then
+    -- automatically gives permissions above all settings if player is guild leader
+    if MonDKP:GetGuildRankIndex(UnitName("player")) == 1 then
       core.IsOfficer = true
       MonDKP.ConfigTab3.WhitelistContainer:Show()
-      return;
+      return true;
     end
+
     if IsInGuild() then
       if #MonDKP_Whitelist > 0 then
         core.IsOfficer = false;
@@ -203,6 +211,8 @@ function MonDKP:CheckOfficer() -- checks if user is an officer IF core.IsOfficer
       core.IsOfficer = false;
     end
   end
+
+  return core.IsOfficer
 end
 
 function MonDKP:GetGuildRankGroup(index) -- returns all members within a specific rank index as well as their index in the guild list (for use with GuildRosterSetPublicNote(index, "msg") and GuildRosterSetOfficerNote)
