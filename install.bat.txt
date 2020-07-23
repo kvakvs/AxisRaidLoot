@@ -1,4 +1,6 @@
-﻿
+﻿rem COPY this to install.bat and edit path to your game to have a quick install option
+rem
+
 SET DST="X:\SSDGames\World of Warcraft\_classic_\Interface\AddOns"
 rd /s /q %DST%\AxisRaidLoot
 mkdir %DST%\AxisRaidLoot
