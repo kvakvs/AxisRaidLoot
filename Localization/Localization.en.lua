@@ -4,22 +4,22 @@ local MonDKP = core.MonDKP;
 core.BossList = {
   MC = {
     "Lucifron", "Magmadar", "Gehennas",
-    "Garr", "Baron Geddon", "Shazzrah", "Sulfuron Harbinger", 
+    "Garr", "Baron Geddon", "Shazzrah", "Sulfuron Harbinger",
     "Golemagg the Incinerator", "Majordomo Executus", "Ragnaros"
   },
   BWL = {
     "Razorgore the Untamed", "Vaelastrasz the Corrupt", "Broodlord Lashlayer",
-    "Firemaw", "Ebonroc", "Flamegor", "Chromaggus", 
+    "Firemaw", "Ebonroc", "Flamegor", "Chromaggus",
     "Nefarian"
   },
   AQ = {
     "The Prophet Skeram", "Battleguard Sartura", "Fankriss the Unyielding",
-    "Princess Huhuran", "Twin Emperors", "C'Thun", 
+    "Princess Huhuran", "Twin Emperors", "C'Thun",
     "Bug Family", "Viscidus", "Ouro"
   },
   NAXX = {
     "Anub'Rekhan", "Grand Widow Faerlina", "Maexxna",
-    "Noth the Plaguebringer", "Heigan the Unclean", "Loatheb", 
+    "Noth the Plaguebringer", "Heigan the Unclean", "Loatheb",
     "Instructor Razuvious", "Gothik the Harvester", "The Four Horsemen",
     "Patchwerk", "Grobbulus", "Gluth", "Thaddius",
     "Sapphiron", "Kel'Thuzad"
@@ -31,7 +31,7 @@ core.BossList = {
   AQ20 = {
     "Ayamiss the Hunter", "Buru the Gorger", "General Rajaxx", "Kurinnaxx", "Moam", "Ossirian the Unscarred"
   },
-  ONYXIA = {"Onyxia"},
+  ONYXIA = { "Onyxia" },
   WORLD = {
     "Azuregos", "Lord Kazzak", "Emeriss", "Lethon", "Ysondre", "Taerar"
   }
@@ -728,12 +728,10 @@ core.L = {
   ONLINEONLYTTDESC = "This will only award raid DKP to players that are online. (For use with auto award, raid timer and zero sum distribution)",
   INZONEONLY = "In Same Zone",
   INZONEONLYTTDESC = "This will only award raid DKP to players that are in the same zone as you. (For use with auto award, raid timer and zero sum distribution)",
-  
   UPDATING = "Updating: ",
   WIPETABLES = "Wipe Tables",
   WIPETABLESCONF = "Are you sure you'd like to delete all tables? You can retrieve all information from an officer when one is online.",
   WIPETABLESTTDESC = "Wipes all data including DKP table, loot history and DKP history. Use this if issues occur while trying to sync to receive new and complete information from an available officer.",
-
   BROADCAST = "Broadcast",
   BROADCASTWHICHDATA = "Please select which data you'd like to broadcast.",
   REPAIRCOMP = "Repair Complete",
@@ -750,13 +748,11 @@ core.L = {
   FULLBROADCASTTTWARN = "If the receiving party has raid data that you do not, it will be lost.",
   TOPLAYERTTDESC = "Whispers selected data below to individual players.",
   TOGUILDTTDESC = "Broadcasts below selection to entire guild.",
-
   NEWERTABS1 = "It appears %s is attempting to send you possibly outdated tables. Newest entry in those tables:",
   NEWERTABS2 = "Your current history has newer entries that don't exist in this broadcast. Accepting will overwrite your data. Would you like to continue?",
   OVERWRITETABLES = "A full broadcast will overwrite all of the receivng parties data with exact duplicates of yours. If they have data you do not it will be overwritten. If you wish to simply send data they are missing, use the \"Merge Last 2 Weeks\" option. Do you wish to continue?",
   VALIDATEWARN = "This will recalculate all players dkp, lifetime earned and lifetime spent based on their complete history. Make sure to back up your saved variables file in the event the result is improper due to missing history entries. You should reset previous dkp (context menu > select all > reset previous dkp) for all players prior to running so you can see how much they changed. Would you like to continue?",
   PASS = "Pass",
-
   CHANGELOG1 = "- Improved broadcast system with interface accessible by clicking the status indicator icon in the lower left corner of main DKP interface.",
   CHANGELOG2 = "  - Full Broadcast option will broadcast all data and overwrite the recipients tables with identical copies of yours. Any data they had that you did not will be lost (Works the same as the broadcast button in 1.6 and earlier).",
   CHANGELOG3 = "  - Merge Last 2 Weeks option will broadcast any entries created in the last two weeks (but no earlier than when 2.1 was installed to prevent the possibility of data duplication) and will only apply entries the recipients do not have. Useful for merging multiple raid party data.",

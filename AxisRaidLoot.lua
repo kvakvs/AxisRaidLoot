@@ -12,13 +12,17 @@ function MonDKP_RestoreFilterOptions() -- restores default filter selections
   core.WorkingTable = CopyTable(MonDKP_DKPTable)
   core.CurView = "all"
   core.CurSubView = "all"
+
+  local classGraphTab = MonDKP.ConfigTab1;
+
   for i = 1, 9 do
-    MonDKP.ConfigTab1.checkBtn[i]:SetChecked(true)
+    classGraphTab.checkBtn[i]:SetChecked(true)
   end
-  MonDKP.ConfigTab1.checkBtn[10]:SetChecked(false)
-  MonDKP.ConfigTab1.checkBtn[11]:SetChecked(false)
-  MonDKP.ConfigTab1.checkBtn[12]:SetChecked(false)
-  MonDKPFilterChecks(MonDKP.ConfigTab1.checkBtn[1])
+
+  classGraphTab.checkBtn[10]:SetChecked(false)
+  classGraphTab.checkBtn[11]:SetChecked(false)
+  classGraphTab.checkBtn[12]:SetChecked(false)
+  MonDKPFilterChecks(classGraphTab.checkBtn[1])
 end
 
 function MonDKP:Toggle() -- toggles IsShown() state of MonDKP.UIConfig, the entire addon window
@@ -111,6 +115,7 @@ function MonDKP:FilterDKPTable(sort, reset) -- filters core.WorkingTable based o
     local name;
     local InRaid = false;
     local searchFilter = true
+    local classGraphTab = MonDKP.ConfigTab1;
 
     if MonDKP.UIConfig.search:GetText() ~= L["SEARCH"] and MonDKP.UIConfig.search:GetText() ~= "" then
       if not strfind(string.upper(v.player), string.upper(MonDKP.UIConfig.search:GetText())) and not strfind(string.upper(v.class), string.upper(MonDKP.UIConfig.search:GetText()))
@@ -120,7 +125,7 @@ function MonDKP:FilterDKPTable(sort, reset) -- filters core.WorkingTable based o
       end
     end
 
-    if MonDKP.ConfigTab1.checkBtn[11]:GetChecked() then
+    if classGraphTab.checkBtn[11]:GetChecked() then
       local guildSize, _, _ = GetNumGuildMembers();
       for i = 1, guildSize do
         local name, _, _, _, _, _, _, _, online = GetGuildRosterInfo(i)
@@ -133,22 +138,22 @@ function MonDKP:FilterDKPTable(sort, reset) -- filters core.WorkingTable based o
       end
     end
     if (core.classFiltered[parentTable[k]["class"]] == true) and searchFilter == true then
-      if MonDKP.ConfigTab1.checkBtn[10]:GetChecked() or MonDKP.ConfigTab1.checkBtn[12]:GetChecked() then
+      if classGraphTab.checkBtn[10]:GetChecked() or classGraphTab.checkBtn[12]:GetChecked() then
         for i = 1, 40 do
           tempName, _, _, _, _, tempClass = GetRaidRosterInfo(i)
-          if tempName and tempName == v.player and MonDKP.ConfigTab1.checkBtn[10]:GetChecked() then
+          if tempName and tempName == v.player and classGraphTab.checkBtn[10]:GetChecked() then
             tinsert(core.WorkingTable, v)
-          elseif tempName and tempName == v.player and MonDKP.ConfigTab1.checkBtn[12]:GetChecked() then
+          elseif tempName and tempName == v.player and classGraphTab.checkBtn[12]:GetChecked() then
             InRaid = true;
           end
         end
       else
-        if ((MonDKP.ConfigTab1.checkBtn[11]:GetChecked() and IsOnline) or not MonDKP.ConfigTab1.checkBtn[11]:GetChecked()) then
+        if ((classGraphTab.checkBtn[11]:GetChecked() and IsOnline) or not classGraphTab.checkBtn[11]:GetChecked()) then
           tinsert(core.WorkingTable, v)
         end
       end
-      if MonDKP.ConfigTab1.checkBtn[12]:GetChecked() and InRaid == false then
-        if MonDKP.ConfigTab1.checkBtn[11]:GetChecked() then
+      if classGraphTab.checkBtn[12]:GetChecked() and InRaid == false then
+        if classGraphTab.checkBtn[11]:GetChecked() then
           if IsOnline then
             tinsert(core.WorkingTable, v)
           end

@@ -15,9 +15,18 @@ function MonDKP:AdjustDKP(value)
     c = MonDKP:GetCColors();
   end
 
-  if (curReason == L["OTHER"]) then adjustReason = L["OTHER"] .. " - " .. MonDKP.ConfigTab2.otherReason:GetText(); end
-  if curReason == L["BOSSKILLBONUS"] then adjustReason = core.CurrentRaidZone .. ": " .. core.LastKilledBoss; end
-  if curReason == L["NEWBOSSKILLBONUS"] then adjustReason = core.CurrentRaidZone .. ": " .. core.LastKilledBoss .. " (" .. L["FIRSTKILL"] .. ")" end
+  if (curReason == L["OTHER"]) then
+    adjustReason = L["OTHER"] .. " - " .. MonDKP.ConfigTab2.otherReason:GetText();
+  end
+
+  if curReason == L["BOSSKILLBONUS"] then
+    adjustReason = core.CurrentRaidZone .. ": " .. core.LastKilledBoss;
+  end
+
+  if curReason == L["NEWBOSSKILLBONUS"] then
+    adjustReason = core.CurrentRaidZone .. ": " .. core.LastKilledBoss .. " (" .. L["FIRSTKILL"] .. ")"
+  end
+
   if (#core.SelectedData > 0 and adjustReason and adjustReason ~= L["OTHER"] .. " - " .. L["ENTEROTHERREASONHERE"]) then
     if core.IsOfficer then
       local tempString = ""; -- stores list of changes
@@ -134,11 +143,12 @@ end
 
 local function RaidTimerPopout_Create()
   if not MonDKP.RaidTimerPopout then
-    MonDKP.RaidTimerPopout = CreateFrame("Frame", "MonDKP_RaidTimerPopout", UIParent, "ShadowOverlaySmallTemplate");
+    local rtPop = CreateFrame("Frame", "MonDKP_RaidTimerPopout", UIParent, "ShadowOverlaySmallTemplate");
+    MonDKP.RaidTimerPopout = rtPop
 
-    MonDKP.RaidTimerPopout:SetPoint("RIGHT", UIParent, "RIGHT", -300, 100);
-    MonDKP.RaidTimerPopout:SetSize(100, 50);
-    MonDKP.RaidTimerPopout:SetBackdrop({
+    rtPop:SetPoint("RIGHT", UIParent, "RIGHT", -300, 100);
+    rtPop:SetSize(100, 50);
+    rtPop:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true, -- White backdrop allows for black background with 1.0 alpha on low alpha containers
       edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
@@ -147,20 +157,20 @@ local function RaidTimerPopout_Create()
       edgeSize = 3,
       insets = { left = 0, right = 0, top = 0, bottom = 0 }
     });
-    MonDKP.RaidTimerPopout:SetBackdropColor(0, 0, 0, 0.9);
-    MonDKP.RaidTimerPopout:SetBackdropBorderColor(1, 1, 1, 1)
-    MonDKP.RaidTimerPopout:SetFrameStrata("DIALOG")
-    MonDKP.RaidTimerPopout:SetFrameLevel(15)
-    MonDKP.RaidTimerPopout:SetMovable(true);
-    MonDKP.RaidTimerPopout:EnableMouse(true);
-    MonDKP.RaidTimerPopout:RegisterForDrag("LeftButton");
-    MonDKP.RaidTimerPopout:SetScript("OnDragStart", MonDKP.RaidTimerPopout.StartMoving);
-    MonDKP.RaidTimerPopout:SetScript("OnDragStop", MonDKP.RaidTimerPopout.StopMovingOrSizing);
+    rtPop:SetBackdropColor(0, 0, 0, 0.9);
+    rtPop:SetBackdropBorderColor(1, 1, 1, 1)
+    rtPop:SetFrameStrata("DIALOG")
+    rtPop:SetFrameLevel(15)
+    rtPop:SetMovable(true);
+    rtPop:EnableMouse(true);
+    rtPop:RegisterForDrag("LeftButton");
+    rtPop:SetScript("OnDragStart", rtPop.StartMoving);
+    rtPop:SetScript("OnDragStop", rtPop.StopMovingOrSizing);
 
     -- Popout Close Button
-    MonDKP.RaidTimerPopout.closeContainer = CreateFrame("Frame", "MonDKPChangeLogClose", MonDKP.RaidTimerPopout)
-    MonDKP.RaidTimerPopout.closeContainer:SetPoint("CENTER", MonDKP.RaidTimerPopout, "TOPRIGHT", -8, -4)
-    MonDKP.RaidTimerPopout.closeContainer:SetBackdrop({
+    rtPop.closeContainer = CreateFrame("Frame", "MonDKPChangeLogClose", rtPop)
+    rtPop.closeContainer:SetPoint("CENTER", rtPop, "TOPRIGHT", -8, -4)
+    rtPop.closeContainer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
       edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
@@ -168,52 +178,53 @@ local function RaidTimerPopout_Create()
       tileSize = 1,
       edgeSize = 3,
     });
-    MonDKP.RaidTimerPopout.closeContainer:SetBackdropColor(0, 0, 0, 0.9)
-    MonDKP.RaidTimerPopout.closeContainer:SetBackdropBorderColor(1, 1, 1, 0.2)
-    MonDKP.RaidTimerPopout.closeContainer:SetScale(0.7)
-    MonDKP.RaidTimerPopout.closeContainer:SetSize(28, 28)
+    rtPop.closeContainer:SetBackdropColor(0, 0, 0, 0.9)
+    rtPop.closeContainer:SetBackdropBorderColor(1, 1, 1, 0.2)
+    rtPop.closeContainer:SetScale(0.7)
+    rtPop.closeContainer:SetSize(28, 28)
 
-    MonDKP.RaidTimerPopout.closeBtn = CreateFrame("Button", nil, MonDKP.RaidTimerPopout, "UIPanelCloseButton")
-    MonDKP.RaidTimerPopout.closeBtn:SetPoint("CENTER", MonDKP.RaidTimerPopout.closeContainer, "TOPRIGHT", -14, -14)
-    MonDKP.RaidTimerPopout.closeBtn:SetScale(0.7)
-    MonDKP.RaidTimerPopout.closeBtn:HookScript("OnClick", function()
+    rtPop.closeBtn = CreateFrame("Button", nil, rtPop, "UIPanelCloseButton")
+    rtPop.closeBtn:SetPoint("CENTER", rtPop.closeContainer, "TOPRIGHT", -14, -14)
+    rtPop.closeBtn:SetScale(0.7)
+    rtPop.closeBtn:HookScript("OnClick", function()
       MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetText(">");
     end)
 
     -- Raid Timer Output
-    MonDKP.RaidTimerPopout.Output = MonDKP.RaidTimerPopout:CreateFontString(nil, "OVERLAY")
-    MonDKP.RaidTimerPopout.Output:SetFontObject("MonDKPLargeLeft");
-    MonDKP.RaidTimerPopout.Output:SetScale(0.8)
-    MonDKP.RaidTimerPopout.Output:SetPoint("CENTER", MonDKP.RaidTimerPopout, "CENTER", 0, 0);
-    MonDKP.RaidTimerPopout.Output:SetText("|cff00ff0000:00:00|r")
-    MonDKP.RaidTimerPopout:Hide();
+    rtPop.Output = rtPop:CreateFontString(nil, "OVERLAY")
+    rtPop.Output:SetFontObject("MonDKPLargeLeft");
+    rtPop.Output:SetScale(0.8)
+    rtPop.Output:SetPoint("CENTER", rtPop, "CENTER", 0, 0);
+    rtPop.Output:SetText("|cff00ff0000:00:00|r")
+    rtPop:Hide();
   else
-    MonDKP.RaidTimerPopout:Show()
+    rtPop:Show()
   end
 end
 
 function MonDKP:AdjustDKPTab_Create()
-  MonDKP.ConfigTab2.header = MonDKP.ConfigTab2:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.header:SetPoint("TOPLEFT", MonDKP.ConfigTab2, "TOPLEFT", 15, -10);
-  MonDKP.ConfigTab2.header:SetFontObject("MonDKPLargeCenter")
-  MonDKP.ConfigTab2.header:SetText(L["ADJUSTDKP"]);
-  MonDKP.ConfigTab2.header:SetScale(1.2)
+  local adjustTab = MonDKP.ConfigTab2
+  adjustTab.header = adjustTab:CreateFontString(nil, "OVERLAY")
+  adjustTab.header:SetPoint("TOPLEFT", adjustTab, "TOPLEFT", 15, -10);
+  adjustTab.header:SetFontObject("MonDKPLargeCenter")
+  adjustTab.header:SetText(L["ADJUSTDKP"]);
+  adjustTab.header:SetScale(1.2)
 
-  MonDKP.ConfigTab2.description = MonDKP.ConfigTab2:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.description:SetPoint("TOPLEFT", MonDKP.ConfigTab2.header, "BOTTOMLEFT", 7, -10);
-  MonDKP.ConfigTab2.description:SetWidth(400)
-  MonDKP.ConfigTab2.description:SetFontObject("MonDKPNormalLeft")
-  MonDKP.ConfigTab2.description:SetText(L["ADJUSTDESC"]);
+  adjustTab.description = adjustTab:CreateFontString(nil, "OVERLAY")
+  adjustTab.description:SetPoint("TOPLEFT", adjustTab.header, "BOTTOMLEFT", 7, -10);
+  adjustTab.description:SetWidth(400)
+  adjustTab.description:SetFontObject("MonDKPNormalLeft")
+  adjustTab.description:SetText(L["ADJUSTDESC"]);
 
   -- Reason DROPDOWN box
   -- Create the dropdown, and configure its appearance
-  MonDKP.ConfigTab2.reasonDropDown = CreateFrame("FRAME", "MonDKPConfigReasonDropDown", MonDKP.ConfigTab2, "MonolithDKPUIDropDownMenuTemplate")
-  MonDKP.ConfigTab2.reasonDropDown:SetPoint("TOPLEFT", MonDKP.ConfigTab2.description, "BOTTOMLEFT", -23, -60)
-  UIDropDownMenu_SetWidth(MonDKP.ConfigTab2.reasonDropDown, 150)
-  UIDropDownMenu_SetText(MonDKP.ConfigTab2.reasonDropDown, L["SELECTREASON"])
+  adjustTab.reasonDropDown = CreateFrame("FRAME", "MonDKPConfigReasonDropDown", adjustTab, "MonolithDKPUIDropDownMenuTemplate")
+  adjustTab.reasonDropDown:SetPoint("TOPLEFT", adjustTab.description, "BOTTOMLEFT", -23, -60)
+  UIDropDownMenu_SetWidth(adjustTab.reasonDropDown, 150)
+  UIDropDownMenu_SetText(adjustTab.reasonDropDown, L["SELECTREASON"])
 
   -- Create and bind the initialization function to the dropdown menu
-  UIDropDownMenu_Initialize(MonDKP.ConfigTab2.reasonDropDown, function(self, level, menuList)
+  UIDropDownMenu_Initialize(adjustTab.reasonDropDown, function(self, level, menuList)
     local reason = UIDropDownMenu_CreateInfo()
     reason.func = self.SetValue
     reason.fontObject = "MonDKPSmallCenter"
@@ -239,55 +250,56 @@ function MonDKP:AdjustDKPTab_Create()
   function MonDKP.ConfigTab2.reasonDropDown:SetValue(newValue)
     if curReason ~= newValue then curReason = newValue else curReason = nil end
 
-    UIDropDownMenu_SetText(MonDKP.ConfigTab2.reasonDropDown, curReason)
+    local adjustTab = MonDKP.ConfigTab2
+    UIDropDownMenu_SetText(adjustTab.reasonDropDown, curReason)
 
-    if (curReason == L["ONTIMEBONUS"]) then MonDKP.ConfigTab2.addDKP:SetNumber(MonDKP_DB.DKPBonus.OnTimeBonus); MonDKP.ConfigTab2.BossKilledDropdown:Hide()
+    if (curReason == L["ONTIMEBONUS"]) then adjustTab.addDKP:SetNumber(MonDKP_DB.DKPBonus.OnTimeBonus); adjustTab.BossKilledDropdown:Hide()
     elseif (curReason == L["BOSSKILLBONUS"]) then
-      MonDKP.ConfigTab2.addDKP:SetNumber(MonDKP_DB.DKPBonus.BossKillBonus);
-      MonDKP.ConfigTab2.BossKilledDropdown:Show()
-      UIDropDownMenu_SetText(MonDKP.ConfigTab2.BossKilledDropdown, core.CurrentRaidZone .. ": " .. core.LastKilledBoss)
-    elseif (curReason == L["RAIDCOMPLETIONBONUS"]) then MonDKP.ConfigTab2.addDKP:SetNumber(MonDKP_DB.DKPBonus.CompletionBonus); MonDKP.ConfigTab2.BossKilledDropdown:Hide()
+      adjustTab.addDKP:SetNumber(MonDKP_DB.DKPBonus.BossKillBonus);
+      adjustTab.BossKilledDropdown:Show()
+      UIDropDownMenu_SetText(adjustTab.BossKilledDropdown, core.CurrentRaidZone .. ": " .. core.LastKilledBoss)
+    elseif (curReason == L["RAIDCOMPLETIONBONUS"]) then adjustTab.addDKP:SetNumber(MonDKP_DB.DKPBonus.CompletionBonus); adjustTab.BossKilledDropdown:Hide()
     elseif (curReason == L["NEWBOSSKILLBONUS"]) then
-      MonDKP.ConfigTab2.addDKP:SetNumber(MonDKP_DB.DKPBonus.NewBossKillBonus);
-      MonDKP.ConfigTab2.BossKilledDropdown:Show()
-      UIDropDownMenu_SetText(MonDKP.ConfigTab2.BossKilledDropdown, core.CurrentRaidZone .. ": " .. core.LastKilledBoss)
-    elseif (curReason == L["UNEXCUSEDABSENCE"]) then MonDKP.ConfigTab2.addDKP:SetNumber(MonDKP_DB.DKPBonus.UnexcusedAbsence); MonDKP.ConfigTab2.BossKilledDropdown:Hide()
-    else MonDKP.ConfigTab2.addDKP:SetText(""); MonDKP.ConfigTab2.BossKilledDropdown:Hide()
+      adjustTab.addDKP:SetNumber(MonDKP_DB.DKPBonus.NewBossKillBonus);
+      adjustTab.BossKilledDropdown:Show()
+      UIDropDownMenu_SetText(adjustTab.BossKilledDropdown, core.CurrentRaidZone .. ": " .. core.LastKilledBoss)
+    elseif (curReason == L["UNEXCUSEDABSENCE"]) then adjustTab.addDKP:SetNumber(MonDKP_DB.DKPBonus.UnexcusedAbsence); adjustTab.BossKilledDropdown:Hide()
+    else adjustTab.addDKP:SetText(""); adjustTab.BossKilledDropdown:Hide()
     end
 
     if (curReason == L["OTHER"]) then
-      MonDKP.ConfigTab2.otherReason:Show();
-      MonDKP.ConfigTab2.BossKilledDropdown:Hide()
+      adjustTab.otherReason:Show();
+      adjustTab.BossKilledDropdown:Hide()
     else
-      MonDKP.ConfigTab2.otherReason:Hide();
+      adjustTab.otherReason:Hide();
     end
 
     CloseDropDownMenus()
   end
 
-  MonDKP.ConfigTab2.reasonDropDown:SetScript("OnEnter", function(self)
+  adjustTab.reasonDropDown:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["REASON"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["REASONTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["REASONTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.reasonDropDown:SetScript("OnLeave", function(self)
+  adjustTab.reasonDropDown:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.reasonHeader = MonDKP.ConfigTab2:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.reasonHeader:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.reasonDropDown, "TOPLEFT", 25, 0);
-  MonDKP.ConfigTab2.reasonHeader:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.reasonHeader:SetText(L["REASONFORADJUSTMENT"] .. ":")
+  adjustTab.reasonHeader = adjustTab:CreateFontString(nil, "OVERLAY")
+  adjustTab.reasonHeader:SetPoint("BOTTOMLEFT", adjustTab.reasonDropDown, "TOPLEFT", 25, 0);
+  adjustTab.reasonHeader:SetFontObject("MonDKPSmallLeft")
+  adjustTab.reasonHeader:SetText(L["REASONFORADJUSTMENT"] .. ":")
 
   -- Other Reason Editbox. Hidden unless "Other" is selected in dropdown
-  MonDKP.ConfigTab2.otherReason = CreateFrame("EditBox", nil, MonDKP.ConfigTab2)
-  MonDKP.ConfigTab2.otherReason:SetPoint("TOPLEFT", MonDKP.ConfigTab2.reasonDropDown, "BOTTOMLEFT", 19, 2)
-  MonDKP.ConfigTab2.otherReason:SetAutoFocus(false)
-  MonDKP.ConfigTab2.otherReason:SetMultiLine(false)
-  MonDKP.ConfigTab2.otherReason:SetSize(225, 24)
-  MonDKP.ConfigTab2.otherReason:SetBackdrop({
+  adjustTab.otherReason = CreateFrame("EditBox", nil, adjustTab)
+  adjustTab.otherReason:SetPoint("TOPLEFT", adjustTab.reasonDropDown, "BOTTOMLEFT", 19, 2)
+  adjustTab.otherReason:SetAutoFocus(false)
+  adjustTab.otherReason:SetMultiLine(false)
+  adjustTab.otherReason:SetSize(225, 24)
+  adjustTab.otherReason:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
@@ -295,39 +307,39 @@ function MonDKP:AdjustDKPTab_Create()
     tileSize = 1,
     edgeSize = 3,
   });
-  MonDKP.ConfigTab2.otherReason:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab2.otherReason:SetBackdropBorderColor(1, 1, 1, 0.6)
-  MonDKP.ConfigTab2.otherReason:SetMaxLetters(50)
-  MonDKP.ConfigTab2.otherReason:SetTextColor(0.4, 0.4, 0.4, 1)
-  MonDKP.ConfigTab2.otherReason:SetFontObject("MonDKPNormalLeft")
-  MonDKP.ConfigTab2.otherReason:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab2.otherReason:SetText(L["ENTEROTHERREASONHERE"])
-  MonDKP.ConfigTab2.otherReason:SetScript("OnEscapePressed", function(self) -- clears text and focus on esc
+  adjustTab.otherReason:SetBackdropColor(0, 0, 0, 0.9)
+  adjustTab.otherReason:SetBackdropBorderColor(1, 1, 1, 0.6)
+  adjustTab.otherReason:SetMaxLetters(50)
+  adjustTab.otherReason:SetTextColor(0.4, 0.4, 0.4, 1)
+  adjustTab.otherReason:SetFontObject("MonDKPNormalLeft")
+  adjustTab.otherReason:SetTextInsets(10, 10, 5, 5)
+  adjustTab.otherReason:SetText(L["ENTEROTHERREASONHERE"])
+  adjustTab.otherReason:SetScript("OnEscapePressed", function(self) -- clears text and focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab2.otherReason:SetScript("OnEditFocusGained", function(self)
+  adjustTab.otherReason:SetScript("OnEditFocusGained", function(self)
     if (self:GetText() == L["ENTEROTHERREASONHERE"]) then
       self:SetText("");
       self:SetTextColor(1, 1, 1, 1)
     end
   end)
-  MonDKP.ConfigTab2.otherReason:SetScript("OnEditFocusLost", function(self)
+  adjustTab.otherReason:SetScript("OnEditFocusLost", function(self)
     if (self:GetText() == "") then
       self:SetText(L["ENTEROTHERREASONHERE"])
       self:SetTextColor(0.4, 0.4, 0.4, 1)
     end
   end)
-  MonDKP.ConfigTab2.otherReason:Hide();
+  adjustTab.otherReason:Hide();
 
   -- Boss Killed Dropdown - Hidden unless "Boss Kill Bonus" or "New Boss Kill Bonus" is selected
   -- Killing a boss on the list will auto select that boss
-  MonDKP.ConfigTab2.BossKilledDropdown = CreateFrame("FRAME", "MonDKPBossKilledDropdown", MonDKP.ConfigTab2, "MonolithDKPUIDropDownMenuTemplate")
-  MonDKP.ConfigTab2.BossKilledDropdown:SetPoint("TOPLEFT", MonDKP.ConfigTab2.reasonDropDown, "BOTTOMLEFT", 0, 2)
-  MonDKP.ConfigTab2.BossKilledDropdown:Hide()
-  UIDropDownMenu_SetWidth(MonDKP.ConfigTab2.BossKilledDropdown, 210)
-  UIDropDownMenu_SetText(MonDKP.ConfigTab2.BossKilledDropdown, L["SELECTBOSS"])
+  adjustTab.BossKilledDropdown = CreateFrame("FRAME", "MonDKPBossKilledDropdown", adjustTab, "MonolithDKPUIDropDownMenuTemplate")
+  adjustTab.BossKilledDropdown:SetPoint("TOPLEFT", adjustTab.reasonDropDown, "BOTTOMLEFT", 0, 2)
+  adjustTab.BossKilledDropdown:Hide()
+  UIDropDownMenu_SetWidth(adjustTab.BossKilledDropdown, 210)
+  UIDropDownMenu_SetText(adjustTab.BossKilledDropdown, L["SELECTBOSS"])
 
-  UIDropDownMenu_Initialize(MonDKP.ConfigTab2.BossKilledDropdown, function(self, level, menuList)
+  UIDropDownMenu_Initialize(adjustTab.BossKilledDropdown, function(self, level, menuList)
     local boss = UIDropDownMenu_CreateInfo()
     boss.fontObject = "MonDKPSmallCenter"
     if (level or 1) == 1 then
@@ -394,12 +406,12 @@ function MonDKP:AdjustDKPTab_Create()
   end
 
   -- Add DKP Edit Box
-  MonDKP.ConfigTab2.addDKP = CreateFrame("EditBox", nil, MonDKP.ConfigTab2)
-  MonDKP.ConfigTab2.addDKP:SetPoint("TOPLEFT", MonDKP.ConfigTab2.reasonDropDown, "BOTTOMLEFT", 20, -44)
-  MonDKP.ConfigTab2.addDKP:SetAutoFocus(false)
-  MonDKP.ConfigTab2.addDKP:SetMultiLine(false)
-  MonDKP.ConfigTab2.addDKP:SetSize(100, 24)
-  MonDKP.ConfigTab2.addDKP:SetBackdrop({
+  adjustTab.addDKP = CreateFrame("EditBox", nil, adjustTab)
+  adjustTab.addDKP:SetPoint("TOPLEFT", adjustTab.reasonDropDown, "BOTTOMLEFT", 20, -44)
+  adjustTab.addDKP:SetAutoFocus(false)
+  adjustTab.addDKP:SetMultiLine(false)
+  adjustTab.addDKP:SetSize(100, 24)
+  adjustTab.addDKP:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -407,59 +419,59 @@ function MonDKP:AdjustDKPTab_Create()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab2.addDKP:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab2.addDKP:SetBackdropBorderColor(1, 1, 1, 0.6)
-  MonDKP.ConfigTab2.addDKP:SetMaxLetters(10)
-  MonDKP.ConfigTab2.addDKP:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab2.addDKP:SetFontObject("MonDKPNormalRight")
-  MonDKP.ConfigTab2.addDKP:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab2.addDKP:SetScript("OnEscapePressed", function(self) -- clears text and focus on esc
+  adjustTab.addDKP:SetBackdropColor(0, 0, 0, 0.9)
+  adjustTab.addDKP:SetBackdropBorderColor(1, 1, 1, 0.6)
+  adjustTab.addDKP:SetMaxLetters(10)
+  adjustTab.addDKP:SetTextColor(1, 1, 1, 1)
+  adjustTab.addDKP:SetFontObject("MonDKPNormalRight")
+  adjustTab.addDKP:SetTextInsets(10, 10, 5, 5)
+  adjustTab.addDKP:SetScript("OnEscapePressed", function(self) -- clears text and focus on esc
     self:SetText("")
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab2.addDKP:SetScript("OnEnter", function(self)
+  adjustTab.addDKP:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["POINTS"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["POINTSTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["POINTSTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.addDKP:SetScript("OnLeave", function(self)
+  adjustTab.addDKP:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.pointsHeader = MonDKP.ConfigTab2:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.pointsHeader:SetFontObject("GameFontHighlightLeft");
-  MonDKP.ConfigTab2.pointsHeader:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.addDKP, "TOPLEFT", 3, 3);
-  MonDKP.ConfigTab2.pointsHeader:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.pointsHeader:SetText(L["POINTS"] .. ":")
+  adjustTab.pointsHeader = adjustTab:CreateFontString(nil, "OVERLAY")
+  adjustTab.pointsHeader:SetFontObject("GameFontHighlightLeft");
+  adjustTab.pointsHeader:SetPoint("BOTTOMLEFT", adjustTab.addDKP, "TOPLEFT", 3, 3);
+  adjustTab.pointsHeader:SetFontObject("MonDKPSmallLeft")
+  adjustTab.pointsHeader:SetText(L["POINTS"] .. ":")
 
   -- Raid Only Checkbox
-  MonDKP.ConfigTab2.RaidOnlyCheck = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.RaidOnlyCheck:SetChecked(false)
-  MonDKP.ConfigTab2.RaidOnlyCheck:SetScale(0.6);
-  MonDKP.ConfigTab2.RaidOnlyCheck.text:SetText("  |cff5151deShow Raid Only|r");
-  MonDKP.ConfigTab2.RaidOnlyCheck.text:SetScale(1.5);
-  MonDKP.ConfigTab2.RaidOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.RaidOnlyCheck:SetPoint("LEFT", MonDKP.ConfigTab2.addDKP, "RIGHT", 15, 13);
-  MonDKP.ConfigTab2.RaidOnlyCheck:Hide()
+  adjustTab.RaidOnlyCheck = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
+  adjustTab.RaidOnlyCheck:SetChecked(false)
+  adjustTab.RaidOnlyCheck:SetScale(0.6);
+  adjustTab.RaidOnlyCheck.text:SetText("  |cff5151deShow Raid Only|r");
+  adjustTab.RaidOnlyCheck.text:SetScale(1.5);
+  adjustTab.RaidOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.RaidOnlyCheck:SetPoint("LEFT", adjustTab.addDKP, "RIGHT", 15, 13);
+  adjustTab.RaidOnlyCheck:Hide()
 
 
   -- Select All Checkbox
-  MonDKP.ConfigTab2.selectAll = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.selectAll:SetChecked(false)
-  MonDKP.ConfigTab2.selectAll:SetScale(0.6);
-  MonDKP.ConfigTab2.selectAll.text:SetText("  |cff5151de" .. L["SELECTALLVISIBLE"] .. "|r");
-  MonDKP.ConfigTab2.selectAll.text:SetScale(1.5);
-  MonDKP.ConfigTab2.selectAll.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.selectAll:SetPoint("LEFT", MonDKP.ConfigTab2.addDKP, "RIGHT", 15, -13);
-  MonDKP.ConfigTab2.selectAll:Hide();
+  adjustTab.selectAll = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
+  adjustTab.selectAll:SetChecked(false)
+  adjustTab.selectAll:SetScale(0.6);
+  adjustTab.selectAll.text:SetText("  |cff5151de" .. L["SELECTALLVISIBLE"] .. "|r");
+  adjustTab.selectAll.text:SetScale(1.5);
+  adjustTab.selectAll.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.selectAll:SetPoint("LEFT", adjustTab.addDKP, "RIGHT", 15, -13);
+  adjustTab.selectAll:Hide();
 
 
   -- Adjust DKP Button
-  MonDKP.ConfigTab2.adjustButton = self:CreateButton("TOPLEFT", MonDKP.ConfigTab2.addDKP, "BOTTOMLEFT", -1, -15, L["ADJUSTDKP"]);
-  MonDKP.ConfigTab2.adjustButton:SetSize(90, 25)
-  MonDKP.ConfigTab2.adjustButton:SetScript("OnClick", function()
+  adjustTab.adjustButton = self:CreateButton("TOPLEFT", adjustTab.addDKP, "BOTTOMLEFT", -1, -15, L["ADJUSTDKP"]);
+  adjustTab.adjustButton:SetSize(90, 25)
+  adjustTab.adjustButton:SetScript("OnClick", function()
     if #core.SelectedData > 0 and curReason and MonDKP.ConfigTab2.otherReason:GetText() then
       local selected = L["AREYOUSURE"] .. " " .. MonDKP_round(MonDKP.ConfigTab2.addDKP:GetNumber(), MonDKP_DB.modes.rounding) .. " " .. L["DKPTOFOLLOWING"] .. ": \n\n";
 
@@ -494,24 +506,24 @@ function MonDKP:AdjustDKPTab_Create()
       MonDKP:AdjustDKP(MonDKP.ConfigTab2.addDKP:GetNumber());
     end
   end)
-  MonDKP.ConfigTab2.adjustButton:SetScript("OnEnter", function(self)
+  adjustTab.adjustButton:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["ADJUSTDKP"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["ADJUSTDKPTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["ADJUSTDKPTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.adjustButton:SetScript("OnLeave", function(self)
+  adjustTab.adjustButton:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- weekly decay Editbox
-  MonDKP.ConfigTab2.decayDKP = CreateFrame("EditBox", nil, MonDKP.ConfigTab2)
-  MonDKP.ConfigTab2.decayDKP:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2, "BOTTOMLEFT", 21, 70)
-  MonDKP.ConfigTab2.decayDKP:SetAutoFocus(false)
-  MonDKP.ConfigTab2.decayDKP:SetMultiLine(false)
-  MonDKP.ConfigTab2.decayDKP:SetSize(100, 24)
-  MonDKP.ConfigTab2.decayDKP:SetBackdrop({
+  adjustTab.decayDKP = CreateFrame("EditBox", nil, adjustTab)
+  adjustTab.decayDKP:SetPoint("BOTTOMLEFT", adjustTab, "BOTTOMLEFT", 21, 70)
+  adjustTab.decayDKP:SetAutoFocus(false)
+  adjustTab.decayDKP:SetMultiLine(false)
+  adjustTab.decayDKP:SetSize(100, 24)
+  adjustTab.decayDKP:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -519,87 +531,87 @@ function MonDKP:AdjustDKPTab_Create()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab2.decayDKP:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab2.decayDKP:SetBackdropBorderColor(1, 1, 1, 0.6)
-  MonDKP.ConfigTab2.decayDKP:SetMaxLetters(4)
-  MonDKP.ConfigTab2.decayDKP:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab2.decayDKP:SetFontObject("MonDKPNormalRight")
-  MonDKP.ConfigTab2.decayDKP:SetTextInsets(10, 15, 5, 5)
-  MonDKP.ConfigTab2.decayDKP:SetNumber(tonumber(MonDKP_DB.DKPBonus.DecayPercentage))
-  MonDKP.ConfigTab2.decayDKP:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  adjustTab.decayDKP:SetBackdropColor(0, 0, 0, 0.9)
+  adjustTab.decayDKP:SetBackdropBorderColor(1, 1, 1, 0.6)
+  adjustTab.decayDKP:SetMaxLetters(4)
+  adjustTab.decayDKP:SetTextColor(1, 1, 1, 1)
+  adjustTab.decayDKP:SetFontObject("MonDKPNormalRight")
+  adjustTab.decayDKP:SetTextInsets(10, 15, 5, 5)
+  adjustTab.decayDKP:SetNumber(tonumber(MonDKP_DB.DKPBonus.DecayPercentage))
+  adjustTab.decayDKP:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
 
-  MonDKP.ConfigTab2.decayDKP:SetScript("OnEnter", function(self)
+  adjustTab.decayDKP:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["WEEKLYDKPDECAY"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["WEEKLYDECAYTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["WEEKLYDECAYTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.decayDKP:SetScript("OnLeave", function(self)
+  adjustTab.decayDKP:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.decayDKPHeader = MonDKP.ConfigTab2:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.decayDKPHeader:SetFontObject("GameFontHighlightLeft");
-  MonDKP.ConfigTab2.decayDKPHeader:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.decayDKP, "TOPLEFT", 3, 3);
-  MonDKP.ConfigTab2.decayDKPHeader:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.decayDKPHeader:SetText(L["WEEKLYDKPDECAY"] .. ":")
+  adjustTab.decayDKPHeader = adjustTab:CreateFontString(nil, "OVERLAY")
+  adjustTab.decayDKPHeader:SetFontObject("GameFontHighlightLeft");
+  adjustTab.decayDKPHeader:SetPoint("BOTTOMLEFT", adjustTab.decayDKP, "TOPLEFT", 3, 3);
+  adjustTab.decayDKPHeader:SetFontObject("MonDKPSmallLeft")
+  adjustTab.decayDKPHeader:SetText(L["WEEKLYDKPDECAY"] .. ":")
 
-  MonDKP.ConfigTab2.decayDKPFooter = MonDKP.ConfigTab2.decayDKP:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.decayDKPFooter:SetFontObject("MonDKPNormalLeft");
-  MonDKP.ConfigTab2.decayDKPFooter:SetPoint("LEFT", MonDKP.ConfigTab2.decayDKP, "RIGHT", -15, 0);
-  MonDKP.ConfigTab2.decayDKPFooter:SetText("%")
+  adjustTab.decayDKPFooter = adjustTab.decayDKP:CreateFontString(nil, "OVERLAY")
+  adjustTab.decayDKPFooter:SetFontObject("MonDKPNormalLeft");
+  adjustTab.decayDKPFooter:SetPoint("LEFT", adjustTab.decayDKP, "RIGHT", -15, 0);
+  adjustTab.decayDKPFooter:SetText("%")
 
   -- selected players only checkbox
-  MonDKP.ConfigTab2.SelectedOnlyCheck = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.SelectedOnlyCheck:SetChecked(false)
-  MonDKP.ConfigTab2.SelectedOnlyCheck:SetScale(0.6);
-  MonDKP.ConfigTab2.SelectedOnlyCheck.text:SetText("  |cff5151de" .. L["SELPLAYERSONLY"] .. "|r");
-  MonDKP.ConfigTab2.SelectedOnlyCheck.text:SetScale(1.5);
-  MonDKP.ConfigTab2.SelectedOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.SelectedOnlyCheck:SetPoint("TOP", MonDKP.ConfigTab2.decayDKP, "BOTTOMLEFT", 15, -13);
-  MonDKP.ConfigTab2.SelectedOnlyCheck:SetScript("OnClick", function(self)
+  adjustTab.SelectedOnlyCheck = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
+  adjustTab.SelectedOnlyCheck:SetChecked(false)
+  adjustTab.SelectedOnlyCheck:SetScale(0.6);
+  adjustTab.SelectedOnlyCheck.text:SetText("  |cff5151de" .. L["SELPLAYERSONLY"] .. "|r");
+  adjustTab.SelectedOnlyCheck.text:SetScale(1.5);
+  adjustTab.SelectedOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.SelectedOnlyCheck:SetPoint("TOP", adjustTab.decayDKP, "BOTTOMLEFT", 15, -13);
+  adjustTab.SelectedOnlyCheck:SetScript("OnClick", function(self)
     PlaySound(808)
   end)
-  MonDKP.ConfigTab2.SelectedOnlyCheck:SetScript("OnEnter", function(self)
+  adjustTab.SelectedOnlyCheck:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["SELPLAYERSONLY"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["SELPLAYERSTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["SELPLAYERSTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.SelectedOnlyCheck:SetScript("OnLeave", function(self)
+  adjustTab.SelectedOnlyCheck:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- add to negative dkp checkbox
-  MonDKP.ConfigTab2.AddNegative = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.AddNegative:SetChecked(MonDKP_DB.modes.AddToNegative)
-  MonDKP.ConfigTab2.AddNegative:SetScale(0.6);
-  MonDKP.ConfigTab2.AddNegative.text:SetText("  |cff5151de" .. L["ADDNEGVALUES"] .. "|r");
-  MonDKP.ConfigTab2.AddNegative.text:SetScale(1.5);
-  MonDKP.ConfigTab2.AddNegative.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.AddNegative:SetPoint("TOP", MonDKP.ConfigTab2.SelectedOnlyCheck, "BOTTOM", 0, 0);
-  MonDKP.ConfigTab2.AddNegative:SetScript("OnClick", function(self)
+  adjustTab.AddNegative = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
+  adjustTab.AddNegative:SetChecked(MonDKP_DB.modes.AddToNegative)
+  adjustTab.AddNegative:SetScale(0.6);
+  adjustTab.AddNegative.text:SetText("  |cff5151de" .. L["ADDNEGVALUES"] .. "|r");
+  adjustTab.AddNegative.text:SetScale(1.5);
+  adjustTab.AddNegative.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.AddNegative:SetPoint("TOP", adjustTab.SelectedOnlyCheck, "BOTTOM", 0, 0);
+  adjustTab.AddNegative:SetScript("OnClick", function(self)
     MonDKP_DB.modes.AddToNegative = self:GetChecked();
     PlaySound(808)
   end)
-  MonDKP.ConfigTab2.AddNegative:SetScript("OnEnter", function(self)
+  adjustTab.AddNegative:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["ADDNEGVALUES"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["ADDNEGTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["ADDNEGTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.AddNegative:SetScript("OnLeave", function(self)
+  adjustTab.AddNegative:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.decayButton = self:CreateButton("TOPLEFT", MonDKP.ConfigTab2.decayDKP, "TOPRIGHT", 20, 0, L["APPLYDECAY"]);
-  MonDKP.ConfigTab2.decayButton:SetSize(90, 25)
-  MonDKP.ConfigTab2.decayButton:SetScript("OnClick", function()
+  adjustTab.decayButton = self:CreateButton("TOPLEFT", adjustTab.decayDKP, "TOPRIGHT", 20, 0, L["APPLYDECAY"]);
+  adjustTab.decayButton:SetSize(90, 25)
+  adjustTab.decayButton:SetScript("OnClick", function()
     local SelectedToggle;
     local selected;
 
@@ -620,22 +632,22 @@ function MonDKP:AdjustDKPTab_Create()
     }
     StaticPopup_Show("ADJUST_DKP")
   end)
-  MonDKP.ConfigTab2.decayButton:SetScript("OnEnter", function(self)
+  adjustTab.decayButton:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["WEEKLYDKPDECAY"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["APPDECAYTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["APPDECAYTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.decayButton:SetScript("OnLeave", function(self)
+  adjustTab.decayButton:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- Raid Timer Container
-  MonDKP.ConfigTab2.RaidTimerContainer = CreateFrame("Frame", nil, MonDKP.ConfigTab2);
-  MonDKP.ConfigTab2.RaidTimerContainer:SetSize(200, 360);
-  MonDKP.ConfigTab2.RaidTimerContainer:SetPoint("RIGHT", MonDKP.ConfigTab2, "RIGHT", -25, -60)
-  MonDKP.ConfigTab2.RaidTimerContainer:SetBackdrop({
+  adjustTab.RaidTimerContainer = CreateFrame("Frame", nil, adjustTab);
+  adjustTab.RaidTimerContainer:SetSize(200, 360);
+  adjustTab.RaidTimerContainer:SetPoint("RIGHT", adjustTab, "RIGHT", -25, -60)
+  adjustTab.RaidTimerContainer:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -643,31 +655,31 @@ function MonDKP:AdjustDKPTab_Create()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab2.RaidTimerContainer:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab2.RaidTimerContainer:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+  adjustTab.RaidTimerContainer:SetBackdropColor(0, 0, 0, 0.9)
+  adjustTab.RaidTimerContainer:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
 
   -- Pop out button
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut = CreateFrame("Button", nil, MonDKP.ConfigTab2, "UIMenuButtonStretchTemplate")
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetPoint("TOPRIGHT", MonDKP.ConfigTab2.RaidTimerContainer, "TOPRIGHT", -5, -5)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetHeight(22)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetWidth(18)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetNormalFontObject("MonDKPLargeCenter")
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetHighlightFontObject("MonDKPLargeCenter")
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:GetFontString():SetTextColor(0, 0.3, 0.7, 1)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetScale(1.2)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetFrameStrata("DIALOG")
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetFrameLevel(15)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetText(">")
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.PopOut = CreateFrame("Button", nil, adjustTab, "UIMenuButtonStretchTemplate")
+  adjustTab.RaidTimerContainer.PopOut:SetPoint("TOPRIGHT", adjustTab.RaidTimerContainer, "TOPRIGHT", -5, -5)
+  adjustTab.RaidTimerContainer.PopOut:SetHeight(22)
+  adjustTab.RaidTimerContainer.PopOut:SetWidth(18)
+  adjustTab.RaidTimerContainer.PopOut:SetNormalFontObject("MonDKPLargeCenter")
+  adjustTab.RaidTimerContainer.PopOut:SetHighlightFontObject("MonDKPLargeCenter")
+  adjustTab.RaidTimerContainer.PopOut:GetFontString():SetTextColor(0, 0.3, 0.7, 1)
+  adjustTab.RaidTimerContainer.PopOut:SetScale(1.2)
+  adjustTab.RaidTimerContainer.PopOut:SetFrameStrata("DIALOG")
+  adjustTab.RaidTimerContainer.PopOut:SetFrameLevel(15)
+  adjustTab.RaidTimerContainer.PopOut:SetText(">")
+  adjustTab.RaidTimerContainer.PopOut:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["POPOUTTIMER"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["POPOUTTIMERDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.PopOut:SetScript("OnLeave", function(self)
     GameTooltip:Hide();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.PopOut:SetScript("OnClick", function(self)
+  adjustTab.RaidTimerContainer.PopOut:SetScript("OnClick", function(self)
     if self:GetText() == ">" then
       self:SetText("<");
       RaidTimerPopout_Create()
@@ -678,42 +690,42 @@ function MonDKP:AdjustDKPTab_Create()
   end)
 
   -- Raid Timer Header
-  MonDKP.ConfigTab2.RaidTimerContainer.Header = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.Header:SetFontObject("MonDKPLargeLeft");
-  MonDKP.ConfigTab2.RaidTimerContainer.Header:SetScale(0.6)
-  MonDKP.ConfigTab2.RaidTimerContainer.Header:SetPoint("TOPLEFT", MonDKP.ConfigTab2.RaidTimerContainer, "TOPLEFT", 15, -15);
-  MonDKP.ConfigTab2.RaidTimerContainer.Header:SetText(L["RAIDTIMER"])
+  adjustTab.RaidTimerContainer.Header = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.Header:SetFontObject("MonDKPLargeLeft");
+  adjustTab.RaidTimerContainer.Header:SetScale(0.6)
+  adjustTab.RaidTimerContainer.Header:SetPoint("TOPLEFT", adjustTab.RaidTimerContainer, "TOPLEFT", 15, -15);
+  adjustTab.RaidTimerContainer.Header:SetText(L["RAIDTIMER"])
 
   -- Raid Timer Output Header
-  MonDKP.ConfigTab2.RaidTimerContainer.OutputHeader = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.OutputHeader:SetFontObject("MonDKPNormalRight");
-  MonDKP.ConfigTab2.RaidTimerContainer.OutputHeader:SetPoint("TOP", MonDKP.ConfigTab2.RaidTimerContainer, "TOP", -20, -40);
-  MonDKP.ConfigTab2.RaidTimerContainer.OutputHeader:SetText(L["TIMEELAPSED"] .. ":")
-  MonDKP.ConfigTab2.RaidTimerContainer.OutputHeader:Hide();
+  adjustTab.RaidTimerContainer.OutputHeader = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.OutputHeader:SetFontObject("MonDKPNormalRight");
+  adjustTab.RaidTimerContainer.OutputHeader:SetPoint("TOP", adjustTab.RaidTimerContainer, "TOP", -20, -40);
+  adjustTab.RaidTimerContainer.OutputHeader:SetText(L["TIMEELAPSED"] .. ":")
+  adjustTab.RaidTimerContainer.OutputHeader:Hide();
 
   -- Raid Timer Output
-  MonDKP.ConfigTab2.RaidTimerContainer.Output = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.Output:SetFontObject("MonDKPLargeLeft");
-  MonDKP.ConfigTab2.RaidTimerContainer.Output:SetScale(0.8)
-  MonDKP.ConfigTab2.RaidTimerContainer.Output:SetPoint("LEFT", MonDKP.ConfigTab2.RaidTimerContainer.OutputHeader, "RIGHT", 5, 0);
+  adjustTab.RaidTimerContainer.Output = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.Output:SetFontObject("MonDKPLargeLeft");
+  adjustTab.RaidTimerContainer.Output:SetScale(0.8)
+  adjustTab.RaidTimerContainer.Output:SetPoint("LEFT", adjustTab.RaidTimerContainer.OutputHeader, "RIGHT", 5, 0);
 
   -- Bonus Awarded Header
-  MonDKP.ConfigTab2.RaidTimerContainer.BonusHeader = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.BonusHeader:SetFontObject("MonDKPNormalRight");
-  MonDKP.ConfigTab2.RaidTimerContainer.BonusHeader:SetPoint("TOP", MonDKP.ConfigTab2.RaidTimerContainer, "TOP", -15, -60);
-  MonDKP.ConfigTab2.RaidTimerContainer.BonusHeader:SetText(L["BONUSAWARDED"] .. ":")
-  MonDKP.ConfigTab2.RaidTimerContainer.BonusHeader:Hide();
+  adjustTab.RaidTimerContainer.BonusHeader = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.BonusHeader:SetFontObject("MonDKPNormalRight");
+  adjustTab.RaidTimerContainer.BonusHeader:SetPoint("TOP", adjustTab.RaidTimerContainer, "TOP", -15, -60);
+  adjustTab.RaidTimerContainer.BonusHeader:SetText(L["BONUSAWARDED"] .. ":")
+  adjustTab.RaidTimerContainer.BonusHeader:Hide();
 
   -- Bonus Awarded Output
-  MonDKP.ConfigTab2.RaidTimerContainer.Bonus = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.Bonus:SetFontObject("MonDKPLargeLeft");
-  MonDKP.ConfigTab2.RaidTimerContainer.Bonus:SetScale(0.8)
-  MonDKP.ConfigTab2.RaidTimerContainer.Bonus:SetPoint("LEFT", MonDKP.ConfigTab2.RaidTimerContainer.BonusHeader, "RIGHT", 5, 0);
+  adjustTab.RaidTimerContainer.Bonus = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.Bonus:SetFontObject("MonDKPLargeLeft");
+  adjustTab.RaidTimerContainer.Bonus:SetScale(0.8)
+  adjustTab.RaidTimerContainer.Bonus:SetPoint("LEFT", adjustTab.RaidTimerContainer.BonusHeader, "RIGHT", 5, 0);
 
   -- Start Raid Timer Button
-  MonDKP.ConfigTab2.RaidTimerContainer.StartTimer = self:CreateButton("BOTTOMLEFT", MonDKP.ConfigTab2.RaidTimerContainer, "BOTTOMLEFT", 10, 135, L["INITRAID"]);
-  MonDKP.ConfigTab2.RaidTimerContainer.StartTimer:SetSize(90, 25)
-  MonDKP.ConfigTab2.RaidTimerContainer.StartTimer:SetScript("OnClick", function(self)
+  adjustTab.RaidTimerContainer.StartTimer = self:CreateButton("BOTTOMLEFT", adjustTab.RaidTimerContainer, "BOTTOMLEFT", 10, 135, L["INITRAID"]);
+  adjustTab.RaidTimerContainer.StartTimer:SetSize(90, 25)
+  adjustTab.RaidTimerContainer.StartTimer:SetScript("OnClick", function(self)
     if not IsInRaid() then
       StaticPopupDialogs["NO_RAID_TIMER"] = {
         text = L["NOTINRAID"],
@@ -733,17 +745,17 @@ function MonDKP:AdjustDKPTab_Create()
           button1 = L["YES"],
           button2 = L["NO"],
           OnAccept = function()
-            local setInterval = MonDKP.ConfigTab2.RaidTimerContainer.interval:GetNumber();
-            local setBonus = MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:GetNumber();
-            local setOnTime = tostring(MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:GetChecked());
-            local setGiveEnd = tostring(MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:GetChecked());
-            local setStandby = tostring(MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:GetChecked());
+            local setInterval = adjustTab.RaidTimerContainer.interval:GetNumber();
+            local setBonus = adjustTab.RaidTimerContainer.bonusvalue:GetNumber();
+            local setOnTime = tostring(adjustTab.RaidTimerContainer.StartBonus:GetChecked());
+            local setGiveEnd = tostring(adjustTab.RaidTimerContainer.EndRaidBonus:GetChecked());
+            local setStandby = tostring(adjustTab.RaidTimerContainer.StandbyInclude:GetChecked());
             MonDKP.Sync:SendData("MonDKPRaidTime", "start,false " .. setInterval .. " " .. setBonus .. " " .. setOnTime .. " " .. setGiveEnd .. " " .. setStandby)
-            if MonDKP.ConfigTab2.RaidTimerContainer.StartTimer:GetText() == L["CONTINUERAID"] then
+            if adjustTab.RaidTimerContainer.StartTimer:GetText() == L["CONTINUERAID"] then
               MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDRESUME"])
             else
               MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDSTART"])
-              MonDKP.ConfigTab2.RaidTimerContainer.Output:SetText("|cff00ff0000|r")
+              adjustTab.RaidTimerContainer.Output:SetText("|cff00ff0000|r")
             end
             MonDKP:StartRaidTimer(false)
           end,
@@ -754,17 +766,17 @@ function MonDKP:AdjustDKPTab_Create()
         }
         StaticPopup_Show("START_RAID_BONUS")
       else
-        local setInterval = MonDKP.ConfigTab2.RaidTimerContainer.interval:GetNumber();
-        local setBonus = MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:GetNumber();
-        local setOnTime = tostring(MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:GetChecked());
-        local setGiveEnd = tostring(MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:GetChecked());
-        local setStandby = tostring(MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:GetChecked());
+        local setInterval = adjustTab.RaidTimerContainer.interval:GetNumber();
+        local setBonus = adjustTab.RaidTimerContainer.bonusvalue:GetNumber();
+        local setOnTime = tostring(adjustTab.RaidTimerContainer.StartBonus:GetChecked());
+        local setGiveEnd = tostring(adjustTab.RaidTimerContainer.EndRaidBonus:GetChecked());
+        local setStandby = tostring(adjustTab.RaidTimerContainer.StandbyInclude:GetChecked());
         MonDKP.Sync:SendData("MonDKPRaidTime", "start,false " .. setInterval .. " " .. setBonus .. " " .. setOnTime .. " " .. setGiveEnd .. " " .. setStandby)
-        if MonDKP.ConfigTab2.RaidTimerContainer.StartTimer:GetText() == L["CONTINUERAID"] then
+        if adjustTab.RaidTimerContainer.StartTimer:GetText() == L["CONTINUERAID"] then
           MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDRESUME"])
         else
           MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDSTART"])
-          MonDKP.ConfigTab2.RaidTimerContainer.Output:SetText("|cff00ff0000|r")
+          adjustTab.RaidTimerContainer.Output:SetText("|cff00ff0000|r")
         end
         MonDKP:StartRaidTimer(false)
       end
@@ -774,7 +786,7 @@ function MonDKP:AdjustDKPTab_Create()
         button1 = L["YES"],
         button2 = L["NO"],
         OnAccept = function()
-          MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDTIMERCONCLUDE"] .. " " .. MonDKP.ConfigTab2.RaidTimerContainer.Output:GetText() .. "!")
+          MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDTIMERCONCLUDE"] .. " " .. adjustTab.RaidTimerContainer.Output:GetText() .. "!")
           MonDKP.Sync:SendData("MonDKPRaidTime", "stop")
           MonDKP:StopRaidTimer()
         end,
@@ -786,53 +798,53 @@ function MonDKP:AdjustDKPTab_Create()
       StaticPopup_Show("END_RAID")
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.StartTimer:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.StartTimer:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["INITRAID"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["INITRAIDTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["INITRAIDTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.StartTimer:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.StartTimer:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- Pause Raid Timer Button
-  MonDKP.ConfigTab2.RaidTimerContainer.PauseTimer = self:CreateButton("BOTTOMRIGHT", MonDKP.ConfigTab2.RaidTimerContainer, "BOTTOMRIGHT", -10, 135, L["PAUSERAID"]);
-  MonDKP.ConfigTab2.RaidTimerContainer.PauseTimer:SetSize(90, 25)
-  MonDKP.ConfigTab2.RaidTimerContainer.PauseTimer:Hide();
-  MonDKP.ConfigTab2.RaidTimerContainer.PauseTimer:SetScript("OnClick", function(self)
+  adjustTab.RaidTimerContainer.PauseTimer = self:CreateButton("BOTTOMRIGHT", adjustTab.RaidTimerContainer, "BOTTOMRIGHT", -10, 135, L["PAUSERAID"]);
+  adjustTab.RaidTimerContainer.PauseTimer:SetSize(90, 25)
+  adjustTab.RaidTimerContainer.PauseTimer:Hide();
+  adjustTab.RaidTimerContainer.PauseTimer:SetScript("OnClick", function(self)
     if core.RaidInProgress then
-      local setInterval = MonDKP.ConfigTab2.RaidTimerContainer.interval:GetNumber();
-      local setBonus = MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:GetNumber();
-      local setOnTime = tostring(MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:GetChecked());
-      local setGiveEnd = tostring(MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:GetChecked());
-      local setStandby = tostring(MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:GetChecked());
+      local setInterval = adjustTab.RaidTimerContainer.interval:GetNumber();
+      local setBonus = adjustTab.RaidTimerContainer.bonusvalue:GetNumber();
+      local setOnTime = tostring(adjustTab.RaidTimerContainer.StartBonus:GetChecked());
+      local setGiveEnd = tostring(adjustTab.RaidTimerContainer.EndRaidBonus:GetChecked());
+      local setStandby = tostring(adjustTab.RaidTimerContainer.StandbyInclude:GetChecked());
 
       MonDKP.Sync:SendData("MonDKPRaidTime", "start,true " .. setInterval .. " " .. setBonus .. " " .. setOnTime .. " " .. setGiveEnd .. " " .. setStandby)
-      MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDPAUSE"] .. " " .. MonDKP.ConfigTab2.RaidTimerContainer.Output:GetText() .. "!")
+      MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDPAUSE"] .. " " .. adjustTab.RaidTimerContainer.Output:GetText() .. "!")
       MonDKP:StartRaidTimer(true)
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.PauseTimer:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.PauseTimer:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["PAUSERAID"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["PAUSERAIDTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["PAUSERAIDTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.PauseTimer:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.PauseTimer:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- Award Interval Editbox
   if not MonDKP_DB.modes.increment then MonDKP_DB.modes.increment = 60 end
-  MonDKP.ConfigTab2.RaidTimerContainer.interval = CreateFrame("EditBox", nil, MonDKP.ConfigTab2.RaidTimerContainer)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.RaidTimerContainer, "BOTTOMLEFT", 35, 225)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetAutoFocus(false)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetMultiLine(false)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetSize(60, 24)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetBackdrop({
+  adjustTab.RaidTimerContainer.interval = CreateFrame("EditBox", nil, adjustTab.RaidTimerContainer)
+  adjustTab.RaidTimerContainer.interval:SetPoint("BOTTOMLEFT", adjustTab.RaidTimerContainer, "BOTTOMLEFT", 35, 225)
+  adjustTab.RaidTimerContainer.interval:SetAutoFocus(false)
+  adjustTab.RaidTimerContainer.interval:SetMultiLine(false)
+  adjustTab.RaidTimerContainer.interval:SetSize(60, 24)
+  adjustTab.RaidTimerContainer.interval:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -840,14 +852,14 @@ function MonDKP:AdjustDKPTab_Create()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetBackdropBorderColor(1, 1, 1, 0.6)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetMaxLetters(5)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetFontObject("MonDKPSmallRight")
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetTextInsets(10, 15, 5, 5)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetNumber(tonumber(MonDKP_DB.modes.increment))
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetScript("OnTextChanged", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.interval:SetBackdropColor(0, 0, 0, 0.9)
+  adjustTab.RaidTimerContainer.interval:SetBackdropBorderColor(1, 1, 1, 0.6)
+  adjustTab.RaidTimerContainer.interval:SetMaxLetters(5)
+  adjustTab.RaidTimerContainer.interval:SetTextColor(1, 1, 1, 1)
+  adjustTab.RaidTimerContainer.interval:SetFontObject("MonDKPSmallRight")
+  adjustTab.RaidTimerContainer.interval:SetTextInsets(10, 15, 5, 5)
+  adjustTab.RaidTimerContainer.interval:SetNumber(tonumber(MonDKP_DB.modes.increment))
+  adjustTab.RaidTimerContainer.interval:SetScript("OnTextChanged", function(self) -- clears focus on esc
     if tonumber(self:GetNumber()) then
       MonDKP_DB.modes.increment = self:GetNumber();
     else
@@ -862,44 +874,44 @@ function MonDKP:AdjustDKPTab_Create()
       StaticPopup_Show("ALERT_NUMBER")
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.interval:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:HighlightText(0, 0)
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.interval:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:HighlightText(0, 0)
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetScript("OnTabPressed", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.interval:SetScript("OnTabPressed", function(self) -- clears focus on esc
     self:HighlightText(0, 0)
-    MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetFocus()
-    MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:HighlightText()
+    adjustTab.RaidTimerContainer.bonusvalue:SetFocus()
+    adjustTab.RaidTimerContainer.bonusvalue:HighlightText()
   end)
 
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.interval:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["AWARDINTERVAL"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["AWARDINTERVALTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["AWARDINTERVALTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.interval:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.interval:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.RaidTimerContainer.intervalHeader = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.intervalHeader:SetFontObject("MonDKPTinyRight");
-  MonDKP.ConfigTab2.RaidTimerContainer.intervalHeader:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.RaidTimerContainer.interval, "TOPLEFT", 0, 2);
-  MonDKP.ConfigTab2.RaidTimerContainer.intervalHeader:SetText(L["INTERVAL"] .. ":")
+  adjustTab.RaidTimerContainer.intervalHeader = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.intervalHeader:SetFontObject("MonDKPTinyRight");
+  adjustTab.RaidTimerContainer.intervalHeader:SetPoint("BOTTOMLEFT", adjustTab.RaidTimerContainer.interval, "TOPLEFT", 0, 2);
+  adjustTab.RaidTimerContainer.intervalHeader:SetText(L["INTERVAL"] .. ":")
 
   -- Award Value Editbox
   if not MonDKP_DB.DKPBonus.IntervalBonus then MonDKP_DB.DKPBonus.IntervalBonus = 15 end
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue = CreateFrame("EditBox", nil, MonDKP.ConfigTab2.RaidTimerContainer)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetPoint("LEFT", MonDKP.ConfigTab2.RaidTimerContainer.interval, "RIGHT", 10, 0)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetAutoFocus(false)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetMultiLine(false)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetSize(60, 24)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetBackdrop({
+  adjustTab.RaidTimerContainer.bonusvalue = CreateFrame("EditBox", nil, adjustTab.RaidTimerContainer)
+  adjustTab.RaidTimerContainer.bonusvalue:SetPoint("LEFT", adjustTab.RaidTimerContainer.interval, "RIGHT", 10, 0)
+  adjustTab.RaidTimerContainer.bonusvalue:SetAutoFocus(false)
+  adjustTab.RaidTimerContainer.bonusvalue:SetMultiLine(false)
+  adjustTab.RaidTimerContainer.bonusvalue:SetSize(60, 24)
+  adjustTab.RaidTimerContainer.bonusvalue:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -907,14 +919,14 @@ function MonDKP:AdjustDKPTab_Create()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetBackdropBorderColor(1, 1, 1, 0.6)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetMaxLetters(5)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetFontObject("MonDKPSmallRight")
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetTextInsets(10, 15, 5, 5)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetNumber(tonumber(MonDKP_DB.DKPBonus.IntervalBonus))
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetScript("OnTextChanged", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.bonusvalue:SetBackdropColor(0, 0, 0, 0.9)
+  adjustTab.RaidTimerContainer.bonusvalue:SetBackdropBorderColor(1, 1, 1, 0.6)
+  adjustTab.RaidTimerContainer.bonusvalue:SetMaxLetters(5)
+  adjustTab.RaidTimerContainer.bonusvalue:SetTextColor(1, 1, 1, 1)
+  adjustTab.RaidTimerContainer.bonusvalue:SetFontObject("MonDKPSmallRight")
+  adjustTab.RaidTimerContainer.bonusvalue:SetTextInsets(10, 15, 5, 5)
+  adjustTab.RaidTimerContainer.bonusvalue:SetNumber(tonumber(MonDKP_DB.DKPBonus.IntervalBonus))
+  adjustTab.RaidTimerContainer.bonusvalue:SetScript("OnTextChanged", function(self) -- clears focus on esc
     if tonumber(self:GetNumber()) then
       MonDKP_DB.DKPBonus.IntervalBonus = self:GetNumber();
     else
@@ -929,44 +941,44 @@ function MonDKP:AdjustDKPTab_Create()
       StaticPopup_Show("ALERT_NUMBER")
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.bonusvalue:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:HighlightText(0, 0)
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.bonusvalue:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:HighlightText(0, 0)
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetScript("OnTabPressed", function(self) -- clears focus on esc
+  adjustTab.RaidTimerContainer.bonusvalue:SetScript("OnTabPressed", function(self) -- clears focus on esc
     self:HighlightText(0, 0)
-    MonDKP.ConfigTab2.RaidTimerContainer.interval:SetFocus()
-    MonDKP.ConfigTab2.RaidTimerContainer.interval:HighlightText()
+    adjustTab.RaidTimerContainer.interval:SetFocus()
+    adjustTab.RaidTimerContainer.interval:HighlightText()
   end)
 
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.bonusvalue:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["AWARDBONUS"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["AWARDBONUSTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.bonusvalue:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalueHeader = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalueHeader:SetFontObject("MonDKPTinyRight");
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalueHeader:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.RaidTimerContainer.bonusvalue, "TOPLEFT", 0, 2);
-  MonDKP.ConfigTab2.RaidTimerContainer.bonusvalueHeader:SetText(L["BONUS"] .. ":")
+  adjustTab.RaidTimerContainer.bonusvalueHeader = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.bonusvalueHeader:SetFontObject("MonDKPTinyRight");
+  adjustTab.RaidTimerContainer.bonusvalueHeader:SetPoint("BOTTOMLEFT", adjustTab.RaidTimerContainer.bonusvalue, "TOPLEFT", 0, 2);
+  adjustTab.RaidTimerContainer.bonusvalueHeader:SetText(L["BONUS"] .. ":")
 
   -- Give On Time Bonus Checkbox
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2.RaidTimerContainer, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetChecked(MonDKP_DB.DKPBonus.GiveRaidStart)
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetScale(0.6);
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus.text:SetText("  |cff5151de" .. L["GIVEONTIMEBONUS"] .. "|r");
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus.text:SetScale(1.5);
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetPoint("TOPLEFT", MonDKP.ConfigTab2.RaidTimerContainer.interval, "BOTTOMLEFT", 0, -10);
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetScript("OnClick", function(self)
+  adjustTab.RaidTimerContainer.StartBonus = CreateFrame("CheckButton", nil, adjustTab.RaidTimerContainer, "UICheckButtonTemplate");
+  adjustTab.RaidTimerContainer.StartBonus:SetChecked(MonDKP_DB.DKPBonus.GiveRaidStart)
+  adjustTab.RaidTimerContainer.StartBonus:SetScale(0.6);
+  adjustTab.RaidTimerContainer.StartBonus.text:SetText("  |cff5151de" .. L["GIVEONTIMEBONUS"] .. "|r");
+  adjustTab.RaidTimerContainer.StartBonus.text:SetScale(1.5);
+  adjustTab.RaidTimerContainer.StartBonus.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.RaidTimerContainer.StartBonus:SetPoint("TOPLEFT", adjustTab.RaidTimerContainer.interval, "BOTTOMLEFT", 0, -10);
+  adjustTab.RaidTimerContainer.StartBonus:SetScript("OnClick", function(self)
     if self:GetChecked() then
       MonDKP_DB.DKPBonus.GiveRaidStart = true;
       PlaySound(808)
@@ -974,25 +986,25 @@ function MonDKP:AdjustDKPTab_Create()
       MonDKP_DB.DKPBonus.GiveRaidStart = false;
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.StartBonus:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["GIVEONTIMEBONUS"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["GIVEONTIMETTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.StartBonus:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- Give Raid End Bonus Checkbox
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2.RaidTimerContainer, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetChecked(MonDKP_DB.DKPBonus.GiveRaidEnd)
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetScale(0.6);
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus.text:SetText("  |cff5151de" .. L["GIVEENDBONUS"] .. "|r");
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus.text:SetScale(1.5);
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetPoint("TOP", MonDKP.ConfigTab2.RaidTimerContainer.StartBonus, "BOTTOM", 0, 2);
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetScript("OnClick", function(self)
+  adjustTab.RaidTimerContainer.EndRaidBonus = CreateFrame("CheckButton", nil, adjustTab.RaidTimerContainer, "UICheckButtonTemplate");
+  adjustTab.RaidTimerContainer.EndRaidBonus:SetChecked(MonDKP_DB.DKPBonus.GiveRaidEnd)
+  adjustTab.RaidTimerContainer.EndRaidBonus:SetScale(0.6);
+  adjustTab.RaidTimerContainer.EndRaidBonus.text:SetText("  |cff5151de" .. L["GIVEENDBONUS"] .. "|r");
+  adjustTab.RaidTimerContainer.EndRaidBonus.text:SetScale(1.5);
+  adjustTab.RaidTimerContainer.EndRaidBonus.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.RaidTimerContainer.EndRaidBonus:SetPoint("TOP", adjustTab.RaidTimerContainer.StartBonus, "BOTTOM", 0, 2);
+  adjustTab.RaidTimerContainer.EndRaidBonus:SetScript("OnClick", function(self)
     if self:GetChecked() then
       MonDKP_DB.DKPBonus.GiveRaidEnd = true;
       PlaySound(808)
@@ -1000,25 +1012,25 @@ function MonDKP:AdjustDKPTab_Create()
       MonDKP_DB.DKPBonus.GiveRaidEnd = false;
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.EndRaidBonus:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["GIVEENDBONUS"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["GIVEENDBONUSTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.EndRaidBonus:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   -- Include Standby Checkbox
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude = CreateFrame("CheckButton", nil, MonDKP.ConfigTab2.RaidTimerContainer, "UICheckButtonTemplate");
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetChecked(MonDKP_DB.DKPBonus.IncStandby)
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetScale(0.6);
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude.text:SetText("  |cff5151de" .. L["INCLUDESTANDBY"] .. "|r");
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude.text:SetScale(1.5);
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetPoint("TOP", MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus, "BOTTOM", 0, 2);
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetScript("OnClick", function(self)
+  adjustTab.RaidTimerContainer.StandbyInclude = CreateFrame("CheckButton", nil, adjustTab.RaidTimerContainer, "UICheckButtonTemplate");
+  adjustTab.RaidTimerContainer.StandbyInclude:SetChecked(MonDKP_DB.DKPBonus.IncStandby)
+  adjustTab.RaidTimerContainer.StandbyInclude:SetScale(0.6);
+  adjustTab.RaidTimerContainer.StandbyInclude.text:SetText("  |cff5151de" .. L["INCLUDESTANDBY"] .. "|r");
+  adjustTab.RaidTimerContainer.StandbyInclude.text:SetScale(1.5);
+  adjustTab.RaidTimerContainer.StandbyInclude.text:SetFontObject("MonDKPSmallLeft")
+  adjustTab.RaidTimerContainer.StandbyInclude:SetPoint("TOP", adjustTab.RaidTimerContainer.EndRaidBonus, "BOTTOM", 0, 2);
+  adjustTab.RaidTimerContainer.StandbyInclude:SetScript("OnClick", function(self)
     if self:GetChecked() then
       MonDKP_DB.DKPBonus.IncStandby = true;
       PlaySound(808)
@@ -1026,21 +1038,21 @@ function MonDKP:AdjustDKPTab_Create()
       MonDKP_DB.DKPBonus.IncStandby = false;
     end
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetScript("OnEnter", function(self)
+  adjustTab.RaidTimerContainer.StandbyInclude:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["INCLUDESTANDBY"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["INCLUDESTANDBYTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["INCLUDESTANDBYTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetScript("OnLeave", function(self)
+  adjustTab.RaidTimerContainer.StandbyInclude:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
-  MonDKP.ConfigTab2.RaidTimerContainer.TimerWarning = MonDKP.ConfigTab2.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab2.RaidTimerContainer.TimerWarning:SetFontObject("MonDKPTinyLeft");
-  MonDKP.ConfigTab2.RaidTimerContainer.TimerWarning:SetWidth(180)
-  MonDKP.ConfigTab2.RaidTimerContainer.TimerWarning:SetPoint("BOTTOMLEFT", MonDKP.ConfigTab2.RaidTimerContainer, "BOTTOMLEFT", 10, 10);
-  MonDKP.ConfigTab2.RaidTimerContainer.TimerWarning:SetText("|CFFFF0000" .. L["TIMERWARNING"] .. "|r")
+  adjustTab.RaidTimerContainer.TimerWarning = adjustTab.RaidTimerContainer:CreateFontString(nil, "OVERLAY")
+  adjustTab.RaidTimerContainer.TimerWarning:SetFontObject("MonDKPTinyLeft");
+  adjustTab.RaidTimerContainer.TimerWarning:SetWidth(180)
+  adjustTab.RaidTimerContainer.TimerWarning:SetPoint("BOTTOMLEFT", adjustTab.RaidTimerContainer, "BOTTOMLEFT", 10, 10);
+  adjustTab.RaidTimerContainer.TimerWarning:SetText("|CFFFF0000" .. L["TIMERWARNING"] .. "|r")
   RaidTimerPopout_Create()
 end

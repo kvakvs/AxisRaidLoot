@@ -192,17 +192,21 @@ local function OnEvent_BossKill(self, event, arg1, ...)
 end
 
 local function OnEvent_ZoneIn(self, event, arg1, ...)
-  if IsInRaid() and core.Initialized then -- only processes combat log events if in raid
+  -- only process combat log events if in raid
+  if IsInRaid() and core.Initialized then
     if MonDKP.IsOfficer() then
-      if not MonDKP:Table_Search(MonDKP_DB.bossargs.RecentZones, GetRealZoneText()) then -- only adds it if it doesn't already exist in the table
+      -- only adds it if it doesn't already exist in the table
+      if not MonDKP:Table_Search(MonDKP_DB.bossargs.RecentZones, GetRealZoneText()) then
         if #MonDKP_DB.bossargs.RecentZones > 14 then
-          for i = 15, #MonDKP_DB.bossargs.RecentZones do -- trims the tail end of the stack
+          -- trim the tail end of the stack
+          for i = 15, #MonDKP_DB.bossargs.RecentZones do
             table.remove(MonDKP_DB.bossargs.RecentZones, i)
           end
         end
         table.insert(MonDKP_DB.bossargs.RecentZones, 1, GetRealZoneText())
       end
     end
+
     if MonDKP_DB.defaults.AutoLog and MonDKP:Table_Search(core.ZoneList, GetRealZoneText()) then
       if not LoggingCombat() then
         LoggingCombat(1)
@@ -391,7 +395,9 @@ end
 
 local function OnEvent_Loot(self, event, arg1, ...)
   if MonDKP.IsOfficer() then
-    if not IsInRaid() and arg1 == false then -- only fires hook when autoloot is not active if not in a raid to prevent nil value error
+    -- only fires hook when autoloot is not active if not in a raid to
+    -- prevent nil value error
+    if not IsInRaid() and arg1 == false then
       MonDKP_Register_ShiftClickLootWindowHook()
     elseif IsInRaid() then
       MonDKP_Register_ShiftClickLootWindowHook()
@@ -410,9 +416,11 @@ local function OnEvent_Loot(self, event, arg1, ...)
       end
       local name
       if not UnitIsFriend("player", "target") and UnitIsDead("target") then
-        name = UnitName("target") -- sets bidding window name to current target
+        -- sets bidding window name to current target
+        name = UnitName("target")
       else
-        name = core.LastKilledBoss -- sets name to last killed boss if no target is available (chests)
+        -- sets name to last killed boss if no target is available (chests)
+        name = core.LastKilledBoss
       end
       lootTable.boss = name
       MonDKP.Sync:SendData("MonDKPBossLoot", lootTable)
@@ -458,7 +466,8 @@ function MonDKP_OnEvent(self, event, arg1, ...)
         MonDKP.Print(L["NOWLOGGINGCOMBAT"])
       end
     end
-  elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then -- logs 15 recent zones entered while in a raid party
+  elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
+    -- logs 15 recent zones entered while in a raid party
     OnEvent_ZoneIn(self, event, arg1, ...)
   elseif event == "CHAT_MSG_WHISPER" then
     OnEvent_Whisper(self, event, arg1, ...)

@@ -23,31 +23,38 @@ end
 
 function MonDKPFilterChecks(self) -- sets/unsets check boxes in conjunction with "All" button, then runs MonDKP:FilterDKPTable() above
   local verifyCheck = true; -- switches to false if the below loop finds anything unchecked
-  if (self:GetChecked() == false and not MonDKP.ConfigTab1.checkBtn[10]) then
+  local classGraphTab = MonDKP.ConfigTab1;
+
+  if (self:GetChecked() == false and not classGraphTab.checkBtn[10]) then
     core.CurView = "limited"
     core.CurSubView = "raid"
-    MonDKP.ConfigTab1.checkBtn[9]:SetChecked(false);
+    classGraphTab.checkBtn[9]:SetChecked(false);
     checkAll = false;
     verifyCheck = false
   end
+
   for i = 1, 8 do -- checks all boxes to see if all are checked, if so, checks "All" as well
-    if MonDKP.ConfigTab1.checkBtn[i]:GetChecked() == false then
+    if classGraphTab.checkBtn[i]:GetChecked() == false then
       verifyCheck = false;
     end
   end
+
   if (verifyCheck == true) then
-    MonDKP.ConfigTab1.checkBtn[9]:SetChecked(true);
+    classGraphTab.checkBtn[9]:SetChecked(true);
   else
-    MonDKP.ConfigTab1.checkBtn[9]:SetChecked(false);
+    classGraphTab.checkBtn[9]:SetChecked(false);
   end
+
   for k, v in pairs(core.classes) do
-    if (MonDKP.ConfigTab1.checkBtn[k]:GetChecked() == true) then
+    if (classGraphTab.checkBtn[k]:GetChecked() == true) then
       core.classFiltered[v] = true;
     else
       core.classFiltered[v] = false;
     end
   end
+
   PlaySound(808)
+
   MonDKP:FilterDKPTable(core.currentSort, "reset");
 end
 
@@ -119,126 +126,132 @@ function MonDKP:ConfigMenuTabs()
   -- TabMenu
   ---------------------------------------
 
-  MonDKP.UIConfig.TabMenu = CreateFrame("Frame", "MonDKPMonDKP.ConfigTabMenu", MonDKP.UIConfig);
-  MonDKP.UIConfig.TabMenu:SetPoint("TOPRIGHT", MonDKP.UIConfig, "TOPRIGHT", -25, -25);
-  MonDKP.UIConfig.TabMenu:SetSize(477, 510);
-  MonDKP.UIConfig.TabMenu:SetBackdrop({
+  local tabMenu = CreateFrame("Frame", "MonDKPMonDKP.ConfigTabMenu", MonDKP.UIConfig);
+  MonDKP.UIConfig.TabMenu = tabMenu
+  tabMenu:SetPoint("TOPRIGHT", MonDKP.UIConfig, "TOPRIGHT", -25, -25);
+  tabMenu:SetSize(477, 510);
+  tabMenu:SetBackdrop({
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile.tga",
     tile = true,
     tileSize = 1,
     edgeSize = 2,
     insets = { left = 0, right = 0, top = 0, bottom = 0 }
   });
-  MonDKP.UIConfig.TabMenu:SetBackdropColor(0, 0, 0, 0.9);
-  MonDKP.UIConfig.TabMenu:SetBackdropBorderColor(1, 1, 1, 0.5)
+  tabMenu:SetBackdropColor(0, 0, 0, 0.9);
+  tabMenu:SetBackdropBorderColor(1, 1, 1, 0.5)
 
-  MonDKP.UIConfig.TabMenuBG = MonDKP.UIConfig.TabMenu:CreateTexture(nil, "OVERLAY", nil);
+  MonDKP.UIConfig.TabMenuBG = tabMenu:CreateTexture(nil, "OVERLAY", nil);
   MonDKP.UIConfig.TabMenuBG:SetColorTexture(0, 0, 0, 1)
   MonDKP.UIConfig.TabMenuBG:SetPoint("TOPLEFT", MonDKP.UIConfig.TabMenu, "TOPLEFT", 2, -2);
   MonDKP.UIConfig.TabMenuBG:SetSize(478, 511);
   MonDKP.UIConfig.TabMenuBG:SetTexture("Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\menu-bg");
 
   -- TabMenu ScrollFrame and ScrollBar
-  MonDKP.UIConfig.TabMenu.ScrollFrame = CreateFrame("ScrollFrame", nil, MonDKP.UIConfig.TabMenu, "UIPanelScrollFrameTemplate");
-  MonDKP.UIConfig.TabMenu.ScrollFrame:ClearAllPoints();
-  MonDKP.UIConfig.TabMenu.ScrollFrame:SetPoint("TOPLEFT", MonDKP.UIConfig.TabMenu, "TOPLEFT", 4, -8);
-  MonDKP.UIConfig.TabMenu.ScrollFrame:SetPoint("BOTTOMRIGHT", MonDKP.UIConfig.TabMenu, "BOTTOMRIGHT", -3, 4);
-  MonDKP.UIConfig.TabMenu.ScrollFrame:SetClipsChildren(false);
-  MonDKP.UIConfig.TabMenu.ScrollFrame:SetScript("OnMouseWheel", ScrollFrame_OnMouseWheel);
+  tabMenu.ScrollFrame = CreateFrame("ScrollFrame", nil, MonDKP.UIConfig.TabMenu, "UIPanelScrollFrameTemplate");
+  tabMenu.ScrollFrame:ClearAllPoints();
+  tabMenu.ScrollFrame:SetPoint("TOPLEFT", tabMenu, "TOPLEFT", 4, -8);
+  tabMenu.ScrollFrame:SetPoint("BOTTOMRIGHT", tabMenu, "BOTTOMRIGHT", -3, 4);
+  tabMenu.ScrollFrame:SetClipsChildren(false);
+  tabMenu.ScrollFrame:SetScript("OnMouseWheel", ScrollFrame_OnMouseWheel);
 
-  MonDKP.UIConfig.TabMenu.ScrollFrame.ScrollBar:Hide();
-  MonDKP.UIConfig.TabMenu.ScrollFrame.ScrollBar = CreateFrame("Slider", nil, MonDKP.UIConfig.TabMenu.ScrollFrame, "UIPanelScrollBarTrimTemplate")
-  MonDKP.UIConfig.TabMenu.ScrollFrame.ScrollBar:ClearAllPoints();
-  MonDKP.UIConfig.TabMenu.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", MonDKP.UIConfig.TabMenu.ScrollFrame, "TOPRIGHT", -20, -12);
-  MonDKP.UIConfig.TabMenu.ScrollFrame.ScrollBar:SetPoint("BOTTOMRIGHT", MonDKP.UIConfig.TabMenu.ScrollFrame, "BOTTOMRIGHT", -2, 15);
+  tabMenu.ScrollFrame.ScrollBar:Hide();
+  tabMenu.ScrollFrame.ScrollBar = CreateFrame("Slider", nil, tabMenu.ScrollFrame, "UIPanelScrollBarTrimTemplate")
+  tabMenu.ScrollFrame.ScrollBar:ClearAllPoints();
+  tabMenu.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", tabMenu.ScrollFrame, "TOPRIGHT", -20, -12);
+  tabMenu.ScrollFrame.ScrollBar:SetPoint("BOTTOMRIGHT", tabMenu.ScrollFrame, "BOTTOMRIGHT", -2, 15);
 
-  MonDKP.ConfigTab1, MonDKP.ConfigTab2, MonDKP.ConfigTab3, MonDKP.ConfigTab4, MonDKP.ConfigTab5, MonDKP.ConfigTab6 = MonDKP:SetTabs(MonDKP.UIConfig.TabMenu, 6, 475, 490, L["FILTERS"], L["ADJUSTDKP"], L["MANAGE"], L["OPTIONS"], L["LOOTHISTORY"], L["DKPHISTORY"]);
+  MonDKP.ConfigTab1, MonDKP.ConfigTab2, MonDKP.ConfigTab3, MonDKP.ConfigTab4, MonDKP.ConfigTab5, MonDKP.ConfigTab6 =
+    MonDKP:SetTabs(
+      tabMenu, 6, 475, 490, -- frame, numtabs, width, height
+      L["FILTERS"], L["ADJUSTDKP"], L["MANAGE"], L["OPTIONS"], L["LOOTHISTORY"], L["DKPHISTORY"]
+    );
 
   ---------------------------------------
   -- MENU TAB 1
   ---------------------------------------
+  local classGraphTab = MonDKP.ConfigTab1;
 
-  MonDKP.ConfigTab1.text = MonDKP.ConfigTab1:CreateFontString(nil, "OVERLAY") -- Filters header
-  MonDKP.ConfigTab1.text:ClearAllPoints();
-  MonDKP.ConfigTab1.text:SetFontObject("MonDKPLargeCenter")
-  MonDKP.ConfigTab1.text:SetPoint("TOPLEFT", MonDKP.ConfigTab1, "TOPLEFT", 15, -10);
-  MonDKP.ConfigTab1.text:SetText(L["FILTERS"]);
-  MonDKP.ConfigTab1.text:SetScale(1.2)
+  classGraphTab.text = classGraphTab:CreateFontString(nil, "OVERLAY") -- Filters header
+  classGraphTab.text:ClearAllPoints();
+  classGraphTab.text:SetFontObject("MonDKPLargeCenter")
+  classGraphTab.text:SetPoint("TOPLEFT", classGraphTab, "TOPLEFT", 15, -10);
+  classGraphTab.text:SetText(L["FILTERS"]);
+  classGraphTab.text:SetScale(1.2)
 
   local checkBtn = {}
-  MonDKP.ConfigTab1.checkBtn = checkBtn;
+  classGraphTab.checkBtn = checkBtn;
 
   -- Create CheckBoxes
   for i = 1, 10 do
-    MonDKP.ConfigTab1.checkBtn[i] = CreateFrame("CheckButton", nil, MonDKP.ConfigTab1, "UICheckButtonTemplate");
-    if i <= 9 then MonDKP.ConfigTab1.checkBtn[i]:SetChecked(true) else MonDKP.ConfigTab1.checkBtn[i]:SetChecked(false) end;
-    MonDKP.ConfigTab1.checkBtn[i]:SetID(i)
+    classGraphTab.checkBtn[i] = CreateFrame("CheckButton", nil, classGraphTab, "UICheckButtonTemplate");
+    if i <= 9 then classGraphTab.checkBtn[i]:SetChecked(true) else classGraphTab.checkBtn[i]:SetChecked(false) end;
+    classGraphTab.checkBtn[i]:SetID(i)
     if i <= 8 then
-      MonDKP.ConfigTab1.checkBtn[i].text:SetText("|cff5151de" .. core.LocalClass[core.classes[i]] .. "|r");
+      classGraphTab.checkBtn[i].text:SetText("|cff5151de" .. core.LocalClass[core.classes[i]] .. "|r");
     end
     if i == 9 then
-      MonDKP.ConfigTab1.checkBtn[i]:SetScript("OnClick",
+      classGraphTab.checkBtn[i]:SetScript("OnClick",
         function()
           for j = 1, 9 do
             if (checkAll) then
-              MonDKP.ConfigTab1.checkBtn[j]:SetChecked(false)
+              classGraphTab.checkBtn[j]:SetChecked(false)
             else
-              MonDKP.ConfigTab1.checkBtn[j]:SetChecked(true)
+              classGraphTab.checkBtn[j]:SetChecked(true)
             end
           end
           checkAll = not checkAll;
-          MonDKPFilterChecks(MonDKP.ConfigTab1.checkBtn[9]);
+          MonDKPFilterChecks(classGraphTab.checkBtn[9]);
         end)
 
       for k, v in pairs(core.classes) do -- sets core.classFiltered table with all values
-        if (MonDKP.ConfigTab1.checkBtn[k]:GetChecked() == true) then
+        if (classGraphTab.checkBtn[k]:GetChecked() == true) then
           core.classFiltered[v] = true;
         else
           core.classFiltered[v] = false;
         end
       end
     elseif i == 10 then
-      MonDKP.ConfigTab1.checkBtn[i]:SetScript("OnClick", function(self)
-        MonDKP.ConfigTab1.checkBtn[12]:SetChecked(false);
+      classGraphTab.checkBtn[i]:SetScript("OnClick", function(self)
+        classGraphTab.checkBtn[12]:SetChecked(false);
         MonDKPFilterChecks(self)
       end)
     else
-      MonDKP.ConfigTab1.checkBtn[i]:SetScript("OnClick", MonDKPFilterChecks)
+      classGraphTab.checkBtn[i]:SetScript("OnClick", MonDKPFilterChecks)
     end
-    MonDKP.ConfigTab1.checkBtn[i].text:SetFontObject("MonDKPSmall")
+    classGraphTab.checkBtn[i].text:SetFontObject("MonDKPSmall")
   end
 
   -- Class Check Buttons:
-  MonDKP.ConfigTab1.checkBtn[1]:SetPoint("TOPLEFT", MonDKP.ConfigTab1, "TOPLEFT", 85, -70);
-  MonDKP.ConfigTab1.checkBtn[2]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[1], "TOPRIGHT", 50, 0);
-  MonDKP.ConfigTab1.checkBtn[3]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[2], "TOPRIGHT", 50, 0);
-  MonDKP.ConfigTab1.checkBtn[4]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[3], "TOPRIGHT", 50, 0);
-  MonDKP.ConfigTab1.checkBtn[5]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[1], "BOTTOMLEFT", 0, -10);
-  MonDKP.ConfigTab1.checkBtn[6]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[2], "BOTTOMLEFT", 0, -10);
-  MonDKP.ConfigTab1.checkBtn[7]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[3], "BOTTOMLEFT", 0, -10);
-  MonDKP.ConfigTab1.checkBtn[8]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[4], "BOTTOMLEFT", 0, -10);
+  classGraphTab.checkBtn[1]:SetPoint("TOPLEFT", classGraphTab, "TOPLEFT", 85, -70);
+  classGraphTab.checkBtn[2]:SetPoint("TOPLEFT", classGraphTab.checkBtn[1], "TOPRIGHT", 50, 0);
+  classGraphTab.checkBtn[3]:SetPoint("TOPLEFT", classGraphTab.checkBtn[2], "TOPRIGHT", 50, 0);
+  classGraphTab.checkBtn[4]:SetPoint("TOPLEFT", classGraphTab.checkBtn[3], "TOPRIGHT", 50, 0);
+  classGraphTab.checkBtn[5]:SetPoint("TOPLEFT", classGraphTab.checkBtn[1], "BOTTOMLEFT", 0, -10);
+  classGraphTab.checkBtn[6]:SetPoint("TOPLEFT", classGraphTab.checkBtn[2], "BOTTOMLEFT", 0, -10);
+  classGraphTab.checkBtn[7]:SetPoint("TOPLEFT", classGraphTab.checkBtn[3], "BOTTOMLEFT", 0, -10);
+  classGraphTab.checkBtn[8]:SetPoint("TOPLEFT", classGraphTab.checkBtn[4], "BOTTOMLEFT", 0, -10);
 
-  MonDKP.ConfigTab1.checkBtn[9]:SetPoint("BOTTOMRIGHT", MonDKP.ConfigTab1.checkBtn[2], "TOPLEFT", 50, 0);
-  MonDKP.ConfigTab1.checkBtn[9].text:SetText("|cff5151de" .. L["ALLCLASSES"] .. "|r");
-  MonDKP.ConfigTab1.checkBtn[10]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[5], "BOTTOMLEFT", 0, 0);
-  MonDKP.ConfigTab1.checkBtn[10].text:SetText("|cff5151de" .. L["INPARTYRAID"] .. "|r"); -- executed in filterDKPTable (AxisRaidLoot.lua)
+  classGraphTab.checkBtn[9]:SetPoint("BOTTOMRIGHT", classGraphTab.checkBtn[2], "TOPLEFT", 50, 0);
+  classGraphTab.checkBtn[9].text:SetText("|cff5151de" .. L["ALLCLASSES"] .. "|r");
+  classGraphTab.checkBtn[10]:SetPoint("TOPLEFT", classGraphTab.checkBtn[5], "BOTTOMLEFT", 0, 0);
+  classGraphTab.checkBtn[10].text:SetText("|cff5151de" .. L["INPARTYRAID"] .. "|r"); -- executed in filterDKPTable (AxisRaidLoot.lua)
 
-  MonDKP.ConfigTab1.checkBtn[11] = CreateFrame("CheckButton", nil, MonDKP.ConfigTab1, "UICheckButtonTemplate");
-  MonDKP.ConfigTab1.checkBtn[11]:SetID(11)
-  MonDKP.ConfigTab1.checkBtn[11].text:SetText("|cff5151de" .. L["ONLINE"] .. "|r");
-  MonDKP.ConfigTab1.checkBtn[11].text:SetFontObject("MonDKPSmall")
-  MonDKP.ConfigTab1.checkBtn[11]:SetScript("OnClick", MonDKPFilterChecks)
-  MonDKP.ConfigTab1.checkBtn[11]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[10], "TOPRIGHT", 100, 0);
+  classGraphTab.checkBtn[11] = CreateFrame("CheckButton", nil, classGraphTab, "UICheckButtonTemplate");
+  classGraphTab.checkBtn[11]:SetID(11)
+  classGraphTab.checkBtn[11].text:SetText("|cff5151de" .. L["ONLINE"] .. "|r");
+  classGraphTab.checkBtn[11].text:SetFontObject("MonDKPSmall")
+  classGraphTab.checkBtn[11]:SetScript("OnClick", MonDKPFilterChecks)
+  classGraphTab.checkBtn[11]:SetPoint("TOPLEFT", classGraphTab.checkBtn[10], "TOPRIGHT", 100, 0);
 
-  MonDKP.ConfigTab1.checkBtn[12] = CreateFrame("CheckButton", nil, MonDKP.ConfigTab1, "UICheckButtonTemplate");
-  MonDKP.ConfigTab1.checkBtn[12]:SetID(12)
-  MonDKP.ConfigTab1.checkBtn[12].text:SetText("|cff5151de" .. L["NOTINRAIDFILTER"] .. "|r");
-  MonDKP.ConfigTab1.checkBtn[12].text:SetFontObject("MonDKPSmall")
-  MonDKP.ConfigTab1.checkBtn[12]:SetScript("OnClick", function(self)
+  classGraphTab.checkBtn[12] = CreateFrame("CheckButton", nil, classGraphTab, "UICheckButtonTemplate");
+  classGraphTab.checkBtn[12]:SetID(12)
+  classGraphTab.checkBtn[12].text:SetText("|cff5151de" .. L["NOTINRAIDFILTER"] .. "|r");
+  classGraphTab.checkBtn[12].text:SetFontObject("MonDKPSmall")
+  classGraphTab.checkBtn[12]:SetScript("OnClick", function(self)
     MonDKP.ConfigTab1.checkBtn[10]:SetChecked(false);
     MonDKPFilterChecks(self)
   end)
-  MonDKP.ConfigTab1.checkBtn[12]:SetPoint("TOPLEFT", MonDKP.ConfigTab1.checkBtn[11], "TOPRIGHT", 65, 0);
+  classGraphTab.checkBtn[12]:SetPoint("TOPLEFT", classGraphTab.checkBtn[11], "TOPRIGHT", 65, 0);
 
   core.ClassGraph = MonDKP:ClassGraph() -- draws class graph on tab1
 
@@ -252,12 +265,13 @@ function MonDKP:ConfigMenuTabs()
   -- Manage DKP TAB
   ---------------------------------------
 
-  MonDKP.ConfigTab3.header = MonDKP.ConfigTab3:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab3.header:ClearAllPoints();
-  MonDKP.ConfigTab3.header:SetFontObject("MonDKPLargeCenter");
-  MonDKP.ConfigTab3.header:SetPoint("TOPLEFT", MonDKP.ConfigTab3, "TOPLEFT", 15, -10);
-  MonDKP.ConfigTab3.header:SetText(L["MANAGEDKP"]);
-  MonDKP.ConfigTab3.header:SetScale(1.2)
+  local manageTab = MonDKP.ConfigTab3
+  manageTab.header = manageTab:CreateFontString(nil, "OVERLAY")
+  manageTab.header:ClearAllPoints();
+  manageTab.header:SetFontObject("MonDKPLargeCenter");
+  manageTab.header:SetPoint("TOPLEFT", manageTab, "TOPLEFT", 15, -10);
+  manageTab.header:SetText(L["MANAGEDKP"]);
+  manageTab.header:SetScale(1.2)
 
   -- Populate Manage Tab
   MonDKP:ManageEntries()
