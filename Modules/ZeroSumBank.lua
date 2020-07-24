@@ -224,7 +224,7 @@ function MonDKP:ZeroSumBank_Create()
   f.IncludeStandby = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
   f.IncludeStandby:SetChecked(MonDKP_DB.modes.ZeroSumStandby)
   f.IncludeStandby:SetScale(0.6);
-  f.IncludeStandby.text:SetText("  |cff5151de" .. L["INCLUDESTANDBY"] .. "|r");
+  f.IncludeStandby.text:SetText("  |cff999999" .. L["INCLUDESTANDBY"] .. "|r");
   f.IncludeStandby.text:SetScale(1.5);
   f.IncludeStandby.text:SetFontObject("MonDKPSmallLeft")
   f.IncludeStandby:SetPoint("TOPLEFT", f.Distribute, "BOTTOMLEFT", -15, -10);

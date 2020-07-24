@@ -1404,7 +1404,7 @@ function MonDKP:CreateBidWindow()
     f.CustomMinBid = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
     f.CustomMinBid:SetChecked(true)
     f.CustomMinBid:SetScale(0.6);
-    f.CustomMinBid.text:SetText("  |cff5151de" .. L["CUSTOM"] .. "|r");
+    f.CustomMinBid.text:SetText("  |cff999999" .. L["CUSTOM"] .. "|r");
     f.CustomMinBid.text:SetScale(1.5);
     f.CustomMinBid.text:SetFontObject("MonDKPSmallLeft")
     f.CustomMinBid.text:SetPoint("LEFT", f.CustomMinBid, "RIGHT", -10, 0)
@@ -1468,7 +1468,7 @@ function MonDKP:CreateBidWindow()
       f.CustomMaxBid = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
       f.CustomMaxBid:SetChecked(true)
       f.CustomMaxBid:SetScale(0.6);
-      f.CustomMaxBid.text:SetText("  |cff5151de" .. L["CUSTOM"] .. "|r");
+      f.CustomMaxBid.text:SetText("  |cff999999" .. L["CUSTOM"] .. "|r");
       f.CustomMaxBid.text:SetScale(1.5);
       f.CustomMaxBid.text:SetFontObject("MonDKPSmallLeft")
       f.CustomMaxBid.text:SetPoint("LEFT", f.CustomMaxBid, "RIGHT", -10, 0)

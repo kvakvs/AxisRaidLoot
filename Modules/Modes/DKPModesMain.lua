@@ -684,7 +684,7 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
   f.DKPModesMain.SubZeroBidding = CreateFrame("CheckButton", nil, f.DKPModesMain, "UICheckButtonTemplate");
   f.DKPModesMain.SubZeroBidding:SetChecked(MonDKP_DB.modes.SubZeroBidding)
   f.DKPModesMain.SubZeroBidding:SetScale(0.6);
-  f.DKPModesMain.SubZeroBidding.text:SetText("  |cff5151de"..L["SUBZEROBIDDING"].."|r");
+  f.DKPModesMain.SubZeroBidding.text:SetText("  |cff999999"..L["SUBZEROBIDDING"].."|r");
   f.DKPModesMain.SubZeroBidding.text:SetScale(1.5);
   f.DKPModesMain.SubZeroBidding.text:SetFontObject("MonDKPSmallLeft")
   f.DKPModesMain.SubZeroBidding:SetPoint("TOP", f.DKPModesMain.ModesDropDown, "BOTTOMLEFT", 60, 0);
@@ -719,7 +719,7 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
   f.DKPModesMain.AllowNegativeBidders = CreateFrame("CheckButton", nil, f.DKPModesMain, "UICheckButtonTemplate");
   f.DKPModesMain.AllowNegativeBidders:SetChecked(MonDKP_DB.modes.AllowNegativeBidders)
   f.DKPModesMain.AllowNegativeBidders:SetScale(0.6);
-  f.DKPModesMain.AllowNegativeBidders.text:SetText("  |cff5151de"..L["ALLOWNEGATIVEBIDDERS"].."|r");
+  f.DKPModesMain.AllowNegativeBidders.text:SetText("  |cff999999"..L["ALLOWNEGATIVEBIDDERS"].."|r");
   f.DKPModesMain.AllowNegativeBidders.text:SetScale(1.5);
   f.DKPModesMain.AllowNegativeBidders.text:SetFontObject("MonDKPSmallLeft")
   f.DKPModesMain.AllowNegativeBidders:SetPoint("TOPLEFT", f.DKPModesMain.SubZeroBidding, "BOTTOMLEFT", 0, 0);
@@ -896,7 +896,7 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
     f.DKPModesMain.RollContainer.UsePerc = CreateFrame("CheckButton", nil, f.DKPModesMain.RollContainer, "UICheckButtonTemplate");
     f.DKPModesMain.RollContainer.UsePerc:SetChecked(MonDKP_DB.modes.rolls.UsePerc)
     f.DKPModesMain.RollContainer.UsePerc:SetScale(0.6);
-    f.DKPModesMain.RollContainer.UsePerc.text:SetText("  |cff5151de"..L["USEPERCENTAGE"].."|r");
+    f.DKPModesMain.RollContainer.UsePerc.text:SetText("  |cff999999"..L["USEPERCENTAGE"].."|r");
     f.DKPModesMain.RollContainer.UsePerc.text:SetScale(1.5);
     f.DKPModesMain.RollContainer.UsePerc.text:SetFontObject("MonDKPSmallLeft")
     f.DKPModesMain.RollContainer.UsePerc:SetPoint("TOP", f.DKPModesMain.RollContainer.rollMin, "BOTTOMLEFT", 0, -10);

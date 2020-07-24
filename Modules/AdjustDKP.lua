@@ -450,7 +450,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.RaidOnlyCheck = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
   adjustTab.RaidOnlyCheck:SetChecked(false)
   adjustTab.RaidOnlyCheck:SetScale(0.6);
-  adjustTab.RaidOnlyCheck.text:SetText("  |cff5151deShow Raid Only|r");
+  adjustTab.RaidOnlyCheck.text:SetText("  |cff999999Show Raid Only|r");
   adjustTab.RaidOnlyCheck.text:SetScale(1.5);
   adjustTab.RaidOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.RaidOnlyCheck:SetPoint("LEFT", adjustTab.addDKP, "RIGHT", 15, 13);
@@ -461,7 +461,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.selectAll = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
   adjustTab.selectAll:SetChecked(false)
   adjustTab.selectAll:SetScale(0.6);
-  adjustTab.selectAll.text:SetText("  |cff5151de" .. L["SELECTALLVISIBLE"] .. "|r");
+  adjustTab.selectAll.text:SetText("  |cff999999" .. L["SELECTALLVISIBLE"] .. "|r");
   adjustTab.selectAll.text:SetScale(1.5);
   adjustTab.selectAll.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.selectAll:SetPoint("LEFT", adjustTab.addDKP, "RIGHT", 15, -13);
@@ -568,7 +568,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.SelectedOnlyCheck = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
   adjustTab.SelectedOnlyCheck:SetChecked(false)
   adjustTab.SelectedOnlyCheck:SetScale(0.6);
-  adjustTab.SelectedOnlyCheck.text:SetText("  |cff5151de" .. L["SELPLAYERSONLY"] .. "|r");
+  adjustTab.SelectedOnlyCheck.text:SetText("  |cff999999" .. L["SELPLAYERSONLY"] .. "|r");
   adjustTab.SelectedOnlyCheck.text:SetScale(1.5);
   adjustTab.SelectedOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.SelectedOnlyCheck:SetPoint("TOP", adjustTab.decayDKP, "BOTTOMLEFT", 15, -13);
@@ -590,7 +590,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.AddNegative = CreateFrame("CheckButton", nil, adjustTab, "UICheckButtonTemplate");
   adjustTab.AddNegative:SetChecked(MonDKP_DB.modes.AddToNegative)
   adjustTab.AddNegative:SetScale(0.6);
-  adjustTab.AddNegative.text:SetText("  |cff5151de" .. L["ADDNEGVALUES"] .. "|r");
+  adjustTab.AddNegative.text:SetText("  |cff999999" .. L["ADDNEGVALUES"] .. "|r");
   adjustTab.AddNegative.text:SetScale(1.5);
   adjustTab.AddNegative.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.AddNegative:SetPoint("TOP", adjustTab.SelectedOnlyCheck, "BOTTOM", 0, 0);
@@ -974,7 +974,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.RaidTimerContainer.StartBonus = CreateFrame("CheckButton", nil, adjustTab.RaidTimerContainer, "UICheckButtonTemplate");
   adjustTab.RaidTimerContainer.StartBonus:SetChecked(MonDKP_DB.DKPBonus.GiveRaidStart)
   adjustTab.RaidTimerContainer.StartBonus:SetScale(0.6);
-  adjustTab.RaidTimerContainer.StartBonus.text:SetText("  |cff5151de" .. L["GIVEONTIMEBONUS"] .. "|r");
+  adjustTab.RaidTimerContainer.StartBonus.text:SetText("  |cff999999" .. L["GIVEONTIMEBONUS"] .. "|r");
   adjustTab.RaidTimerContainer.StartBonus.text:SetScale(1.5);
   adjustTab.RaidTimerContainer.StartBonus.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.RaidTimerContainer.StartBonus:SetPoint("TOPLEFT", adjustTab.RaidTimerContainer.interval, "BOTTOMLEFT", 0, -10);
@@ -1000,7 +1000,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.RaidTimerContainer.EndRaidBonus = CreateFrame("CheckButton", nil, adjustTab.RaidTimerContainer, "UICheckButtonTemplate");
   adjustTab.RaidTimerContainer.EndRaidBonus:SetChecked(MonDKP_DB.DKPBonus.GiveRaidEnd)
   adjustTab.RaidTimerContainer.EndRaidBonus:SetScale(0.6);
-  adjustTab.RaidTimerContainer.EndRaidBonus.text:SetText("  |cff5151de" .. L["GIVEENDBONUS"] .. "|r");
+  adjustTab.RaidTimerContainer.EndRaidBonus.text:SetText("  |cff999999" .. L["GIVEENDBONUS"] .. "|r");
   adjustTab.RaidTimerContainer.EndRaidBonus.text:SetScale(1.5);
   adjustTab.RaidTimerContainer.EndRaidBonus.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.RaidTimerContainer.EndRaidBonus:SetPoint("TOP", adjustTab.RaidTimerContainer.StartBonus, "BOTTOM", 0, 2);
@@ -1026,7 +1026,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.RaidTimerContainer.StandbyInclude = CreateFrame("CheckButton", nil, adjustTab.RaidTimerContainer, "UICheckButtonTemplate");
   adjustTab.RaidTimerContainer.StandbyInclude:SetChecked(MonDKP_DB.DKPBonus.IncStandby)
   adjustTab.RaidTimerContainer.StandbyInclude:SetScale(0.6);
-  adjustTab.RaidTimerContainer.StandbyInclude.text:SetText("  |cff5151de" .. L["INCLUDESTANDBY"] .. "|r");
+  adjustTab.RaidTimerContainer.StandbyInclude.text:SetText("  |cff999999" .. L["INCLUDESTANDBY"] .. "|r");
   adjustTab.RaidTimerContainer.StandbyInclude.text:SetScale(1.5);
   adjustTab.RaidTimerContainer.StandbyInclude.text:SetFontObject("MonDKPSmallLeft")
   adjustTab.RaidTimerContainer.StandbyInclude:SetPoint("TOP", adjustTab.RaidTimerContainer.EndRaidBonus, "BOTTOM", 0, 2);

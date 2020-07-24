@@ -8,99 +8,102 @@ local validating = false
 
 local function DrawPercFrame(box)
   --Draw % signs if set to percent
-  MonDKP.ConfigTab4.DefaultMinBids.SlotBox[box].perc = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[box]:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.DefaultMinBids.SlotBox[box].perc:SetFontObject("MonDKPNormalLeft");
-  MonDKP.ConfigTab4.DefaultMinBids.SlotBox[box].perc:SetPoint("LEFT", MonDKP.ConfigTab4.DefaultMinBids.SlotBox[box], "RIGHT", -15, 0);
-  MonDKP.ConfigTab4.DefaultMinBids.SlotBox[box].perc:SetText("%")
+  local optionsTab = MonDKP.ConfigTab4
+  optionsTab.DefaultMinBids.SlotBox[box].perc = optionsTab.DefaultMinBids.SlotBox[box]:CreateFontString(nil, "OVERLAY")
+  optionsTab.DefaultMinBids.SlotBox[box].perc:SetFontObject("MonDKPNormalLeft");
+  optionsTab.DefaultMinBids.SlotBox[box].perc:SetPoint("LEFT", optionsTab.DefaultMinBids.SlotBox[box], "RIGHT", -15, 0);
+  optionsTab.DefaultMinBids.SlotBox[box].perc:SetText("%")
 
-  MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[box].perc = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[box]:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[box].perc:SetFontObject("MonDKPNormalLeft");
-  MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[box].perc:SetPoint("LEFT", MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[box], "RIGHT", -15, 0);
-  MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[box].perc:SetText("%")
+  optionsTab.DefaultMaxBids.SlotBox[box].perc = optionsTab.DefaultMaxBids.SlotBox[box]:CreateFontString(nil, "OVERLAY")
+  optionsTab.DefaultMaxBids.SlotBox[box].perc:SetFontObject("MonDKPNormalLeft");
+  optionsTab.DefaultMaxBids.SlotBox[box].perc:SetPoint("LEFT", optionsTab.DefaultMaxBids.SlotBox[box], "RIGHT", -15, 0);
+  optionsTab.DefaultMaxBids.SlotBox[box].perc:SetText("%")
 end
 
 local function SaveSettings()
-  if MonDKP.ConfigTab4.default[1] then
-    MonDKP_DB.DKPBonus.OnTimeBonus = MonDKP.ConfigTab4.default[1]:GetNumber();
-    MonDKP_DB.DKPBonus.BossKillBonus = MonDKP.ConfigTab4.default[2]:GetNumber();
-    MonDKP_DB.DKPBonus.CompletionBonus = MonDKP.ConfigTab4.default[3]:GetNumber();
-    MonDKP_DB.DKPBonus.NewBossKillBonus = MonDKP.ConfigTab4.default[4]:GetNumber();
-    MonDKP_DB.DKPBonus.UnexcusedAbsence = MonDKP.ConfigTab4.default[5]:GetNumber();
-    if MonDKP.ConfigTab4.default[6]:GetNumber() < 0 then
-      MonDKP_DB.DKPBonus.DecayPercentage = 0 - MonDKP.ConfigTab4.default[6]:GetNumber();
+  local optionsTab = MonDKP.ConfigTab4
+  if optionsTab.default[1] then
+    MonDKP_DB.DKPBonus.OnTimeBonus = optionsTab.default[1]:GetNumber();
+    MonDKP_DB.DKPBonus.BossKillBonus = optionsTab.default[2]:GetNumber();
+    MonDKP_DB.DKPBonus.CompletionBonus = optionsTab.default[3]:GetNumber();
+    MonDKP_DB.DKPBonus.NewBossKillBonus = optionsTab.default[4]:GetNumber();
+    MonDKP_DB.DKPBonus.UnexcusedAbsence = optionsTab.default[5]:GetNumber();
+    if optionsTab.default[6]:GetNumber() < 0 then
+      MonDKP_DB.DKPBonus.DecayPercentage = 0 - optionsTab.default[6]:GetNumber();
     else
-      MonDKP_DB.DKPBonus.DecayPercentage = MonDKP.ConfigTab4.default[6]:GetNumber();
+      MonDKP_DB.DKPBonus.DecayPercentage = optionsTab.default[6]:GetNumber();
     end
     MonDKP.ConfigTab2.decayDKP:SetNumber(MonDKP_DB.DKPBonus.DecayPercentage);
-    MonDKP.ConfigTab4.default[6]:SetNumber(MonDKP_DB.DKPBonus.DecayPercentage)
-    MonDKP_DB.DKPBonus.BidTimer = MonDKP.ConfigTab4.bidTimer:GetNumber();
+    optionsTab.default[6]:SetNumber(MonDKP_DB.DKPBonus.DecayPercentage)
+    MonDKP_DB.DKPBonus.BidTimer = optionsTab.bidTimer:GetNumber();
 
-    MonDKP_DB.MinBidBySlot.Head = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Neck = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[2]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Shoulders = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[3]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Cloak = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[4]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Chest = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[5]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Bracers = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[6]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Hands = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[7]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Belt = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[8]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Legs = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Boots = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[10]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Ring = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[11]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Trinket = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[12]:GetNumber()
-    MonDKP_DB.MinBidBySlot.OneHanded = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[13]:GetNumber()
-    MonDKP_DB.MinBidBySlot.TwoHanded = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14]:GetNumber()
-    MonDKP_DB.MinBidBySlot.OffHand = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[15]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Range = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[16]:GetNumber()
-    MonDKP_DB.MinBidBySlot.Other = MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Head = optionsTab.DefaultMinBids.SlotBox[1]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Neck = optionsTab.DefaultMinBids.SlotBox[2]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Shoulders = optionsTab.DefaultMinBids.SlotBox[3]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Cloak = optionsTab.DefaultMinBids.SlotBox[4]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Chest = optionsTab.DefaultMinBids.SlotBox[5]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Bracers = optionsTab.DefaultMinBids.SlotBox[6]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Hands = optionsTab.DefaultMinBids.SlotBox[7]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Belt = optionsTab.DefaultMinBids.SlotBox[8]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Legs = optionsTab.DefaultMinBids.SlotBox[9]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Boots = optionsTab.DefaultMinBids.SlotBox[10]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Ring = optionsTab.DefaultMinBids.SlotBox[11]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Trinket = optionsTab.DefaultMinBids.SlotBox[12]:GetNumber()
+    MonDKP_DB.MinBidBySlot.OneHanded = optionsTab.DefaultMinBids.SlotBox[13]:GetNumber()
+    MonDKP_DB.MinBidBySlot.TwoHanded = optionsTab.DefaultMinBids.SlotBox[14]:GetNumber()
+    MonDKP_DB.MinBidBySlot.OffHand = optionsTab.DefaultMinBids.SlotBox[15]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Range = optionsTab.DefaultMinBids.SlotBox[16]:GetNumber()
+    MonDKP_DB.MinBidBySlot.Other = optionsTab.DefaultMinBids.SlotBox[17]:GetNumber()
 
-    MonDKP_DB.MaxBidBySlot.Head = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[1]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Neck = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[2]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Shoulders = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[3]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Cloak = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[4]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Chest = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[5]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Bracers = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[6]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Hands = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[7]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Belt = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[8]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Legs = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Boots = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[10]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Ring = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[11]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Trinket = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[12]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.OneHanded = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[13]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.TwoHanded = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.OffHand = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[15]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Range = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[16]:GetNumber()
-    MonDKP_DB.MaxBidBySlot.Other = MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Head = optionsTab.DefaultMaxBids.SlotBox[1]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Neck = optionsTab.DefaultMaxBids.SlotBox[2]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Shoulders = optionsTab.DefaultMaxBids.SlotBox[3]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Cloak = optionsTab.DefaultMaxBids.SlotBox[4]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Chest = optionsTab.DefaultMaxBids.SlotBox[5]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Bracers = optionsTab.DefaultMaxBids.SlotBox[6]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Hands = optionsTab.DefaultMaxBids.SlotBox[7]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Belt = optionsTab.DefaultMaxBids.SlotBox[8]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Legs = optionsTab.DefaultMaxBids.SlotBox[9]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Boots = optionsTab.DefaultMaxBids.SlotBox[10]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Ring = optionsTab.DefaultMaxBids.SlotBox[11]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Trinket = optionsTab.DefaultMaxBids.SlotBox[12]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.OneHanded = optionsTab.DefaultMaxBids.SlotBox[13]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.TwoHanded = optionsTab.DefaultMaxBids.SlotBox[14]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.OffHand = optionsTab.DefaultMaxBids.SlotBox[15]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Range = optionsTab.DefaultMaxBids.SlotBox[16]:GetNumber()
+    MonDKP_DB.MaxBidBySlot.Other = optionsTab.DefaultMaxBids.SlotBox[17]:GetNumber()
   end
 
   core.MonDKPUI:SetScale(MonDKP_DB.defaults.MonDKPScaleSize);
-  MonDKP_DB.defaults.HistoryLimit = MonDKP.ConfigTab4.history:GetNumber();
-  MonDKP_DB.defaults.DKPHistoryLimit = MonDKP.ConfigTab4.DKPHistory:GetNumber();
-  MonDKP_DB.defaults.TooltipHistoryCount = MonDKP.ConfigTab4.TooltipHistory:GetNumber();
+  MonDKP_DB.defaults.HistoryLimit = optionsTab.history:GetNumber();
+  MonDKP_DB.defaults.DKPHistoryLimit = optionsTab.DKPHistory:GetNumber();
+  MonDKP_DB.defaults.TooltipHistoryCount = optionsTab.TooltipHistory:GetNumber();
   DKPTable_Update()
 end
 
 function MonDKP:Options()
   local default = {}
-  MonDKP.ConfigTab4.default = default;
+  local optionsTab = MonDKP.ConfigTab4
+  optionsTab.default = default;
 
-  MonDKP.ConfigTab4.header = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.header:SetFontObject("MonDKPLargeCenter");
-  MonDKP.ConfigTab4.header:SetPoint("TOPLEFT", MonDKP.ConfigTab4, "TOPLEFT", 15, -10);
-  MonDKP.ConfigTab4.header:SetText(L["DEFAULTSETTINGS"]);
-  MonDKP.ConfigTab4.header:SetScale(1.2)
+  optionsTab.header = optionsTab:CreateFontString(nil, "OVERLAY")
+  optionsTab.header:SetFontObject("MonDKPLargeCenter");
+  optionsTab.header:SetPoint("TOPLEFT", optionsTab, "TOPLEFT", 15, -10);
+  optionsTab.header:SetText(L["DEFAULTSETTINGS"]);
+  optionsTab.header:SetScale(1.2)
 
   if core.IsOfficer == true then
-    MonDKP.ConfigTab4.description = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.description:SetFontObject("MonDKPNormalLeft");
-    MonDKP.ConfigTab4.description:SetPoint("TOPLEFT", MonDKP.ConfigTab4.header, "BOTTOMLEFT", 7, -15);
-    MonDKP.ConfigTab4.description:SetText("|CFFcca600" .. L["DEFAULTDKPAWARDVALUES"] .. "|r");
+    optionsTab.description = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.description:SetFontObject("MonDKPNormalLeft");
+    optionsTab.description:SetPoint("TOPLEFT", optionsTab.header, "BOTTOMLEFT", 7, -15);
+    optionsTab.description:SetText("|CFFcca600" .. L["DEFAULTDKPAWARDVALUES"] .. "|r");
 
     for i = 1, 6 do
-      MonDKP.ConfigTab4.default[i] = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-      MonDKP.ConfigTab4.default[i]:SetAutoFocus(false)
-      MonDKP.ConfigTab4.default[i]:SetMultiLine(false)
-      MonDKP.ConfigTab4.default[i]:SetSize(80, 24)
-      MonDKP.ConfigTab4.default[i]:SetBackdrop({
+      optionsTab.default[i] = CreateFrame("EditBox", nil, optionsTab)
+      optionsTab.default[i]:SetAutoFocus(false)
+      optionsTab.default[i]:SetMultiLine(false)
+      optionsTab.default[i]:SetSize(80, 24)
+      optionsTab.default[i]:SetBackdrop({
         bgFile = "Textures\\white.blp",
         tile = true,
         edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -108,35 +111,35 @@ function MonDKP:Options()
         tileSize = 32,
         edgeSize = 2,
       });
-      MonDKP.ConfigTab4.default[i]:SetBackdropColor(0, 0, 0, 0.9)
-      MonDKP.ConfigTab4.default[i]:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-      MonDKP.ConfigTab4.default[i]:SetMaxLetters(6)
-      MonDKP.ConfigTab4.default[i]:SetTextColor(1, 1, 1, 1)
-      MonDKP.ConfigTab4.default[i]:SetFontObject("MonDKPSmallRight")
-      MonDKP.ConfigTab4.default[i]:SetTextInsets(10, 10, 5, 5)
-      MonDKP.ConfigTab4.default[i]:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+      optionsTab.default[i]:SetBackdropColor(0, 0, 0, 0.9)
+      optionsTab.default[i]:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+      optionsTab.default[i]:SetMaxLetters(6)
+      optionsTab.default[i]:SetTextColor(1, 1, 1, 1)
+      optionsTab.default[i]:SetFontObject("MonDKPSmallRight")
+      optionsTab.default[i]:SetTextInsets(10, 10, 5, 5)
+      optionsTab.default[i]:SetScript("OnEscapePressed", function(self) -- clears focus on esc
         self:HighlightText(0, 0)
         SaveSettings()
         self:ClearFocus()
       end)
-      MonDKP.ConfigTab4.default[i]:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+      optionsTab.default[i]:SetScript("OnEnterPressed", function(self) -- clears focus on esc
         self:HighlightText(0, 0)
         SaveSettings()
         self:ClearFocus()
       end)
-      MonDKP.ConfigTab4.default[i]:SetScript("OnTabPressed", function(self) -- clears focus on esc
+      optionsTab.default[i]:SetScript("OnTabPressed", function(self) -- clears focus on esc
         SaveSettings()
         if i == 6 then
           self:HighlightText(0, 0)
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1]:SetFocus()
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1]:HighlightText()
+          optionsTab.DefaultMinBids.SlotBox[1]:SetFocus()
+          optionsTab.DefaultMinBids.SlotBox[1]:HighlightText()
         else
           self:HighlightText(0, 0)
-          MonDKP.ConfigTab4.default[i + 1]:SetFocus()
-          MonDKP.ConfigTab4.default[i + 1]:HighlightText()
+          optionsTab.default[i + 1]:SetFocus()
+          optionsTab.default[i + 1]:HighlightText()
         end
       end)
-      MonDKP.ConfigTab4.default[i]:SetScript("OnEnter", function(self)
+      optionsTab.default[i]:SetScript("OnEnter", function(self)
         if (self.tooltipText) then
           GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
           GameTooltip:SetText(self.tooltipText, 0.25, 0.75, 0.90, 1, true);
@@ -150,127 +153,127 @@ function MonDKP:Options()
           GameTooltip:Show();
         end
       end)
-      MonDKP.ConfigTab4.default[i]:SetScript("OnLeave", function(self)
+      optionsTab.default[i]:SetScript("OnLeave", function(self)
         GameTooltip:Hide()
       end)
 
       if i == 1 then
-        MonDKP.ConfigTab4.default[i]:SetPoint("TOPLEFT", MonDKP.ConfigTab4, "TOPLEFT", 144, -84)
+        optionsTab.default[i]:SetPoint("TOPLEFT", optionsTab, "TOPLEFT", 144, -84)
       elseif i == 4 then
-        MonDKP.ConfigTab4.default[i]:SetPoint("TOPLEFT", MonDKP.ConfigTab4.default[1], "TOPLEFT", 212, 0)
+        optionsTab.default[i]:SetPoint("TOPLEFT", optionsTab.default[1], "TOPLEFT", 212, 0)
       else
-        MonDKP.ConfigTab4.default[i]:SetPoint("TOP", MonDKP.ConfigTab4.default[i - 1], "BOTTOM", 0, -22)
+        optionsTab.default[i]:SetPoint("TOP", optionsTab.default[i - 1], "BOTTOM", 0, -22)
       end
     end
 
     -- Modes Button
-    MonDKP.ConfigTab4.ModesButton = self:CreateButton("TOPRIGHT", MonDKP.ConfigTab4, "TOPRIGHT", -40, -20, L["DKPMODES"]);
-    MonDKP.ConfigTab4.ModesButton:SetSize(110, 25)
-    MonDKP.ConfigTab4.ModesButton:SetScript("OnClick", function()
+    optionsTab.ModesButton = self:CreateButton("TOPRIGHT", optionsTab, "TOPRIGHT", -40, -20, L["DKPMODES"]);
+    optionsTab.ModesButton:SetSize(110, 25)
+    optionsTab.ModesButton:SetScript("OnClick", function()
       MonDKP:ToggleDKPModesWindow()
     end);
-    MonDKP.ConfigTab4.ModesButton:SetScript("OnEnter", function(self)
+    optionsTab.ModesButton:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
       GameTooltip:SetText(L["DKPMODES"], 0.25, 0.75, 0.90, 1, true)
       GameTooltip:AddLine(L["DKPMODESTTDESC2"], 1.0, 1.0, 1.0, true);
       GameTooltip:AddLine(L["DKPMODESTTWARN"], 1.0, 0, 0, true);
       GameTooltip:Show()
     end)
-    MonDKP.ConfigTab4.ModesButton:SetScript("OnLeave", function()
+    optionsTab.ModesButton:SetScript("OnLeave", function()
       GameTooltip:Hide()
     end)
     if not core.IsOfficer then
-      MonDKP.ConfigTab4.ModesButton:Hide()
+      optionsTab.ModesButton:Hide()
     end
 
-    MonDKP.ConfigTab4.default[1]:SetText(MonDKP_DB.DKPBonus.OnTimeBonus)
-    MonDKP.ConfigTab4.default[1].tooltipText = L["ONTIMEBONUS"]
-    MonDKP.ConfigTab4.default[1].tooltipDescription = L["ONTIMEBONUSTTDESC"]
+    optionsTab.default[1]:SetText(MonDKP_DB.DKPBonus.OnTimeBonus)
+    optionsTab.default[1].tooltipText = L["ONTIMEBONUS"]
+    optionsTab.default[1].tooltipDescription = L["ONTIMEBONUSTTDESC"]
 
-    MonDKP.ConfigTab4.default[2]:SetText(MonDKP_DB.DKPBonus.BossKillBonus)
-    MonDKP.ConfigTab4.default[2].tooltipText = L["BOSSKILLBONUS"]
-    MonDKP.ConfigTab4.default[2].tooltipDescription = L["BOSSKILLBONUSTTDESC"]
+    optionsTab.default[2]:SetText(MonDKP_DB.DKPBonus.BossKillBonus)
+    optionsTab.default[2].tooltipText = L["BOSSKILLBONUS"]
+    optionsTab.default[2].tooltipDescription = L["BOSSKILLBONUSTTDESC"]
 
-    MonDKP.ConfigTab4.default[3]:SetText(MonDKP_DB.DKPBonus.CompletionBonus)
-    MonDKP.ConfigTab4.default[3].tooltipText = L["RAIDCOMPLETIONBONUS"]
-    MonDKP.ConfigTab4.default[3].tooltipDescription = L["RAIDCOMPLETEBONUSTT"]
+    optionsTab.default[3]:SetText(MonDKP_DB.DKPBonus.CompletionBonus)
+    optionsTab.default[3].tooltipText = L["RAIDCOMPLETIONBONUS"]
+    optionsTab.default[3].tooltipDescription = L["RAIDCOMPLETEBONUSTT"]
 
-    MonDKP.ConfigTab4.default[4]:SetText(MonDKP_DB.DKPBonus.NewBossKillBonus)
-    MonDKP.ConfigTab4.default[4].tooltipText = L["NEWBOSSKILLBONUS"]
-    MonDKP.ConfigTab4.default[4].tooltipDescription = L["NEWBOSSKILLTTDESC"]
+    optionsTab.default[4]:SetText(MonDKP_DB.DKPBonus.NewBossKillBonus)
+    optionsTab.default[4].tooltipText = L["NEWBOSSKILLBONUS"]
+    optionsTab.default[4].tooltipDescription = L["NEWBOSSKILLTTDESC"]
 
-    MonDKP.ConfigTab4.default[5]:SetText(MonDKP_DB.DKPBonus.UnexcusedAbsence)
-    MonDKP.ConfigTab4.default[5]:SetNumeric(false)
-    MonDKP.ConfigTab4.default[5].tooltipText = L["UNEXCUSEDABSENCE"]
-    MonDKP.ConfigTab4.default[5].tooltipDescription = L["UNEXCUSEDTTDESC"]
-    MonDKP.ConfigTab4.default[5].tooltipWarning = L["UNEXCUSEDTTWARN"]
+    optionsTab.default[5]:SetText(MonDKP_DB.DKPBonus.UnexcusedAbsence)
+    optionsTab.default[5]:SetNumeric(false)
+    optionsTab.default[5].tooltipText = L["UNEXCUSEDABSENCE"]
+    optionsTab.default[5].tooltipDescription = L["UNEXCUSEDTTDESC"]
+    optionsTab.default[5].tooltipWarning = L["UNEXCUSEDTTWARN"]
 
-    MonDKP.ConfigTab4.default[6]:SetText(MonDKP_DB.DKPBonus.DecayPercentage)
-    MonDKP.ConfigTab4.default[6]:SetTextInsets(0, 15, 0, 0)
-    MonDKP.ConfigTab4.default[6].tooltipText = L["DECAYPERCENTAGE"]
-    MonDKP.ConfigTab4.default[6].tooltipDescription = L["DECAYPERCENTAGETTDESC"]
-    MonDKP.ConfigTab4.default[6].tooltipWarning = L["DECAYPERCENTAGETTWARN"]
+    optionsTab.default[6]:SetText(MonDKP_DB.DKPBonus.DecayPercentage)
+    optionsTab.default[6]:SetTextInsets(0, 15, 0, 0)
+    optionsTab.default[6].tooltipText = L["DECAYPERCENTAGE"]
+    optionsTab.default[6].tooltipDescription = L["DECAYPERCENTAGETTDESC"]
+    optionsTab.default[6].tooltipWarning = L["DECAYPERCENTAGETTWARN"]
 
     --OnTimeBonus Header
-    MonDKP.ConfigTab4.OnTimeHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.OnTimeHeader:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.OnTimeHeader:SetPoint("RIGHT", MonDKP.ConfigTab4.default[1], "LEFT", 0, 0);
-    MonDKP.ConfigTab4.OnTimeHeader:SetText(L["ONTIMEBONUS"] .. ": ")
+    optionsTab.OnTimeHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.OnTimeHeader:SetFontObject("MonDKPSmallRight");
+    optionsTab.OnTimeHeader:SetPoint("RIGHT", optionsTab.default[1], "LEFT", 0, 0);
+    optionsTab.OnTimeHeader:SetText(L["ONTIMEBONUS"] .. ": ")
 
     --BossKillBonus Header
-    MonDKP.ConfigTab4.BossKillHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.BossKillHeader:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.BossKillHeader:SetPoint("RIGHT", MonDKP.ConfigTab4.default[2], "LEFT", 0, 0);
-    MonDKP.ConfigTab4.BossKillHeader:SetText(L["BOSSKILLBONUS"] .. ": ")
+    optionsTab.BossKillHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.BossKillHeader:SetFontObject("MonDKPSmallRight");
+    optionsTab.BossKillHeader:SetPoint("RIGHT", optionsTab.default[2], "LEFT", 0, 0);
+    optionsTab.BossKillHeader:SetText(L["BOSSKILLBONUS"] .. ": ")
 
     --CompletionBonus Header
-    MonDKP.ConfigTab4.CompleteHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.CompleteHeader:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.CompleteHeader:SetPoint("RIGHT", MonDKP.ConfigTab4.default[3], "LEFT", 0, 0);
-    MonDKP.ConfigTab4.CompleteHeader:SetText(L["RAIDCOMPLETIONBONUS"] .. ": ")
+    optionsTab.CompleteHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.CompleteHeader:SetFontObject("MonDKPSmallRight");
+    optionsTab.CompleteHeader:SetPoint("RIGHT", optionsTab.default[3], "LEFT", 0, 0);
+    optionsTab.CompleteHeader:SetText(L["RAIDCOMPLETIONBONUS"] .. ": ")
 
     --NewBossKillBonus Header
-    MonDKP.ConfigTab4.NewBossHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.NewBossHeader:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.NewBossHeader:SetPoint("RIGHT", MonDKP.ConfigTab4.default[4], "LEFT", 0, 0);
-    MonDKP.ConfigTab4.NewBossHeader:SetText(L["NEWBOSSKILLBONUS"] .. ": ")
+    optionsTab.NewBossHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.NewBossHeader:SetFontObject("MonDKPSmallRight");
+    optionsTab.NewBossHeader:SetPoint("RIGHT", optionsTab.default[4], "LEFT", 0, 0);
+    optionsTab.NewBossHeader:SetText(L["NEWBOSSKILLBONUS"] .. ": ")
 
     --UnexcusedAbsence Header
-    MonDKP.ConfigTab4.UnexcusedHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.UnexcusedHeader:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.UnexcusedHeader:SetPoint("RIGHT", MonDKP.ConfigTab4.default[5], "LEFT", 0, 0);
-    MonDKP.ConfigTab4.UnexcusedHeader:SetText(L["UNEXCUSEDABSENCE"] .. ": ")
+    optionsTab.UnexcusedHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.UnexcusedHeader:SetFontObject("MonDKPSmallRight");
+    optionsTab.UnexcusedHeader:SetPoint("RIGHT", optionsTab.default[5], "LEFT", 0, 0);
+    optionsTab.UnexcusedHeader:SetText(L["UNEXCUSEDABSENCE"] .. ": ")
 
     --DKP Decay Header
-    MonDKP.ConfigTab4.DecayHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.DecayHeader:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.DecayHeader:SetPoint("RIGHT", MonDKP.ConfigTab4.default[6], "LEFT", 0, 0);
-    MonDKP.ConfigTab4.DecayHeader:SetText(L["DECAYAMOUNT"] .. ": ")
+    optionsTab.DecayHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.DecayHeader:SetFontObject("MonDKPSmallRight");
+    optionsTab.DecayHeader:SetPoint("RIGHT", optionsTab.default[6], "LEFT", 0, 0);
+    optionsTab.DecayHeader:SetText(L["DECAYAMOUNT"] .. ": ")
 
-    MonDKP.ConfigTab4.DecayFooter = MonDKP.ConfigTab4.default[6]:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.DecayFooter:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.DecayFooter:SetPoint("LEFT", MonDKP.ConfigTab4.default[6], "RIGHT", -15, -1);
-    MonDKP.ConfigTab4.DecayFooter:SetText("%")
+    optionsTab.DecayFooter = optionsTab.default[6]:CreateFontString(nil, "OVERLAY")
+    optionsTab.DecayFooter:SetFontObject("MonDKPSmallRight");
+    optionsTab.DecayFooter:SetPoint("LEFT", optionsTab.default[6], "RIGHT", -15, -1);
+    optionsTab.DecayFooter:SetText("%")
 
     -- Default Minimum Bids Container Frame
-    MonDKP.ConfigTab4.DefaultMinBids = CreateFrame("Frame", nil, MonDKP.ConfigTab4);
-    MonDKP.ConfigTab4.DefaultMinBids:SetPoint("TOPLEFT", MonDKP.ConfigTab4.default[3], "BOTTOMLEFT", -130, -52)
-    MonDKP.ConfigTab4.DefaultMinBids:SetSize(420, 410);
+    optionsTab.DefaultMinBids = CreateFrame("Frame", nil, optionsTab);
+    optionsTab.DefaultMinBids:SetPoint("TOPLEFT", optionsTab.default[3], "BOTTOMLEFT", -130, -52)
+    optionsTab.DefaultMinBids:SetSize(420, 410);
 
-    MonDKP.ConfigTab4.DefaultMinBids.description = MonDKP.ConfigTab4.DefaultMinBids:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.DefaultMinBids.description:SetFontObject("MonDKPSmallRight");
-    MonDKP.ConfigTab4.DefaultMinBids.description:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMinBids, "TOPLEFT", 15, 15);
+    optionsTab.DefaultMinBids.description = optionsTab.DefaultMinBids:CreateFontString(nil, "OVERLAY")
+    optionsTab.DefaultMinBids.description:SetFontObject("MonDKPSmallRight");
+    optionsTab.DefaultMinBids.description:SetPoint("TOPLEFT", optionsTab.DefaultMinBids, "TOPLEFT", 15, 15);
 
     -- DEFAULT min bids Create EditBoxes
     local SlotBox = {}
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox = SlotBox;
+    optionsTab.DefaultMinBids.SlotBox = SlotBox;
 
     for i = 1, 17 do
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i] = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetAutoFocus(false)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetMultiLine(false)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetSize(60, 24)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetBackdrop({
+      optionsTab.DefaultMinBids.SlotBox[i] = CreateFrame("EditBox", nil, optionsTab)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetAutoFocus(false)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetMultiLine(false)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetSize(60, 24)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetBackdrop({
         bgFile = "Textures\\white.blp",
         tile = true,
         edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -278,59 +281,59 @@ function MonDKP:Options()
         tileSize = 32,
         edgeSize = 2,
       });
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetBackdropColor(0, 0, 0, 0.9)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetMaxLetters(6)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetTextColor(1, 1, 1, 1)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetFontObject("MonDKPSmallRight")
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetTextInsets(10, 10, 5, 5)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+      optionsTab.DefaultMinBids.SlotBox[i]:SetBackdropColor(0, 0, 0, 0.9)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetMaxLetters(6)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetTextColor(1, 1, 1, 1)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetFontObject("MonDKPSmallRight")
+      optionsTab.DefaultMinBids.SlotBox[i]:SetTextInsets(10, 10, 5, 5)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetScript("OnEscapePressed", function(self) -- clears focus on esc
         self:HighlightText(0, 0)
         SaveSettings()
         self:ClearFocus()
       end)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+      optionsTab.DefaultMinBids.SlotBox[i]:SetScript("OnEnterPressed", function(self) -- clears focus on esc
         self:HighlightText(0, 0)
         SaveSettings()
         self:ClearFocus()
       end)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetScript("OnTabPressed", function(self) -- clears focus on esc
+      optionsTab.DefaultMinBids.SlotBox[i]:SetScript("OnTabPressed", function(self) -- clears focus on esc
         if i == 8 then
           self:HighlightText(0, 0)
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17]:SetFocus()
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17]:HighlightText()
+          optionsTab.DefaultMinBids.SlotBox[17]:SetFocus()
+          optionsTab.DefaultMinBids.SlotBox[17]:HighlightText()
           SaveSettings()
         elseif i == 5 then
           self:HighlightText(0, 0)
           MonDKP.UIConfig.TabMenu.ScrollFrame:SetVerticalScroll(200)
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i + 1]:SetFocus()
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i + 1]:HighlightText()
+          optionsTab.DefaultMinBids.SlotBox[i + 1]:SetFocus()
+          optionsTab.DefaultMinBids.SlotBox[i + 1]:HighlightText()
           SaveSettings()
         elseif i == 13 then
           self:HighlightText(0, 0)
           MonDKP.UIConfig.TabMenu.ScrollFrame:SetVerticalScroll(200)
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14]:SetFocus()
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14]:HighlightText()
+          optionsTab.DefaultMinBids.SlotBox[14]:SetFocus()
+          optionsTab.DefaultMinBids.SlotBox[14]:HighlightText()
           SaveSettings()
         elseif i == 17 then
           self:HighlightText(0, 0)
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9]:SetFocus()
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9]:HighlightText()
+          optionsTab.DefaultMinBids.SlotBox[9]:SetFocus()
+          optionsTab.DefaultMinBids.SlotBox[9]:HighlightText()
           SaveSettings()
         elseif i == 16 then
           self:HighlightText(0, 0)
           MonDKP.UIConfig.TabMenu.ScrollFrame:SetVerticalScroll(1)
-          MonDKP.ConfigTab4.default[1]:SetFocus()
-          MonDKP.ConfigTab4.default[1]:HighlightText()
+          optionsTab.default[1]:SetFocus()
+          optionsTab.default[1]:HighlightText()
           SaveSettings()
         else
           self:HighlightText(0, 0)
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i + 1]:SetFocus()
-          MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i + 1]:HighlightText()
+          optionsTab.DefaultMinBids.SlotBox[i + 1]:SetFocus()
+          optionsTab.DefaultMinBids.SlotBox[i + 1]:HighlightText()
           SaveSettings()
         end
       end)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetScript("OnEnter", function(self)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetScript("OnEnter", function(self)
         if (self.tooltipText) then
           GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
           GameTooltip:SetText(self.tooltipText, 0.25, 0.75, 0.90, 1, true);
@@ -344,23 +347,23 @@ function MonDKP:Options()
           GameTooltip:Show();
         end
       end)
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetScript("OnLeave", function(self)
+      optionsTab.DefaultMinBids.SlotBox[i]:SetScript("OnLeave", function(self)
         GameTooltip:Hide()
       end)
 
       -- Slot Headers
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i].Header = MonDKP.ConfigTab4.DefaultMinBids:CreateFontString(nil, "OVERLAY")
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i].Header:SetFontObject("MonDKPNormalLeft");
-      MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i].Header:SetPoint("RIGHT", MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i], "LEFT", 0, 0);
+      optionsTab.DefaultMinBids.SlotBox[i].Header = optionsTab.DefaultMinBids:CreateFontString(nil, "OVERLAY")
+      optionsTab.DefaultMinBids.SlotBox[i].Header:SetFontObject("MonDKPNormalLeft");
+      optionsTab.DefaultMinBids.SlotBox[i].Header:SetPoint("RIGHT", optionsTab.DefaultMinBids.SlotBox[i], "LEFT", 0, 0);
 
       if i == 1 then
-        MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMinBids, "TOPLEFT", 100, -10)
+        optionsTab.DefaultMinBids.SlotBox[i]:SetPoint("TOPLEFT", optionsTab.DefaultMinBids, "TOPLEFT", 100, -10)
       elseif i == 9 then
-        MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1], "TOPLEFT", 150, 0)
+        optionsTab.DefaultMinBids.SlotBox[i]:SetPoint("TOPLEFT", optionsTab.DefaultMinBids.SlotBox[1], "TOPLEFT", 150, 0)
       elseif i == 17 then
-        MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetPoint("TOP", MonDKP.ConfigTab4.DefaultMinBids.SlotBox[8], "BOTTOM", 0, -22)
+        optionsTab.DefaultMinBids.SlotBox[i]:SetPoint("TOP", optionsTab.DefaultMinBids.SlotBox[8], "BOTTOM", 0, -22)
       else
-        MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetPoint("TOP", MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i - 1], "BOTTOM", 0, -22)
+        optionsTab.DefaultMinBids.SlotBox[i]:SetPoint("TOP", optionsTab.DefaultMinBids.SlotBox[i - 1], "BOTTOM", 0, -22)
       end
     end
 
@@ -368,23 +371,23 @@ function MonDKP:Options()
 
     if MonDKP_DB.modes.mode == "Minimum Bid Values" then
       prefix = L["MINIMUMBID"];
-      MonDKP.ConfigTab4.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTMINBIDVALUES"] .. "|r");
+      optionsTab.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTMINBIDVALUES"] .. "|r");
     elseif MonDKP_DB.modes.mode == "Static Item Values" then
-      MonDKP.ConfigTab4.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTITEMCOSTS"] .. "|r");
+      optionsTab.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTITEMCOSTS"] .. "|r");
       if MonDKP_DB.modes.costvalue == "Integer" then
         prefix = L["DKPPRICE"]
       elseif MonDKP_DB.modes.costvalue == "Percent" then
         prefix = L["PERCENTCOST"]
       end
     elseif MonDKP_DB.modes.mode == "Roll Based Bidding" then
-      MonDKP.ConfigTab4.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTITEMCOSTS"] .. "|r");
+      optionsTab.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTITEMCOSTS"] .. "|r");
       if MonDKP_DB.modes.costvalue == "Integer" then
         prefix = L["DKPPRICE"]
       elseif MonDKP_DB.modes.costvalue == "Percent" then
         prefix = L["PERCENTCOST"]
       end
     elseif MonDKP_DB.modes.mode == "Zero Sum" then
-      MonDKP.ConfigTab4.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTITEMCOSTS"] .. "|r");
+      optionsTab.DefaultMinBids.description:SetText("|CFFcca600" .. L["DEFAULTITEMCOSTS"] .. "|r");
       if MonDKP_DB.modes.costvalue == "Integer" then
         prefix = L["DKPPRICE"]
       elseif MonDKP_DB.modes.costvalue == "Percent" then
@@ -392,104 +395,104 @@ function MonDKP:Options()
       end
     end
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1].Header:SetText(L["HEAD"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1]:SetText(MonDKP_DB.MinBidBySlot.Head)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1].tooltipText = L["HEAD"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[1].tooltipDescription = prefix .. " " .. L["FORHEADSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[1].Header:SetText(L["HEAD"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[1]:SetText(MonDKP_DB.MinBidBySlot.Head)
+    optionsTab.DefaultMinBids.SlotBox[1].tooltipText = L["HEAD"]
+    optionsTab.DefaultMinBids.SlotBox[1].tooltipDescription = prefix .. " " .. L["FORHEADSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[2].Header:SetText(L["NECK"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[2]:SetText(MonDKP_DB.MinBidBySlot.Neck)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[2].tooltipText = L["NECK"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[2].tooltipDescription = prefix .. " " .. L["FORNECKSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[2].Header:SetText(L["NECK"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[2]:SetText(MonDKP_DB.MinBidBySlot.Neck)
+    optionsTab.DefaultMinBids.SlotBox[2].tooltipText = L["NECK"]
+    optionsTab.DefaultMinBids.SlotBox[2].tooltipDescription = prefix .. " " .. L["FORNECKSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[3].Header:SetText(L["SHOULDERS"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[3]:SetText(MonDKP_DB.MinBidBySlot.Shoulders)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[3].tooltipText = L["SHOULDERS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[3].tooltipDescription = prefix .. " " .. L["FORSHOULDERSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[3].Header:SetText(L["SHOULDERS"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[3]:SetText(MonDKP_DB.MinBidBySlot.Shoulders)
+    optionsTab.DefaultMinBids.SlotBox[3].tooltipText = L["SHOULDERS"]
+    optionsTab.DefaultMinBids.SlotBox[3].tooltipDescription = prefix .. " " .. L["FORSHOULDERSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[4].Header:SetText(L["CLOAK"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[4]:SetText(MonDKP_DB.MinBidBySlot.Cloak)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[4].tooltipText = L["CLOAK"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[4].tooltipDescription = prefix .. " " .. L["FORBACKSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[4].Header:SetText(L["CLOAK"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[4]:SetText(MonDKP_DB.MinBidBySlot.Cloak)
+    optionsTab.DefaultMinBids.SlotBox[4].tooltipText = L["CLOAK"]
+    optionsTab.DefaultMinBids.SlotBox[4].tooltipDescription = prefix .. " " .. L["FORBACKSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[5].Header:SetText(L["CHEST"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[5]:SetText(MonDKP_DB.MinBidBySlot.Chest)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[5].tooltipText = L["CHEST"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[5].tooltipDescription = prefix .. " " .. L["FORCHESTSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[5].Header:SetText(L["CHEST"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[5]:SetText(MonDKP_DB.MinBidBySlot.Chest)
+    optionsTab.DefaultMinBids.SlotBox[5].tooltipText = L["CHEST"]
+    optionsTab.DefaultMinBids.SlotBox[5].tooltipDescription = prefix .. " " .. L["FORCHESTSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[6].Header:SetText(L["BRACERS"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[6]:SetText(MonDKP_DB.MinBidBySlot.Bracers)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[6].tooltipText = L["BRACERS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[6].tooltipDescription = prefix .. " " .. L["FORWRISTSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[6].Header:SetText(L["BRACERS"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[6]:SetText(MonDKP_DB.MinBidBySlot.Bracers)
+    optionsTab.DefaultMinBids.SlotBox[6].tooltipText = L["BRACERS"]
+    optionsTab.DefaultMinBids.SlotBox[6].tooltipDescription = prefix .. " " .. L["FORWRISTSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[7].Header:SetText(L["HANDS"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[7]:SetText(MonDKP_DB.MinBidBySlot.Hands)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[7].tooltipText = L["HANDS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[7].tooltipDescription = prefix .. " " .. L["FORHANDSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[7].Header:SetText(L["HANDS"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[7]:SetText(MonDKP_DB.MinBidBySlot.Hands)
+    optionsTab.DefaultMinBids.SlotBox[7].tooltipText = L["HANDS"]
+    optionsTab.DefaultMinBids.SlotBox[7].tooltipDescription = prefix .. " " .. L["FORHANDSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[8].Header:SetText(L["BELT"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[8]:SetText(MonDKP_DB.MinBidBySlot.Belt)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[8].tooltipText = L["BELT"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[8].tooltipDescription = prefix .. " " .. L["FORWAISTSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[8].Header:SetText(L["BELT"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[8]:SetText(MonDKP_DB.MinBidBySlot.Belt)
+    optionsTab.DefaultMinBids.SlotBox[8].tooltipText = L["BELT"]
+    optionsTab.DefaultMinBids.SlotBox[8].tooltipDescription = prefix .. " " .. L["FORWAISTSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9].Header:SetText(L["LEGS"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9]:SetText(MonDKP_DB.MinBidBySlot.Legs)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9].tooltipText = L["LEGS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[9].tooltipDescription = prefix .. " " .. L["FORLEGSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[9].Header:SetText(L["LEGS"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[9]:SetText(MonDKP_DB.MinBidBySlot.Legs)
+    optionsTab.DefaultMinBids.SlotBox[9].tooltipText = L["LEGS"]
+    optionsTab.DefaultMinBids.SlotBox[9].tooltipDescription = prefix .. " " .. L["FORLEGSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[10].Header:SetText(L["BOOTS"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[10]:SetText(MonDKP_DB.MinBidBySlot.Boots)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[10].tooltipText = L["BOOTS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[10].tooltipDescription = prefix .. " " .. L["FORFEETSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[10].Header:SetText(L["BOOTS"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[10]:SetText(MonDKP_DB.MinBidBySlot.Boots)
+    optionsTab.DefaultMinBids.SlotBox[10].tooltipText = L["BOOTS"]
+    optionsTab.DefaultMinBids.SlotBox[10].tooltipDescription = prefix .. " " .. L["FORFEETSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[11].Header:SetText(L["RINGS"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[11]:SetText(MonDKP_DB.MinBidBySlot.Ring)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[11].tooltipText = L["RINGS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[11].tooltipDescription = prefix .. " " .. L["FORFINGERSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[11].Header:SetText(L["RINGS"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[11]:SetText(MonDKP_DB.MinBidBySlot.Ring)
+    optionsTab.DefaultMinBids.SlotBox[11].tooltipText = L["RINGS"]
+    optionsTab.DefaultMinBids.SlotBox[11].tooltipDescription = prefix .. " " .. L["FORFINGERSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[12].Header:SetText(L["TRINKET"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[12]:SetText(MonDKP_DB.MinBidBySlot.Trinket)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[12].tooltipText = L["TRINKET"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[12].tooltipDescription = prefix .. " " .. L["FORTRINKETSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[12].Header:SetText(L["TRINKET"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[12]:SetText(MonDKP_DB.MinBidBySlot.Trinket)
+    optionsTab.DefaultMinBids.SlotBox[12].tooltipText = L["TRINKET"]
+    optionsTab.DefaultMinBids.SlotBox[12].tooltipDescription = prefix .. " " .. L["FORTRINKETSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[13].Header:SetText(L["ONEHANDED"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[13]:SetText(MonDKP_DB.MinBidBySlot.OneHanded)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[13].tooltipText = L["ONEHANDEDWEAPONS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[13].tooltipDescription = prefix .. " " .. L["FORONEHANDSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[13].Header:SetText(L["ONEHANDED"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[13]:SetText(MonDKP_DB.MinBidBySlot.OneHanded)
+    optionsTab.DefaultMinBids.SlotBox[13].tooltipText = L["ONEHANDEDWEAPONS"]
+    optionsTab.DefaultMinBids.SlotBox[13].tooltipDescription = prefix .. " " .. L["FORONEHANDSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14].Header:SetText(L["TWOHANDED"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14]:SetText(MonDKP_DB.MinBidBySlot.TwoHanded)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14].tooltipText = L["TWOHANDEDWEAPONS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[14].tooltipDescription = prefix .. " " .. L["FORTWOHANDSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[14].Header:SetText(L["TWOHANDED"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[14]:SetText(MonDKP_DB.MinBidBySlot.TwoHanded)
+    optionsTab.DefaultMinBids.SlotBox[14].tooltipText = L["TWOHANDEDWEAPONS"]
+    optionsTab.DefaultMinBids.SlotBox[14].tooltipDescription = prefix .. " " .. L["FORTWOHANDSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[15].Header:SetText(L["OFFHAND"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[15]:SetText(MonDKP_DB.MinBidBySlot.OffHand)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[15].tooltipText = L["OFFHANDITEMS"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[15].tooltipDescription = prefix .. " " .. L["FOROFFHANDSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[15].Header:SetText(L["OFFHAND"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[15]:SetText(MonDKP_DB.MinBidBySlot.OffHand)
+    optionsTab.DefaultMinBids.SlotBox[15].tooltipText = L["OFFHANDITEMS"]
+    optionsTab.DefaultMinBids.SlotBox[15].tooltipDescription = prefix .. " " .. L["FOROFFHANDSLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[16].Header:SetText(L["RANGE"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[16]:SetText(MonDKP_DB.MinBidBySlot.Range)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[16].tooltipText = L["RANGE"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[16].tooltipDescription = prefix .. " " .. L["FORRANGESLOT"]
+    optionsTab.DefaultMinBids.SlotBox[16].Header:SetText(L["RANGE"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[16]:SetText(MonDKP_DB.MinBidBySlot.Range)
+    optionsTab.DefaultMinBids.SlotBox[16].tooltipText = L["RANGE"]
+    optionsTab.DefaultMinBids.SlotBox[16].tooltipDescription = prefix .. " " .. L["FORRANGESLOT"]
 
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17].Header:SetText(L["OTHER"] .. ": ")
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17]:SetText(MonDKP_DB.MinBidBySlot.Other)
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17].tooltipText = L["OTHER"]
-    MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17].tooltipDescription = prefix .. " " .. L["FOROTHERSLOT"]
+    optionsTab.DefaultMinBids.SlotBox[17].Header:SetText(L["OTHER"] .. ": ")
+    optionsTab.DefaultMinBids.SlotBox[17]:SetText(MonDKP_DB.MinBidBySlot.Other)
+    optionsTab.DefaultMinBids.SlotBox[17].tooltipText = L["OTHER"]
+    optionsTab.DefaultMinBids.SlotBox[17].tooltipDescription = prefix .. " " .. L["FOROTHERSLOT"]
 
     if MonDKP_DB.modes.costvalue == "Percent" then
-      for i = 1, #MonDKP.ConfigTab4.DefaultMinBids.SlotBox do
+      for i = 1, #optionsTab.DefaultMinBids.SlotBox do
         DrawPercFrame(i)
-        MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:SetTextInsets(0, 15, 0, 0)
+        optionsTab.DefaultMinBids.SlotBox[i]:SetTextInsets(0, 15, 0, 0)
       end
     end
 
     -- Broadcast Minimum Bids Button
-    MonDKP.ConfigTab4.BroadcastMinBids = self:CreateButton("TOP", MonDKP.ConfigTab4, "BOTTOM", 30, 30, L["BCASTVALUES"]);
-    MonDKP.ConfigTab4.BroadcastMinBids:ClearAllPoints();
-    MonDKP.ConfigTab4.BroadcastMinBids:SetPoint("LEFT", MonDKP.ConfigTab4.DefaultMinBids.SlotBox[17], "RIGHT", 41, 0)
-    MonDKP.ConfigTab4.BroadcastMinBids:SetSize(110, 25)
-    MonDKP.ConfigTab4.BroadcastMinBids:SetScript("OnClick", function()
+    optionsTab.BroadcastMinBids = self:CreateButton("TOP", optionsTab, "BOTTOM", 30, 30, L["BCASTVALUES"]);
+    optionsTab.BroadcastMinBids:ClearAllPoints();
+    optionsTab.BroadcastMinBids:SetPoint("LEFT", optionsTab.DefaultMinBids.SlotBox[17], "RIGHT", 41, 0)
+    optionsTab.BroadcastMinBids:SetSize(110, 25)
+    optionsTab.BroadcastMinBids:SetScript("OnClick", function()
       StaticPopupDialogs["SEND_MINBIDS"] = {
         text = L["BCASTMINBIDCONFIRM"],
         button1 = L["YES"],
@@ -508,37 +511,37 @@ function MonDKP:Options()
       }
       StaticPopup_Show("SEND_MINBIDS")
     end);
-    MonDKP.ConfigTab4.BroadcastMinBids:SetScript("OnEnter", function(self)
+    optionsTab.BroadcastMinBids:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
       GameTooltip:SetText(L["BCASTVALUES"], 0.25, 0.75, 0.90, 1, true)
       GameTooltip:AddLine(L["BCASTVALUESTTDESC"], 1.0, 1.0, 1.0, true);
       GameTooltip:AddLine(L["BCASTVALUESTTWARN"], 1.0, 0, 0, true);
       GameTooltip:Show()
     end)
-    MonDKP.ConfigTab4.BroadcastMinBids:SetScript("OnLeave", function()
+    optionsTab.BroadcastMinBids:SetScript("OnLeave", function()
       GameTooltip:Hide()
     end)
 
     -- Default Maximum Bids Container Frame
     if MonDKP_DB.modes.mode == "Minimum Bid Values" or (MonDKP_DB.modes.mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-      MonDKP.ConfigTab4.DefaultMaxBids = CreateFrame("Frame", nil, MonDKP.ConfigTab4);
-      MonDKP.ConfigTab4.DefaultMaxBids:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMinBids, "BOTTOMLEFT", 0, -52)
-      MonDKP.ConfigTab4.DefaultMaxBids:SetSize(420, 410);
+      optionsTab.DefaultMaxBids = CreateFrame("Frame", nil, optionsTab);
+      optionsTab.DefaultMaxBids:SetPoint("TOPLEFT", optionsTab.DefaultMinBids, "BOTTOMLEFT", 0, -52)
+      optionsTab.DefaultMaxBids:SetSize(420, 410);
 
-      MonDKP.ConfigTab4.DefaultMaxBids.description = MonDKP.ConfigTab4.DefaultMaxBids:CreateFontString(nil, "OVERLAY")
-      MonDKP.ConfigTab4.DefaultMaxBids.description:SetFontObject("MonDKPSmallRight");
-      MonDKP.ConfigTab4.DefaultMaxBids.description:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMaxBids, "TOPLEFT", 15, 15);
+      optionsTab.DefaultMaxBids.description = optionsTab.DefaultMaxBids:CreateFontString(nil, "OVERLAY")
+      optionsTab.DefaultMaxBids.description:SetFontObject("MonDKPSmallRight");
+      optionsTab.DefaultMaxBids.description:SetPoint("TOPLEFT", optionsTab.DefaultMaxBids, "TOPLEFT", 15, 15);
 
       -- DEFAULT Max bids Create EditBoxes
       local SlotBox = {}
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox = SlotBox;
+      optionsTab.DefaultMaxBids.SlotBox = SlotBox;
 
       for i = 1, 17 do
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i] = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetAutoFocus(false)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetMultiLine(false)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetSize(60, 24)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetBackdrop({
+        optionsTab.DefaultMaxBids.SlotBox[i] = CreateFrame("EditBox", nil, optionsTab)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetAutoFocus(false)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetMultiLine(false)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetSize(60, 24)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetBackdrop({
           bgFile = "Textures\\white.blp",
           tile = true,
           edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -546,59 +549,59 @@ function MonDKP:Options()
           tileSize = 32,
           edgeSize = 2,
         });
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetBackdropColor(0, 0, 0, 0.9)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetMaxLetters(6)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetTextColor(1, 1, 1, 1)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetFontObject("MonDKPSmallRight")
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetTextInsets(10, 10, 5, 5)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetBackdropColor(0, 0, 0, 0.9)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetMaxLetters(6)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetTextColor(1, 1, 1, 1)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetFontObject("MonDKPSmallRight")
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetTextInsets(10, 10, 5, 5)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetScript("OnEscapePressed", function(self) -- clears focus on esc
           self:HighlightText(0, 0)
           SaveSettings()
           self:ClearFocus()
         end)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetScript("OnEnterPressed", function(self) -- clears focus on esc
           self:HighlightText(0, 0)
           SaveSettings()
           self:ClearFocus()
         end)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetScript("OnTabPressed", function(self) -- clears focus on esc
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetScript("OnTabPressed", function(self) -- clears focus on esc
           if i == 8 then
             self:HighlightText(0, 0)
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17]:SetFocus()
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17]:HighlightText()
+            optionsTab.DefaultMaxBids.SlotBox[17]:SetFocus()
+            optionsTab.DefaultMaxBids.SlotBox[17]:HighlightText()
             SaveSettings()
           elseif i == 5 then
             self:HighlightText(0, 0)
             MonDKP.UIConfig.TabMenu.ScrollFrame:SetVerticalScroll(200)
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i + 1]:SetFocus()
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i + 1]:HighlightText()
+            optionsTab.DefaultMaxBids.SlotBox[i + 1]:SetFocus()
+            optionsTab.DefaultMaxBids.SlotBox[i + 1]:HighlightText()
             SaveSettings()
           elseif i == 13 then
             self:HighlightText(0, 0)
             MonDKP.UIConfig.TabMenu.ScrollFrame:SetVerticalScroll(200)
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14]:SetFocus()
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14]:HighlightText()
+            optionsTab.DefaultMaxBids.SlotBox[14]:SetFocus()
+            optionsTab.DefaultMaxBids.SlotBox[14]:HighlightText()
             SaveSettings()
           elseif i == 17 then
             self:HighlightText(0, 0)
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9]:SetFocus()
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9]:HighlightText()
+            optionsTab.DefaultMaxBids.SlotBox[9]:SetFocus()
+            optionsTab.DefaultMaxBids.SlotBox[9]:HighlightText()
             SaveSettings()
           elseif i == 16 then
             self:HighlightText(0, 0)
             MonDKP.UIConfig.TabMenu.ScrollFrame:SetVerticalScroll(1)
-            MonDKP.ConfigTab4.default[1]:SetFocus()
-            MonDKP.ConfigTab4.default[1]:HighlightText()
+            optionsTab.default[1]:SetFocus()
+            optionsTab.default[1]:HighlightText()
             SaveSettings()
           else
             self:HighlightText(0, 0)
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i + 1]:SetFocus()
-            MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i + 1]:HighlightText()
+            optionsTab.DefaultMaxBids.SlotBox[i + 1]:SetFocus()
+            optionsTab.DefaultMaxBids.SlotBox[i + 1]:HighlightText()
             SaveSettings()
           end
         end)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetScript("OnEnter", function(self)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetScript("OnEnter", function(self)
           if (self.tooltipText) then
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
             GameTooltip:SetText(self.tooltipText, 0.25, 0.75, 0.90, 1, true);
@@ -612,129 +615,129 @@ function MonDKP:Options()
             GameTooltip:Show();
           end
         end)
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetScript("OnLeave", function(self)
+        optionsTab.DefaultMaxBids.SlotBox[i]:SetScript("OnLeave", function(self)
           GameTooltip:Hide()
         end)
 
         -- Slot Headers
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i].Header = MonDKP.ConfigTab4.DefaultMaxBids:CreateFontString(nil, "OVERLAY")
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i].Header:SetFontObject("MonDKPNormalLeft");
-        MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i].Header:SetPoint("RIGHT", MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i], "LEFT", 0, 0);
+        optionsTab.DefaultMaxBids.SlotBox[i].Header = optionsTab.DefaultMaxBids:CreateFontString(nil, "OVERLAY")
+        optionsTab.DefaultMaxBids.SlotBox[i].Header:SetFontObject("MonDKPNormalLeft");
+        optionsTab.DefaultMaxBids.SlotBox[i].Header:SetPoint("RIGHT", optionsTab.DefaultMaxBids.SlotBox[i], "LEFT", 0, 0);
 
         if i == 1 then
-          MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMaxBids, "TOPLEFT", 100, -10)
+          optionsTab.DefaultMaxBids.SlotBox[i]:SetPoint("TOPLEFT", optionsTab.DefaultMaxBids, "TOPLEFT", 100, -10)
         elseif i == 9 then
-          MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[1], "TOPLEFT", 150, 0)
+          optionsTab.DefaultMaxBids.SlotBox[i]:SetPoint("TOPLEFT", optionsTab.DefaultMaxBids.SlotBox[1], "TOPLEFT", 150, 0)
         elseif i == 17 then
-          MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetPoint("TOP", MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[8], "BOTTOM", 0, -22)
+          optionsTab.DefaultMaxBids.SlotBox[i]:SetPoint("TOP", optionsTab.DefaultMaxBids.SlotBox[8], "BOTTOM", 0, -22)
         else
-          MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetPoint("TOP", MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i - 1], "BOTTOM", 0, -22)
+          optionsTab.DefaultMaxBids.SlotBox[i]:SetPoint("TOP", optionsTab.DefaultMaxBids.SlotBox[i - 1], "BOTTOM", 0, -22)
         end
       end
 
       local prefix;
 
       prefix = L["MAXIMUMBID"];
-      MonDKP.ConfigTab4.DefaultMaxBids.description:SetText("|CFFcca600" .. L["DEFAULTMAXBIDVALUES"] .. "|r");
+      optionsTab.DefaultMaxBids.description:SetText("|CFFcca600" .. L["DEFAULTMAXBIDVALUES"] .. "|r");
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[1].Header:SetText(L["HEAD"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[1]:SetText(MonDKP_DB.MaxBidBySlot.Head)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[1].tooltipText = L["HEAD"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[1].tooltipDescription = prefix .. " " .. L["FORHEADSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[1].Header:SetText(L["HEAD"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[1]:SetText(MonDKP_DB.MaxBidBySlot.Head)
+      optionsTab.DefaultMaxBids.SlotBox[1].tooltipText = L["HEAD"]
+      optionsTab.DefaultMaxBids.SlotBox[1].tooltipDescription = prefix .. " " .. L["FORHEADSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[2].Header:SetText(L["NECK"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[2]:SetText(MonDKP_DB.MaxBidBySlot.Neck)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[2].tooltipText = L["NECK"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[2].tooltipDescription = prefix .. " " .. L["FORNECKSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[2].Header:SetText(L["NECK"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[2]:SetText(MonDKP_DB.MaxBidBySlot.Neck)
+      optionsTab.DefaultMaxBids.SlotBox[2].tooltipText = L["NECK"]
+      optionsTab.DefaultMaxBids.SlotBox[2].tooltipDescription = prefix .. " " .. L["FORNECKSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[3].Header:SetText(L["SHOULDERS"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[3]:SetText(MonDKP_DB.MaxBidBySlot.Shoulders)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[3].tooltipText = L["SHOULDERS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[3].tooltipDescription = prefix .. " " .. L["FORSHOULDERSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[3].Header:SetText(L["SHOULDERS"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[3]:SetText(MonDKP_DB.MaxBidBySlot.Shoulders)
+      optionsTab.DefaultMaxBids.SlotBox[3].tooltipText = L["SHOULDERS"]
+      optionsTab.DefaultMaxBids.SlotBox[3].tooltipDescription = prefix .. " " .. L["FORSHOULDERSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[4].Header:SetText(L["CLOAK"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[4]:SetText(MonDKP_DB.MaxBidBySlot.Cloak)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[4].tooltipText = L["CLOAK"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[4].tooltipDescription = prefix .. " " .. L["FORBACKSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[4].Header:SetText(L["CLOAK"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[4]:SetText(MonDKP_DB.MaxBidBySlot.Cloak)
+      optionsTab.DefaultMaxBids.SlotBox[4].tooltipText = L["CLOAK"]
+      optionsTab.DefaultMaxBids.SlotBox[4].tooltipDescription = prefix .. " " .. L["FORBACKSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[5].Header:SetText(L["CHEST"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[5]:SetText(MonDKP_DB.MaxBidBySlot.Chest)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[5].tooltipText = L["CHEST"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[5].tooltipDescription = prefix .. " " .. L["FORCHESTSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[5].Header:SetText(L["CHEST"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[5]:SetText(MonDKP_DB.MaxBidBySlot.Chest)
+      optionsTab.DefaultMaxBids.SlotBox[5].tooltipText = L["CHEST"]
+      optionsTab.DefaultMaxBids.SlotBox[5].tooltipDescription = prefix .. " " .. L["FORCHESTSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[6].Header:SetText(L["BRACERS"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[6]:SetText(MonDKP_DB.MaxBidBySlot.Bracers)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[6].tooltipText = L["BRACERS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[6].tooltipDescription = prefix .. " " .. L["FORWRISTSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[6].Header:SetText(L["BRACERS"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[6]:SetText(MonDKP_DB.MaxBidBySlot.Bracers)
+      optionsTab.DefaultMaxBids.SlotBox[6].tooltipText = L["BRACERS"]
+      optionsTab.DefaultMaxBids.SlotBox[6].tooltipDescription = prefix .. " " .. L["FORWRISTSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[7].Header:SetText(L["HANDS"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[7]:SetText(MonDKP_DB.MaxBidBySlot.Hands)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[7].tooltipText = L["HANDS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[7].tooltipDescription = prefix .. " " .. L["FORHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[7].Header:SetText(L["HANDS"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[7]:SetText(MonDKP_DB.MaxBidBySlot.Hands)
+      optionsTab.DefaultMaxBids.SlotBox[7].tooltipText = L["HANDS"]
+      optionsTab.DefaultMaxBids.SlotBox[7].tooltipDescription = prefix .. " " .. L["FORHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[8].Header:SetText(L["BELT"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[8]:SetText(MonDKP_DB.MaxBidBySlot.Belt)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[8].tooltipText = L["BELT"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[8].tooltipDescription = prefix .. " " .. L["FORWAISTSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[8].Header:SetText(L["BELT"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[8]:SetText(MonDKP_DB.MaxBidBySlot.Belt)
+      optionsTab.DefaultMaxBids.SlotBox[8].tooltipText = L["BELT"]
+      optionsTab.DefaultMaxBids.SlotBox[8].tooltipDescription = prefix .. " " .. L["FORWAISTSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9].Header:SetText(L["LEGS"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9]:SetText(MonDKP_DB.MaxBidBySlot.Legs)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9].tooltipText = L["LEGS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[9].tooltipDescription = prefix .. " " .. L["FORLEGSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[9].Header:SetText(L["LEGS"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[9]:SetText(MonDKP_DB.MaxBidBySlot.Legs)
+      optionsTab.DefaultMaxBids.SlotBox[9].tooltipText = L["LEGS"]
+      optionsTab.DefaultMaxBids.SlotBox[9].tooltipDescription = prefix .. " " .. L["FORLEGSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[10].Header:SetText(L["BOOTS"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[10]:SetText(MonDKP_DB.MaxBidBySlot.Boots)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[10].tooltipText = L["BOOTS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[10].tooltipDescription = prefix .. " " .. L["FORFEETSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[10].Header:SetText(L["BOOTS"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[10]:SetText(MonDKP_DB.MaxBidBySlot.Boots)
+      optionsTab.DefaultMaxBids.SlotBox[10].tooltipText = L["BOOTS"]
+      optionsTab.DefaultMaxBids.SlotBox[10].tooltipDescription = prefix .. " " .. L["FORFEETSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[11].Header:SetText(L["RINGS"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[11]:SetText(MonDKP_DB.MaxBidBySlot.Ring)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[11].tooltipText = L["RINGS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[11].tooltipDescription = prefix .. " " .. L["FORFINGERSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[11].Header:SetText(L["RINGS"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[11]:SetText(MonDKP_DB.MaxBidBySlot.Ring)
+      optionsTab.DefaultMaxBids.SlotBox[11].tooltipText = L["RINGS"]
+      optionsTab.DefaultMaxBids.SlotBox[11].tooltipDescription = prefix .. " " .. L["FORFINGERSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[12].Header:SetText(L["TRINKET"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[12]:SetText(MonDKP_DB.MaxBidBySlot.Trinket)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[12].tooltipText = L["TRINKET"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[12].tooltipDescription = prefix .. " " .. L["FORTRINKETSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[12].Header:SetText(L["TRINKET"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[12]:SetText(MonDKP_DB.MaxBidBySlot.Trinket)
+      optionsTab.DefaultMaxBids.SlotBox[12].tooltipText = L["TRINKET"]
+      optionsTab.DefaultMaxBids.SlotBox[12].tooltipDescription = prefix .. " " .. L["FORTRINKETSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[13].Header:SetText(L["ONEHANDED"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[13]:SetText(MonDKP_DB.MaxBidBySlot.OneHanded)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[13].tooltipText = L["ONEHANDEDWEAPONS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[13].tooltipDescription = prefix .. " " .. L["FORONEHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[13].Header:SetText(L["ONEHANDED"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[13]:SetText(MonDKP_DB.MaxBidBySlot.OneHanded)
+      optionsTab.DefaultMaxBids.SlotBox[13].tooltipText = L["ONEHANDEDWEAPONS"]
+      optionsTab.DefaultMaxBids.SlotBox[13].tooltipDescription = prefix .. " " .. L["FORONEHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14].Header:SetText(L["TWOHANDED"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14]:SetText(MonDKP_DB.MaxBidBySlot.TwoHanded)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14].tooltipText = L["TWOHANDEDWEAPONS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[14].tooltipDescription = prefix .. " " .. L["FORTWOHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[14].Header:SetText(L["TWOHANDED"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[14]:SetText(MonDKP_DB.MaxBidBySlot.TwoHanded)
+      optionsTab.DefaultMaxBids.SlotBox[14].tooltipText = L["TWOHANDEDWEAPONS"]
+      optionsTab.DefaultMaxBids.SlotBox[14].tooltipDescription = prefix .. " " .. L["FORTWOHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[15].Header:SetText(L["OFFHAND"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[15]:SetText(MonDKP_DB.MaxBidBySlot.OffHand)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[15].tooltipText = L["OFFHANDITEMS"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[15].tooltipDescription = prefix .. " " .. L["FOROFFHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[15].Header:SetText(L["OFFHAND"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[15]:SetText(MonDKP_DB.MaxBidBySlot.OffHand)
+      optionsTab.DefaultMaxBids.SlotBox[15].tooltipText = L["OFFHANDITEMS"]
+      optionsTab.DefaultMaxBids.SlotBox[15].tooltipDescription = prefix .. " " .. L["FOROFFHANDSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[16].Header:SetText(L["RANGE"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[16]:SetText(MonDKP_DB.MaxBidBySlot.Range)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[16].tooltipText = L["RANGE"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[16].tooltipDescription = prefix .. " " .. L["FORRANGESLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[16].Header:SetText(L["RANGE"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[16]:SetText(MonDKP_DB.MaxBidBySlot.Range)
+      optionsTab.DefaultMaxBids.SlotBox[16].tooltipText = L["RANGE"]
+      optionsTab.DefaultMaxBids.SlotBox[16].tooltipDescription = prefix .. " " .. L["FORRANGESLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17].Header:SetText(L["OTHER"] .. ": ")
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17]:SetText(MonDKP_DB.MaxBidBySlot.Other)
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17].tooltipText = L["OTHER"]
-      MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17].tooltipDescription = prefix .. " " .. L["FOROTHERSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
+      optionsTab.DefaultMaxBids.SlotBox[17].Header:SetText(L["OTHER"] .. ": ")
+      optionsTab.DefaultMaxBids.SlotBox[17]:SetText(MonDKP_DB.MaxBidBySlot.Other)
+      optionsTab.DefaultMaxBids.SlotBox[17].tooltipText = L["OTHER"]
+      optionsTab.DefaultMaxBids.SlotBox[17].tooltipDescription = prefix .. " " .. L["FOROTHERSLOT"] .. " " .. L["MAXIMUMBIDTTDESC"]
 
       if MonDKP_DB.modes.costvalue == "Percent" then
-        for i = 1, #MonDKP.ConfigTab4.DefaultMaxBids.SlotBox do
+        for i = 1, #optionsTab.DefaultMaxBids.SlotBox do
           DrawPercFrame(i)
-          MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[i]:SetTextInsets(0, 15, 0, 0)
+          optionsTab.DefaultMaxBids.SlotBox[i]:SetTextInsets(0, 15, 0, 0)
         end
       end
 
       -- Broadcast Maximum Bids Button
-      MonDKP.ConfigTab4.BroadcastMaxBids = self:CreateButton("TOP", MonDKP.ConfigTab4, "BOTTOM", 30, 30, L["BCASTVALUES"]);
-      MonDKP.ConfigTab4.BroadcastMaxBids:ClearAllPoints();
-      MonDKP.ConfigTab4.BroadcastMaxBids:SetPoint("LEFT", MonDKP.ConfigTab4.DefaultMaxBids.SlotBox[17], "RIGHT", 41, 0)
-      MonDKP.ConfigTab4.BroadcastMaxBids:SetSize(110, 25)
-      MonDKP.ConfigTab4.BroadcastMaxBids:SetScript("OnClick", function()
+      optionsTab.BroadcastMaxBids = self:CreateButton("TOP", optionsTab, "BOTTOM", 30, 30, L["BCASTVALUES"]);
+      optionsTab.BroadcastMaxBids:ClearAllPoints();
+      optionsTab.BroadcastMaxBids:SetPoint("LEFT", optionsTab.DefaultMaxBids.SlotBox[17], "RIGHT", 41, 0)
+      optionsTab.BroadcastMaxBids:SetSize(110, 25)
+      optionsTab.BroadcastMaxBids:SetScript("OnClick", function()
         StaticPopupDialogs["SEND_MAXBIDS"] = {
           text = L["BCASTMAXBIDCONFIRM"],
           button1 = L["YES"],
@@ -753,46 +756,46 @@ function MonDKP:Options()
         }
         StaticPopup_Show("SEND_MAXBIDS")
       end);
-      MonDKP.ConfigTab4.BroadcastMaxBids:SetScript("OnEnter", function(self)
+      optionsTab.BroadcastMaxBids:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(L["BCASTVALUES"], 0.25, 0.75, 0.90, 1, true)
         GameTooltip:AddLine(L["BCASTVALUESTTDESC"], 1.0, 1.0, 1.0, true);
         GameTooltip:AddLine(L["BCASTVALUESTTWARN"], 1.0, 0, 0, true);
         GameTooltip:Show()
       end)
-      MonDKP.ConfigTab4.BroadcastMaxBids:SetScript("OnLeave", function()
+      optionsTab.BroadcastMaxBids:SetScript("OnLeave", function()
         GameTooltip:Hide()
       end)
     end
     -- Bid Timer Slider
-    MonDKP.ConfigTab4.bidTimerSlider = CreateFrame("SLIDER", "$parentBidTimerSlider", MonDKP.ConfigTab4, "MonDKPOptionsSliderTemplate");
+    optionsTab.bidTimerSlider = CreateFrame("SLIDER", "$parentBidTimerSlider", optionsTab, "MonDKPOptionsSliderTemplate");
     if MonDKP_DB.modes.mode == "Minimum Bid Values" or (MonDKP_DB.modes.mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-      MonDKP.ConfigTab4.bidTimerSlider:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMaxBids, "BOTTOMLEFT", 54, -40);
+      optionsTab.bidTimerSlider:SetPoint("TOPLEFT", optionsTab.DefaultMaxBids, "BOTTOMLEFT", 54, -40);
     else
-      MonDKP.ConfigTab4.bidTimerSlider:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DefaultMinBids, "BOTTOMLEFT", 54, -40);
+      optionsTab.bidTimerSlider:SetPoint("TOPLEFT", optionsTab.DefaultMinBids, "BOTTOMLEFT", 54, -40);
     end
-    MonDKP.ConfigTab4.bidTimerSlider:SetMinMaxValues(10, 90);
-    MonDKP.ConfigTab4.bidTimerSlider:SetValue(MonDKP_DB.DKPBonus.BidTimer);
-    MonDKP.ConfigTab4.bidTimerSlider:SetValueStep(1);
-    MonDKP.ConfigTab4.bidTimerSlider.tooltipText = L["BIDTIMER"]
-    MonDKP.ConfigTab4.bidTimerSlider.tooltipRequirement = L["BIDTIMERDEFAULTTTDESC"]
-    MonDKP.ConfigTab4.bidTimerSlider:SetObeyStepOnDrag(true);
-    getglobal(MonDKP.ConfigTab4.bidTimerSlider:GetName() .. "Low"):SetText("10")
-    getglobal(MonDKP.ConfigTab4.bidTimerSlider:GetName() .. "High"):SetText("90")
-    MonDKP.ConfigTab4.bidTimerSlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
-      MonDKP.ConfigTab4.bidTimer:SetText(MonDKP.ConfigTab4.bidTimerSlider:GetValue())
+    optionsTab.bidTimerSlider:SetMinMaxValues(10, 90);
+    optionsTab.bidTimerSlider:SetValue(MonDKP_DB.DKPBonus.BidTimer);
+    optionsTab.bidTimerSlider:SetValueStep(1);
+    optionsTab.bidTimerSlider.tooltipText = L["BIDTIMER"]
+    optionsTab.bidTimerSlider.tooltipRequirement = L["BIDTIMERDEFAULTTTDESC"]
+    optionsTab.bidTimerSlider:SetObeyStepOnDrag(true);
+    getglobal(optionsTab.bidTimerSlider:GetName() .. "Low"):SetText("10")
+    getglobal(optionsTab.bidTimerSlider:GetName() .. "High"):SetText("90")
+    optionsTab.bidTimerSlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
+      optionsTab.bidTimer:SetText(optionsTab.bidTimerSlider:GetValue())
     end)
 
-    MonDKP.ConfigTab4.bidTimerHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-    MonDKP.ConfigTab4.bidTimerHeader:SetFontObject("MonDKPTinyCenter");
-    MonDKP.ConfigTab4.bidTimerHeader:SetPoint("BOTTOM", MonDKP.ConfigTab4.bidTimerSlider, "TOP", 0, 3);
-    MonDKP.ConfigTab4.bidTimerHeader:SetText(L["BIDTIMER"])
+    optionsTab.bidTimerHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+    optionsTab.bidTimerHeader:SetFontObject("MonDKPTinyCenter");
+    optionsTab.bidTimerHeader:SetPoint("BOTTOM", optionsTab.bidTimerSlider, "TOP", 0, 3);
+    optionsTab.bidTimerHeader:SetText(L["BIDTIMER"])
 
-    MonDKP.ConfigTab4.bidTimer = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-    MonDKP.ConfigTab4.bidTimer:SetAutoFocus(false)
-    MonDKP.ConfigTab4.bidTimer:SetMultiLine(false)
-    MonDKP.ConfigTab4.bidTimer:SetSize(50, 18)
-    MonDKP.ConfigTab4.bidTimer:SetBackdrop({
+    optionsTab.bidTimer = CreateFrame("EditBox", nil, optionsTab)
+    optionsTab.bidTimer:SetAutoFocus(false)
+    optionsTab.bidTimer:SetMultiLine(false)
+    optionsTab.bidTimer:SetSize(50, 18)
+    optionsTab.bidTimer:SetBackdrop({
       bgFile = "Textures\\white.blp",
       tile = true,
       edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -800,54 +803,54 @@ function MonDKP:Options()
       tileSize = 32,
       edgeSize = 2,
     });
-    MonDKP.ConfigTab4.bidTimer:SetBackdropColor(0, 0, 0, 0.9)
-    MonDKP.ConfigTab4.bidTimer:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-    MonDKP.ConfigTab4.bidTimer:SetMaxLetters(4)
-    MonDKP.ConfigTab4.bidTimer:SetTextColor(1, 1, 1, 1)
-    MonDKP.ConfigTab4.bidTimer:SetFontObject("MonDKPTinyCenter")
-    MonDKP.ConfigTab4.bidTimer:SetTextInsets(10, 10, 5, 5)
-    MonDKP.ConfigTab4.bidTimer:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+    optionsTab.bidTimer:SetBackdropColor(0, 0, 0, 0.9)
+    optionsTab.bidTimer:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+    optionsTab.bidTimer:SetMaxLetters(4)
+    optionsTab.bidTimer:SetTextColor(1, 1, 1, 1)
+    optionsTab.bidTimer:SetFontObject("MonDKPTinyCenter")
+    optionsTab.bidTimer:SetTextInsets(10, 10, 5, 5)
+    optionsTab.bidTimer:SetScript("OnEscapePressed", function(self) -- clears focus on esc
       self:ClearFocus()
     end)
-    MonDKP.ConfigTab4.bidTimer:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+    optionsTab.bidTimer:SetScript("OnEnterPressed", function(self) -- clears focus on esc
       self:ClearFocus()
     end)
-    MonDKP.ConfigTab4.bidTimer:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
-      MonDKP.ConfigTab4.bidTimerSlider:SetValue(MonDKP.ConfigTab4.bidTimer:GetNumber());
+    optionsTab.bidTimer:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
+      optionsTab.bidTimerSlider:SetValue(optionsTab.bidTimer:GetNumber());
     end)
-    MonDKP.ConfigTab4.bidTimer:SetPoint("TOP", MonDKP.ConfigTab4.bidTimerSlider, "BOTTOM", 0, -3)
-    MonDKP.ConfigTab4.bidTimer:SetText(MonDKP.ConfigTab4.bidTimerSlider:GetValue())
+    optionsTab.bidTimer:SetPoint("TOP", optionsTab.bidTimerSlider, "BOTTOM", 0, -3)
+    optionsTab.bidTimer:SetText(optionsTab.bidTimerSlider:GetValue())
   end
 
   -- Tooltip History Slider
-  MonDKP.ConfigTab4.TooltipHistorySlider = CreateFrame("SLIDER", "$parentTooltipHistorySlider", MonDKP.ConfigTab4, "MonDKPOptionsSliderTemplate");
-  if MonDKP.ConfigTab4.bidTimer then
-    MonDKP.ConfigTab4.TooltipHistorySlider:SetPoint("LEFT", MonDKP.ConfigTab4.bidTimerSlider, "RIGHT", 30, 0);
+  optionsTab.TooltipHistorySlider = CreateFrame("SLIDER", "$parentTooltipHistorySlider", optionsTab, "MonDKPOptionsSliderTemplate");
+  if optionsTab.bidTimer then
+    optionsTab.TooltipHistorySlider:SetPoint("LEFT", optionsTab.bidTimerSlider, "RIGHT", 30, 0);
   else
-    MonDKP.ConfigTab4.TooltipHistorySlider:SetPoint("TOP", MonDKP.ConfigTab4, "TOP", 1, -107);
+    optionsTab.TooltipHistorySlider:SetPoint("TOP", optionsTab, "TOP", 1, -107);
   end
-  MonDKP.ConfigTab4.TooltipHistorySlider:SetMinMaxValues(5, 35);
-  MonDKP.ConfigTab4.TooltipHistorySlider:SetValue(MonDKP_DB.defaults.TooltipHistoryCount);
-  MonDKP.ConfigTab4.TooltipHistorySlider:SetValueStep(1);
-  MonDKP.ConfigTab4.TooltipHistorySlider.tooltipText = L["TTHISTORYCOUNT"]
-  MonDKP.ConfigTab4.TooltipHistorySlider.tooltipRequirement = L["TTHISTORYCOUNTTTDESC"]
-  MonDKP.ConfigTab4.TooltipHistorySlider:SetObeyStepOnDrag(true);
-  getglobal(MonDKP.ConfigTab4.TooltipHistorySlider:GetName() .. "Low"):SetText("5")
-  getglobal(MonDKP.ConfigTab4.TooltipHistorySlider:GetName() .. "High"):SetText("35")
-  MonDKP.ConfigTab4.TooltipHistorySlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.TooltipHistory:SetText(MonDKP.ConfigTab4.TooltipHistorySlider:GetValue())
+  optionsTab.TooltipHistorySlider:SetMinMaxValues(5, 35);
+  optionsTab.TooltipHistorySlider:SetValue(MonDKP_DB.defaults.TooltipHistoryCount);
+  optionsTab.TooltipHistorySlider:SetValueStep(1);
+  optionsTab.TooltipHistorySlider.tooltipText = L["TTHISTORYCOUNT"]
+  optionsTab.TooltipHistorySlider.tooltipRequirement = L["TTHISTORYCOUNTTTDESC"]
+  optionsTab.TooltipHistorySlider:SetObeyStepOnDrag(true);
+  getglobal(optionsTab.TooltipHistorySlider:GetName() .. "Low"):SetText("5")
+  getglobal(optionsTab.TooltipHistorySlider:GetName() .. "High"):SetText("35")
+  optionsTab.TooltipHistorySlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
+    optionsTab.TooltipHistory:SetText(optionsTab.TooltipHistorySlider:GetValue())
   end)
 
-  MonDKP.ConfigTab4.TooltipHistoryHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.TooltipHistoryHeader:SetFontObject("MonDKPTinyCenter");
-  MonDKP.ConfigTab4.TooltipHistoryHeader:SetPoint("BOTTOM", MonDKP.ConfigTab4.TooltipHistorySlider, "TOP", 0, 3);
-  MonDKP.ConfigTab4.TooltipHistoryHeader:SetText(L["TTHISTORYCOUNT"])
+  optionsTab.TooltipHistoryHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+  optionsTab.TooltipHistoryHeader:SetFontObject("MonDKPTinyCenter");
+  optionsTab.TooltipHistoryHeader:SetPoint("BOTTOM", optionsTab.TooltipHistorySlider, "TOP", 0, 3);
+  optionsTab.TooltipHistoryHeader:SetText(L["TTHISTORYCOUNT"])
 
-  MonDKP.ConfigTab4.TooltipHistory = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-  MonDKP.ConfigTab4.TooltipHistory:SetAutoFocus(false)
-  MonDKP.ConfigTab4.TooltipHistory:SetMultiLine(false)
-  MonDKP.ConfigTab4.TooltipHistory:SetSize(50, 18)
-  MonDKP.ConfigTab4.TooltipHistory:SetBackdrop({
+  optionsTab.TooltipHistory = CreateFrame("EditBox", nil, optionsTab)
+  optionsTab.TooltipHistory:SetAutoFocus(false)
+  optionsTab.TooltipHistory:SetMultiLine(false)
+  optionsTab.TooltipHistory:SetSize(50, 18)
+  optionsTab.TooltipHistory:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -855,55 +858,55 @@ function MonDKP:Options()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab4.TooltipHistory:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab4.TooltipHistory:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-  MonDKP.ConfigTab4.TooltipHistory:SetMaxLetters(4)
-  MonDKP.ConfigTab4.TooltipHistory:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab4.TooltipHistory:SetFontObject("MonDKPTinyCenter")
-  MonDKP.ConfigTab4.TooltipHistory:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab4.TooltipHistory:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  optionsTab.TooltipHistory:SetBackdropColor(0, 0, 0, 0.9)
+  optionsTab.TooltipHistory:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+  optionsTab.TooltipHistory:SetMaxLetters(4)
+  optionsTab.TooltipHistory:SetTextColor(1, 1, 1, 1)
+  optionsTab.TooltipHistory:SetFontObject("MonDKPTinyCenter")
+  optionsTab.TooltipHistory:SetTextInsets(10, 10, 5, 5)
+  optionsTab.TooltipHistory:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.TooltipHistory:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  optionsTab.TooltipHistory:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.TooltipHistory:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.TooltipHistorySlider:SetValue(MonDKP.ConfigTab4.TooltipHistory:GetNumber());
+  optionsTab.TooltipHistory:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
+    optionsTab.TooltipHistorySlider:SetValue(optionsTab.TooltipHistory:GetNumber());
   end)
-  MonDKP.ConfigTab4.TooltipHistory:SetPoint("TOP", MonDKP.ConfigTab4.TooltipHistorySlider, "BOTTOM", 0, -3)
-  MonDKP.ConfigTab4.TooltipHistory:SetText(MonDKP.ConfigTab4.TooltipHistorySlider:GetValue())
+  optionsTab.TooltipHistory:SetPoint("TOP", optionsTab.TooltipHistorySlider, "BOTTOM", 0, -3)
+  optionsTab.TooltipHistory:SetText(optionsTab.TooltipHistorySlider:GetValue())
 
 
   -- Loot History Limit Slider
-  MonDKP.ConfigTab4.historySlider = CreateFrame("SLIDER", "$parentHistorySlider", MonDKP.ConfigTab4, "MonDKPOptionsSliderTemplate");
-  if MonDKP.ConfigTab4.bidTimer then
-    MonDKP.ConfigTab4.historySlider:SetPoint("TOPLEFT", MonDKP.ConfigTab4.bidTimerSlider, "BOTTOMLEFT", 0, -50);
+  optionsTab.historySlider = CreateFrame("SLIDER", "$parentHistorySlider", optionsTab, "MonDKPOptionsSliderTemplate");
+  if optionsTab.bidTimer then
+    optionsTab.historySlider:SetPoint("TOPLEFT", optionsTab.bidTimerSlider, "BOTTOMLEFT", 0, -50);
   else
-    MonDKP.ConfigTab4.historySlider:SetPoint("TOPRIGHT", MonDKP.ConfigTab4.TooltipHistorySlider, "BOTTOMLEFT", 56, -49);
+    optionsTab.historySlider:SetPoint("TOPRIGHT", optionsTab.TooltipHistorySlider, "BOTTOMLEFT", 56, -49);
   end
-  MonDKP.ConfigTab4.historySlider:SetMinMaxValues(500, 2500);
-  MonDKP.ConfigTab4.historySlider:SetValue(MonDKP_DB.defaults.HistoryLimit);
-  MonDKP.ConfigTab4.historySlider:SetValueStep(25);
-  MonDKP.ConfigTab4.historySlider.tooltipText = L["LOOTHISTORYLIMIT"]
-  MonDKP.ConfigTab4.historySlider.tooltipRequirement = L["LOOTHISTLIMITTTDESC"]
-  MonDKP.ConfigTab4.historySlider.tooltipWarning = L["LOOTHISTLIMITTTWARN"]
-  MonDKP.ConfigTab4.historySlider:SetObeyStepOnDrag(true);
-  getglobal(MonDKP.ConfigTab4.historySlider:GetName() .. "Low"):SetText("500")
-  getglobal(MonDKP.ConfigTab4.historySlider:GetName() .. "High"):SetText("2500")
-  MonDKP.ConfigTab4.historySlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.history:SetText(MonDKP.ConfigTab4.historySlider:GetValue())
+  optionsTab.historySlider:SetMinMaxValues(500, 2500);
+  optionsTab.historySlider:SetValue(MonDKP_DB.defaults.HistoryLimit);
+  optionsTab.historySlider:SetValueStep(25);
+  optionsTab.historySlider.tooltipText = L["LOOTHISTORYLIMIT"]
+  optionsTab.historySlider.tooltipRequirement = L["LOOTHISTLIMITTTDESC"]
+  optionsTab.historySlider.tooltipWarning = L["LOOTHISTLIMITTTWARN"]
+  optionsTab.historySlider:SetObeyStepOnDrag(true);
+  getglobal(optionsTab.historySlider:GetName() .. "Low"):SetText("500")
+  getglobal(optionsTab.historySlider:GetName() .. "High"):SetText("2500")
+  optionsTab.historySlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
+    optionsTab.history:SetText(optionsTab.historySlider:GetValue())
   end)
 
-  MonDKP.ConfigTab4.HistoryHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.HistoryHeader:SetFontObject("MonDKPTinyCenter");
-  MonDKP.ConfigTab4.HistoryHeader:SetPoint("BOTTOM", MonDKP.ConfigTab4.historySlider, "TOP", 0, 3);
-  MonDKP.ConfigTab4.HistoryHeader:SetText(L["LOOTHISTORYLIMIT"])
+  optionsTab.HistoryHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+  optionsTab.HistoryHeader:SetFontObject("MonDKPTinyCenter");
+  optionsTab.HistoryHeader:SetPoint("BOTTOM", optionsTab.historySlider, "TOP", 0, 3);
+  optionsTab.HistoryHeader:SetText(L["LOOTHISTORYLIMIT"])
 
-  MonDKP.ConfigTab4.history = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-  MonDKP.ConfigTab4.history:SetAutoFocus(false)
-  MonDKP.ConfigTab4.history:SetMultiLine(false)
-  MonDKP.ConfigTab4.history:SetSize(50, 18)
-  MonDKP.ConfigTab4.history:SetBackdrop({
+  optionsTab.history = CreateFrame("EditBox", nil, optionsTab)
+  optionsTab.history:SetAutoFocus(false)
+  optionsTab.history:SetMultiLine(false)
+  optionsTab.history:SetSize(50, 18)
+  optionsTab.history:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -911,50 +914,50 @@ function MonDKP:Options()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab4.history:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab4.history:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-  MonDKP.ConfigTab4.history:SetMaxLetters(4)
-  MonDKP.ConfigTab4.history:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab4.history:SetFontObject("MonDKPTinyCenter")
-  MonDKP.ConfigTab4.history:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab4.history:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  optionsTab.history:SetBackdropColor(0, 0, 0, 0.9)
+  optionsTab.history:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+  optionsTab.history:SetMaxLetters(4)
+  optionsTab.history:SetTextColor(1, 1, 1, 1)
+  optionsTab.history:SetFontObject("MonDKPTinyCenter")
+  optionsTab.history:SetTextInsets(10, 10, 5, 5)
+  optionsTab.history:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.history:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  optionsTab.history:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.history:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.historySlider:SetValue(MonDKP.ConfigTab4.history:GetNumber());
+  optionsTab.history:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
+    optionsTab.historySlider:SetValue(optionsTab.history:GetNumber());
   end)
-  MonDKP.ConfigTab4.history:SetPoint("TOP", MonDKP.ConfigTab4.historySlider, "BOTTOM", 0, -3)
-  MonDKP.ConfigTab4.history:SetText(MonDKP.ConfigTab4.historySlider:GetValue())
+  optionsTab.history:SetPoint("TOP", optionsTab.historySlider, "BOTTOM", 0, -3)
+  optionsTab.history:SetText(optionsTab.historySlider:GetValue())
 
   -- DKP History Limit Slider
-  MonDKP.ConfigTab4.DKPHistorySlider = CreateFrame("SLIDER", "$parentDKPHistorySlider", MonDKP.ConfigTab4, "MonDKPOptionsSliderTemplate");
-  MonDKP.ConfigTab4.DKPHistorySlider:SetPoint("LEFT", MonDKP.ConfigTab4.historySlider, "RIGHT", 30, 0);
-  MonDKP.ConfigTab4.DKPHistorySlider:SetMinMaxValues(500, 2500);
-  MonDKP.ConfigTab4.DKPHistorySlider:SetValue(MonDKP_DB.defaults.DKPHistoryLimit);
-  MonDKP.ConfigTab4.DKPHistorySlider:SetValueStep(25);
-  MonDKP.ConfigTab4.DKPHistorySlider.tooltipText = L["DKPHISTORYLIMIT"]
-  MonDKP.ConfigTab4.DKPHistorySlider.tooltipRequirement = L["DKPHISTLIMITTTDESC"]
-  MonDKP.ConfigTab4.DKPHistorySlider.tooltipWarning = L["DKPHISTLIMITTTWARN"]
-  MonDKP.ConfigTab4.DKPHistorySlider:SetObeyStepOnDrag(true);
-  getglobal(MonDKP.ConfigTab4.DKPHistorySlider:GetName() .. "Low"):SetText("500")
-  getglobal(MonDKP.ConfigTab4.DKPHistorySlider:GetName() .. "High"):SetText("2500")
-  MonDKP.ConfigTab4.DKPHistorySlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.DKPHistory:SetText(MonDKP.ConfigTab4.DKPHistorySlider:GetValue())
+  optionsTab.DKPHistorySlider = CreateFrame("SLIDER", "$parentDKPHistorySlider", optionsTab, "MonDKPOptionsSliderTemplate");
+  optionsTab.DKPHistorySlider:SetPoint("LEFT", optionsTab.historySlider, "RIGHT", 30, 0);
+  optionsTab.DKPHistorySlider:SetMinMaxValues(500, 2500);
+  optionsTab.DKPHistorySlider:SetValue(MonDKP_DB.defaults.DKPHistoryLimit);
+  optionsTab.DKPHistorySlider:SetValueStep(25);
+  optionsTab.DKPHistorySlider.tooltipText = L["DKPHISTORYLIMIT"]
+  optionsTab.DKPHistorySlider.tooltipRequirement = L["DKPHISTLIMITTTDESC"]
+  optionsTab.DKPHistorySlider.tooltipWarning = L["DKPHISTLIMITTTWARN"]
+  optionsTab.DKPHistorySlider:SetObeyStepOnDrag(true);
+  getglobal(optionsTab.DKPHistorySlider:GetName() .. "Low"):SetText("500")
+  getglobal(optionsTab.DKPHistorySlider:GetName() .. "High"):SetText("2500")
+  optionsTab.DKPHistorySlider:SetScript("OnValueChanged", function(self) -- clears focus on esc
+    optionsTab.DKPHistory:SetText(optionsTab.DKPHistorySlider:GetValue())
   end)
 
-  MonDKP.ConfigTab4.DKPHistoryHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetFontObject("MonDKPTinyCenter");
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetPoint("BOTTOM", MonDKP.ConfigTab4.DKPHistorySlider, "TOP", 0, 3);
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetText(L["DKPHISTORYLIMIT"])
+  optionsTab.DKPHistoryHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+  optionsTab.DKPHistoryHeader:SetFontObject("MonDKPTinyCenter");
+  optionsTab.DKPHistoryHeader:SetPoint("BOTTOM", optionsTab.DKPHistorySlider, "TOP", 0, 3);
+  optionsTab.DKPHistoryHeader:SetText(L["DKPHISTORYLIMIT"])
 
-  MonDKP.ConfigTab4.DKPHistory = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-  MonDKP.ConfigTab4.DKPHistory:SetAutoFocus(false)
-  MonDKP.ConfigTab4.DKPHistory:SetMultiLine(false)
-  MonDKP.ConfigTab4.DKPHistory:SetSize(50, 18)
-  MonDKP.ConfigTab4.DKPHistory:SetBackdrop({
+  optionsTab.DKPHistory = CreateFrame("EditBox", nil, optionsTab)
+  optionsTab.DKPHistory:SetAutoFocus(false)
+  optionsTab.DKPHistory:SetMultiLine(false)
+  optionsTab.DKPHistory:SetSize(50, 18)
+  optionsTab.DKPHistory:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -962,52 +965,52 @@ function MonDKP:Options()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab4.DKPHistory:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab4.DKPHistory:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-  MonDKP.ConfigTab4.DKPHistory:SetMaxLetters(4)
-  MonDKP.ConfigTab4.DKPHistory:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab4.DKPHistory:SetFontObject("MonDKPTinyCenter")
-  MonDKP.ConfigTab4.DKPHistory:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab4.DKPHistory:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  optionsTab.DKPHistory:SetBackdropColor(0, 0, 0, 0.9)
+  optionsTab.DKPHistory:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+  optionsTab.DKPHistory:SetMaxLetters(4)
+  optionsTab.DKPHistory:SetTextColor(1, 1, 1, 1)
+  optionsTab.DKPHistory:SetFontObject("MonDKPTinyCenter")
+  optionsTab.DKPHistory:SetTextInsets(10, 10, 5, 5)
+  optionsTab.DKPHistory:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.DKPHistory:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  optionsTab.DKPHistory:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.DKPHistory:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.DKPHistorySlider:SetValue(MonDKP.ConfigTab4.history:GetNumber());
+  optionsTab.DKPHistory:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
+    optionsTab.DKPHistorySlider:SetValue(optionsTab.history:GetNumber());
   end)
-  MonDKP.ConfigTab4.DKPHistory:SetPoint("TOP", MonDKP.ConfigTab4.DKPHistorySlider, "BOTTOM", 0, -3)
-  MonDKP.ConfigTab4.DKPHistory:SetText(MonDKP.ConfigTab4.DKPHistorySlider:GetValue())
+  optionsTab.DKPHistory:SetPoint("TOP", optionsTab.DKPHistorySlider, "BOTTOM", 0, -3)
+  optionsTab.DKPHistory:SetText(optionsTab.DKPHistorySlider:GetValue())
 
   -- Bid Timer Size Slider
-  MonDKP.ConfigTab4.TimerSizeSlider = CreateFrame("SLIDER", "$parentBidTimerSizeSlider", MonDKP.ConfigTab4, "MonDKPOptionsSliderTemplate");
-  MonDKP.ConfigTab4.TimerSizeSlider:SetPoint("TOPLEFT", MonDKP.ConfigTab4.historySlider, "BOTTOMLEFT", 0, -50);
-  MonDKP.ConfigTab4.TimerSizeSlider:SetMinMaxValues(0.5, 2.0);
-  MonDKP.ConfigTab4.TimerSizeSlider:SetValue(MonDKP_DB.defaults.BidTimerSize);
-  MonDKP.ConfigTab4.TimerSizeSlider:SetValueStep(0.05);
-  MonDKP.ConfigTab4.TimerSizeSlider.tooltipText = L["TIMERSIZE"]
-  MonDKP.ConfigTab4.TimerSizeSlider.tooltipRequirement = L["TIMERSIZETTDESC"]
-  MonDKP.ConfigTab4.TimerSizeSlider.tooltipWarning = L["TIMERSIZETTWARN"]
-  MonDKP.ConfigTab4.TimerSizeSlider:SetObeyStepOnDrag(true);
-  getglobal(MonDKP.ConfigTab4.TimerSizeSlider:GetName() .. "Low"):SetText("50%")
-  getglobal(MonDKP.ConfigTab4.TimerSizeSlider:GetName() .. "High"):SetText("200%")
-  MonDKP.ConfigTab4.TimerSizeSlider:SetScript("OnValueChanged", function(self)
-    MonDKP.ConfigTab4.TimerSize:SetText(MonDKP.ConfigTab4.TimerSizeSlider:GetValue())
-    MonDKP_DB.defaults.BidTimerSize = MonDKP.ConfigTab4.TimerSizeSlider:GetValue();
+  optionsTab.TimerSizeSlider = CreateFrame("SLIDER", "$parentBidTimerSizeSlider", optionsTab, "MonDKPOptionsSliderTemplate");
+  optionsTab.TimerSizeSlider:SetPoint("TOPLEFT", optionsTab.historySlider, "BOTTOMLEFT", 0, -50);
+  optionsTab.TimerSizeSlider:SetMinMaxValues(0.5, 2.0);
+  optionsTab.TimerSizeSlider:SetValue(MonDKP_DB.defaults.BidTimerSize);
+  optionsTab.TimerSizeSlider:SetValueStep(0.05);
+  optionsTab.TimerSizeSlider.tooltipText = L["TIMERSIZE"]
+  optionsTab.TimerSizeSlider.tooltipRequirement = L["TIMERSIZETTDESC"]
+  optionsTab.TimerSizeSlider.tooltipWarning = L["TIMERSIZETTWARN"]
+  optionsTab.TimerSizeSlider:SetObeyStepOnDrag(true);
+  getglobal(optionsTab.TimerSizeSlider:GetName() .. "Low"):SetText("50%")
+  getglobal(optionsTab.TimerSizeSlider:GetName() .. "High"):SetText("200%")
+  optionsTab.TimerSizeSlider:SetScript("OnValueChanged", function(self)
+    optionsTab.TimerSize:SetText(optionsTab.TimerSizeSlider:GetValue())
+    MonDKP_DB.defaults.BidTimerSize = optionsTab.TimerSizeSlider:GetValue();
     MonDKP.BidTimer:SetScale(MonDKP_DB.defaults.BidTimerSize);
   end)
 
-  MonDKP.ConfigTab4.DKPHistoryHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetFontObject("MonDKPTinyCenter");
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetPoint("BOTTOM", MonDKP.ConfigTab4.TimerSizeSlider, "TOP", 0, 3);
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetText(L["TIMERSIZE"])
+  optionsTab.DKPHistoryHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+  optionsTab.DKPHistoryHeader:SetFontObject("MonDKPTinyCenter");
+  optionsTab.DKPHistoryHeader:SetPoint("BOTTOM", optionsTab.TimerSizeSlider, "TOP", 0, 3);
+  optionsTab.DKPHistoryHeader:SetText(L["TIMERSIZE"])
 
-  MonDKP.ConfigTab4.TimerSize = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-  MonDKP.ConfigTab4.TimerSize:SetAutoFocus(false)
-  MonDKP.ConfigTab4.TimerSize:SetMultiLine(false)
-  MonDKP.ConfigTab4.TimerSize:SetSize(50, 18)
-  MonDKP.ConfigTab4.TimerSize:SetBackdrop({
+  optionsTab.TimerSize = CreateFrame("EditBox", nil, optionsTab)
+  optionsTab.TimerSize:SetAutoFocus(false)
+  optionsTab.TimerSize:SetMultiLine(false)
+  optionsTab.TimerSize:SetSize(50, 18)
+  optionsTab.TimerSize:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -1015,51 +1018,51 @@ function MonDKP:Options()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab4.TimerSize:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab4.TimerSize:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-  MonDKP.ConfigTab4.TimerSize:SetMaxLetters(4)
-  MonDKP.ConfigTab4.TimerSize:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab4.TimerSize:SetFontObject("MonDKPTinyCenter")
-  MonDKP.ConfigTab4.TimerSize:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab4.TimerSize:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  optionsTab.TimerSize:SetBackdropColor(0, 0, 0, 0.9)
+  optionsTab.TimerSize:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+  optionsTab.TimerSize:SetMaxLetters(4)
+  optionsTab.TimerSize:SetTextColor(1, 1, 1, 1)
+  optionsTab.TimerSize:SetFontObject("MonDKPTinyCenter")
+  optionsTab.TimerSize:SetTextInsets(10, 10, 5, 5)
+  optionsTab.TimerSize:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.TimerSize:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  optionsTab.TimerSize:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.TimerSize:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.TimerSizeSlider:SetValue(MonDKP.ConfigTab4.TimerSize:GetNumber());
+  optionsTab.TimerSize:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
+    optionsTab.TimerSizeSlider:SetValue(optionsTab.TimerSize:GetNumber());
   end)
-  MonDKP.ConfigTab4.TimerSize:SetPoint("TOP", MonDKP.ConfigTab4.TimerSizeSlider, "BOTTOM", 0, -3)
-  MonDKP.ConfigTab4.TimerSize:SetText(MonDKP.ConfigTab4.TimerSizeSlider:GetValue())
+  optionsTab.TimerSize:SetPoint("TOP", optionsTab.TimerSizeSlider, "BOTTOM", 0, -3)
+  optionsTab.TimerSize:SetText(optionsTab.TimerSizeSlider:GetValue())
 
   -- UI Scale Size Slider
-  MonDKP.ConfigTab4.MonDKPScaleSize = CreateFrame("SLIDER", "$parentMonDKPScaleSizeSlider", MonDKP.ConfigTab4, "MonDKPOptionsSliderTemplate");
-  MonDKP.ConfigTab4.MonDKPScaleSize:SetPoint("TOPLEFT", MonDKP.ConfigTab4.DKPHistorySlider, "BOTTOMLEFT", 0, -50);
-  MonDKP.ConfigTab4.MonDKPScaleSize:SetMinMaxValues(0.5, 2.0);
-  MonDKP.ConfigTab4.MonDKPScaleSize:SetValue(MonDKP_DB.defaults.MonDKPScaleSize);
-  MonDKP.ConfigTab4.MonDKPScaleSize:SetValueStep(0.05);
-  MonDKP.ConfigTab4.MonDKPScaleSize.tooltipText = L["MONDKPSCALESIZE"]
-  MonDKP.ConfigTab4.MonDKPScaleSize.tooltipRequirement = L["MONDKPSCALESIZETTDESC"]
-  MonDKP.ConfigTab4.MonDKPScaleSize.tooltipWarning = L["MONDKPSCALESIZETTWARN"]
-  MonDKP.ConfigTab4.MonDKPScaleSize:SetObeyStepOnDrag(true);
-  getglobal(MonDKP.ConfigTab4.MonDKPScaleSize:GetName() .. "Low"):SetText("50%")
-  getglobal(MonDKP.ConfigTab4.MonDKPScaleSize:GetName() .. "High"):SetText("200%")
-  MonDKP.ConfigTab4.MonDKPScaleSize:SetScript("OnValueChanged", function(self)
-    MonDKP.ConfigTab4.UIScaleSize:SetText(MonDKP.ConfigTab4.MonDKPScaleSize:GetValue())
-    MonDKP_DB.defaults.MonDKPScaleSize = MonDKP.ConfigTab4.MonDKPScaleSize:GetValue();
+  optionsTab.MonDKPScaleSize = CreateFrame("SLIDER", "$parentMonDKPScaleSizeSlider", optionsTab, "MonDKPOptionsSliderTemplate");
+  optionsTab.MonDKPScaleSize:SetPoint("TOPLEFT", optionsTab.DKPHistorySlider, "BOTTOMLEFT", 0, -50);
+  optionsTab.MonDKPScaleSize:SetMinMaxValues(0.5, 2.0);
+  optionsTab.MonDKPScaleSize:SetValue(MonDKP_DB.defaults.MonDKPScaleSize);
+  optionsTab.MonDKPScaleSize:SetValueStep(0.05);
+  optionsTab.MonDKPScaleSize.tooltipText = L["MONDKPSCALESIZE"]
+  optionsTab.MonDKPScaleSize.tooltipRequirement = L["MONDKPSCALESIZETTDESC"]
+  optionsTab.MonDKPScaleSize.tooltipWarning = L["MONDKPSCALESIZETTWARN"]
+  optionsTab.MonDKPScaleSize:SetObeyStepOnDrag(true);
+  getglobal(optionsTab.MonDKPScaleSize:GetName() .. "Low"):SetText("50%")
+  getglobal(optionsTab.MonDKPScaleSize:GetName() .. "High"):SetText("200%")
+  optionsTab.MonDKPScaleSize:SetScript("OnValueChanged", function(self)
+    optionsTab.UIScaleSize:SetText(optionsTab.MonDKPScaleSize:GetValue())
+    MonDKP_DB.defaults.MonDKPScaleSize = optionsTab.MonDKPScaleSize:GetValue();
   end)
 
-  MonDKP.ConfigTab4.DKPHistoryHeader = MonDKP.ConfigTab4:CreateFontString(nil, "OVERLAY")
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetFontObject("MonDKPTinyCenter");
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetPoint("BOTTOM", MonDKP.ConfigTab4.MonDKPScaleSize, "TOP", 0, 3);
-  MonDKP.ConfigTab4.DKPHistoryHeader:SetText(L["MAINGUISIZE"])
+  optionsTab.DKPHistoryHeader = optionsTab:CreateFontString(nil, "OVERLAY")
+  optionsTab.DKPHistoryHeader:SetFontObject("MonDKPTinyCenter");
+  optionsTab.DKPHistoryHeader:SetPoint("BOTTOM", optionsTab.MonDKPScaleSize, "TOP", 0, 3);
+  optionsTab.DKPHistoryHeader:SetText(L["MAINGUISIZE"])
 
-  MonDKP.ConfigTab4.UIScaleSize = CreateFrame("EditBox", nil, MonDKP.ConfigTab4)
-  MonDKP.ConfigTab4.UIScaleSize:SetAutoFocus(false)
-  MonDKP.ConfigTab4.UIScaleSize:SetMultiLine(false)
-  MonDKP.ConfigTab4.UIScaleSize:SetSize(50, 18)
-  MonDKP.ConfigTab4.UIScaleSize:SetBackdrop({
+  optionsTab.UIScaleSize = CreateFrame("EditBox", nil, optionsTab)
+  optionsTab.UIScaleSize:SetAutoFocus(false)
+  optionsTab.UIScaleSize:SetMultiLine(false)
+  optionsTab.UIScaleSize:SetSize(50, 18)
+  optionsTab.UIScaleSize:SetBackdrop({
     bgFile = "Textures\\white.blp",
     tile = true,
     edgeFile = "Interface\\AddOns\\AxisRaidLoot\\Media\\Textures\\edgefile",
@@ -1067,43 +1070,43 @@ function MonDKP:Options()
     tileSize = 32,
     edgeSize = 2,
   });
-  MonDKP.ConfigTab4.UIScaleSize:SetBackdropColor(0, 0, 0, 0.9)
-  MonDKP.ConfigTab4.UIScaleSize:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
-  MonDKP.ConfigTab4.UIScaleSize:SetMaxLetters(4)
-  MonDKP.ConfigTab4.UIScaleSize:SetTextColor(1, 1, 1, 1)
-  MonDKP.ConfigTab4.UIScaleSize:SetFontObject("MonDKPTinyCenter")
-  MonDKP.ConfigTab4.UIScaleSize:SetTextInsets(10, 10, 5, 5)
-  MonDKP.ConfigTab4.UIScaleSize:SetScript("OnEscapePressed", function(self) -- clears focus on esc
+  optionsTab.UIScaleSize:SetBackdropColor(0, 0, 0, 0.9)
+  optionsTab.UIScaleSize:SetBackdropBorderColor(0.12, 0.12, 0.34, 1)
+  optionsTab.UIScaleSize:SetMaxLetters(4)
+  optionsTab.UIScaleSize:SetTextColor(1, 1, 1, 1)
+  optionsTab.UIScaleSize:SetFontObject("MonDKPTinyCenter")
+  optionsTab.UIScaleSize:SetTextInsets(10, 10, 5, 5)
+  optionsTab.UIScaleSize:SetScript("OnEscapePressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.UIScaleSize:SetScript("OnEnterPressed", function(self) -- clears focus on esc
+  optionsTab.UIScaleSize:SetScript("OnEnterPressed", function(self) -- clears focus on esc
     self:ClearFocus()
   end)
-  MonDKP.ConfigTab4.UIScaleSize:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
-    MonDKP.ConfigTab4.MonDKPScaleSize:SetValue(MonDKP.ConfigTab4.UIScaleSize:GetNumber());
+  optionsTab.UIScaleSize:SetScript("OnEditFocusLost", function(self) -- clears focus on esc
+    optionsTab.MonDKPScaleSize:SetValue(optionsTab.UIScaleSize:GetNumber());
   end)
-  MonDKP.ConfigTab4.UIScaleSize:SetPoint("TOP", MonDKP.ConfigTab4.MonDKPScaleSize, "BOTTOM", 0, -3)
-  MonDKP.ConfigTab4.UIScaleSize:SetText(MonDKP.ConfigTab4.MonDKPScaleSize:GetValue())
+  optionsTab.UIScaleSize:SetPoint("TOP", optionsTab.MonDKPScaleSize, "BOTTOM", 0, -3)
+  optionsTab.UIScaleSize:SetText(optionsTab.MonDKPScaleSize:GetValue())
 
   -- Supress Broadcast Notifications checkbox
-  MonDKP.ConfigTab4.supressNotifications = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
-  MonDKP.ConfigTab4.supressNotifications:SetPoint("TOP", MonDKP.ConfigTab4.TimerSizeSlider, "BOTTOMLEFT", 0, -35)
-  MonDKP.ConfigTab4.supressNotifications:SetChecked(MonDKP_DB.defaults.supressNotifications)
-  MonDKP.ConfigTab4.supressNotifications:SetScale(0.8)
-  MonDKP.ConfigTab4.supressNotifications.text:SetText("|cff5151de" .. L["SUPPRESSNOTIFICATIONS"] .. "|r");
-  MonDKP.ConfigTab4.supressNotifications.text:SetFontObject("MonDKPSmall")
-  MonDKP.ConfigTab4.supressNotifications:SetScript("OnEnter", function(self)
+  optionsTab.supressNotifications = CreateFrame("CheckButton", nil, optionsTab, "UICheckButtonTemplate");
+  optionsTab.supressNotifications:SetPoint("TOP", optionsTab.TimerSizeSlider, "BOTTOMLEFT", 0, -35)
+  optionsTab.supressNotifications:SetChecked(MonDKP_DB.defaults.supressNotifications)
+  optionsTab.supressNotifications:SetScale(0.8)
+  optionsTab.supressNotifications.text:SetText("|cff999999" .. L["SUPPRESSNOTIFICATIONS"] .. "|r");
+  optionsTab.supressNotifications.text:SetFontObject("MonDKPSmall")
+  optionsTab.supressNotifications:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["SUPPRESSNOTIFICATIONS"], 0.25, 0.75, 0.90, 1, true)
     GameTooltip:AddLine(L["SUPPRESSNOTIFYTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["SUPPRESSNOTIFYTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show()
   end)
-  MonDKP.ConfigTab4.supressNotifications:SetScript("OnLeave", function()
+  optionsTab.supressNotifications:SetScript("OnLeave", function()
     GameTooltip:Hide()
   end)
-  MonDKP.ConfigTab4.supressNotifications:SetScript("OnClick", function()
-    if MonDKP.ConfigTab4.supressNotifications:GetChecked() then
+  optionsTab.supressNotifications:SetScript("OnClick", function()
+    if optionsTab.supressNotifications:GetChecked() then
       MonDKP.Print(L["NOTIFICATIONSLIKETHIS"] .. " |cffff0000" .. L["HIDDEN"] .. "|r.")
       MonDKP_DB["defaults"]["supressNotifications"] = true;
     else
@@ -1114,23 +1117,23 @@ function MonDKP:Options()
   end)
 
   -- Combat Logging checkbox
-  MonDKP.ConfigTab4.CombatLogging = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
-  MonDKP.ConfigTab4.CombatLogging:SetPoint("TOP", MonDKP.ConfigTab4.supressNotifications, "BOTTOM", 0, 0)
-  MonDKP.ConfigTab4.CombatLogging:SetChecked(MonDKP_DB.defaults.AutoLog)
-  MonDKP.ConfigTab4.CombatLogging:SetScale(0.8)
-  MonDKP.ConfigTab4.CombatLogging.text:SetText("|cff5151de" .. L["AUTOCOMBATLOG"] .. "|r");
-  MonDKP.ConfigTab4.CombatLogging.text:SetFontObject("MonDKPSmall")
-  MonDKP.ConfigTab4.CombatLogging:SetScript("OnEnter", function(self)
+  optionsTab.CombatLogging = CreateFrame("CheckButton", nil, optionsTab, "UICheckButtonTemplate");
+  optionsTab.CombatLogging:SetPoint("TOP", optionsTab.supressNotifications, "BOTTOM", 0, 0)
+  optionsTab.CombatLogging:SetChecked(MonDKP_DB.defaults.AutoLog)
+  optionsTab.CombatLogging:SetScale(0.8)
+  optionsTab.CombatLogging.text:SetText("|cff999999" .. L["AUTOCOMBATLOG"] .. "|r");
+  optionsTab.CombatLogging.text:SetFontObject("MonDKPSmall")
+  optionsTab.CombatLogging:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["AUTOCOMBATLOG"], 0.25, 0.75, 0.90, 1, true)
     GameTooltip:AddLine(L["AUTOCOMBATLOGTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:AddLine(L["AUTOCOMBATLOGTTWARN"], 1.0, 0, 0, true);
     GameTooltip:Show()
   end)
-  MonDKP.ConfigTab4.CombatLogging:SetScript("OnLeave", function()
+  optionsTab.CombatLogging:SetScript("OnLeave", function()
     GameTooltip:Hide()
   end)
-  MonDKP.ConfigTab4.CombatLogging:SetScript("OnClick", function(self)
+  optionsTab.CombatLogging:SetScript("OnClick", function(self)
     MonDKP_DB.defaults.AutoLog = self:GetChecked()
     PlaySound(808)
   end)
@@ -1139,46 +1142,46 @@ function MonDKP:Options()
     MonDKP_DB.defaults.AutoOpenBid = true
   end
 
-  MonDKP.ConfigTab4.AutoOpenCheckbox = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
-  MonDKP.ConfigTab4.AutoOpenCheckbox:SetChecked(MonDKP_DB.defaults.AutoOpenBid)
-  MonDKP.ConfigTab4.AutoOpenCheckbox:SetScale(0.8);
-  MonDKP.ConfigTab4.AutoOpenCheckbox.text:SetText("|cff5151de" .. L["AUTOOPEN"] .. "|r");
-  MonDKP.ConfigTab4.AutoOpenCheckbox.text:SetScale(1);
-  MonDKP.ConfigTab4.AutoOpenCheckbox.text:SetFontObject("MonDKPSmallLeft")
-  MonDKP.ConfigTab4.AutoOpenCheckbox:SetPoint("TOP", MonDKP.ConfigTab4.CombatLogging, "BOTTOM", 0, 0);
-  MonDKP.ConfigTab4.AutoOpenCheckbox:SetScript("OnClick", function(self)
+  optionsTab.AutoOpenCheckbox = CreateFrame("CheckButton", nil, optionsTab, "UICheckButtonTemplate");
+  optionsTab.AutoOpenCheckbox:SetChecked(MonDKP_DB.defaults.AutoOpenBid)
+  optionsTab.AutoOpenCheckbox:SetScale(0.8);
+  optionsTab.AutoOpenCheckbox.text:SetText("|cff999999" .. L["AUTOOPEN"] .. "|r");
+  optionsTab.AutoOpenCheckbox.text:SetScale(1);
+  optionsTab.AutoOpenCheckbox.text:SetFontObject("MonDKPSmallLeft")
+  optionsTab.AutoOpenCheckbox:SetPoint("TOP", optionsTab.CombatLogging, "BOTTOM", 0, 0);
+  optionsTab.AutoOpenCheckbox:SetScript("OnClick", function(self)
     MonDKP_DB.defaults.AutoOpenBid = self:GetChecked()
   end)
-  MonDKP.ConfigTab4.AutoOpenCheckbox:SetScript("OnEnter", function(self)
+  optionsTab.AutoOpenCheckbox:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT");
     GameTooltip:SetText(L["AUTOOPEN"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["AUTOOPENTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab4.AutoOpenCheckbox:SetScript("OnLeave", function(self)
+  optionsTab.AutoOpenCheckbox:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
   if core.IsOfficer == true then
     -- Supress Broadcast Notifications checkbox
-    MonDKP.ConfigTab4.supressTells = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
-    MonDKP.ConfigTab4.supressTells:SetPoint("LEFT", MonDKP.ConfigTab4.supressNotifications, "RIGHT", 200, 0)
-    MonDKP.ConfigTab4.supressTells:SetChecked(MonDKP_DB.defaults.SupressTells)
-    MonDKP.ConfigTab4.supressTells:SetScale(0.8)
-    MonDKP.ConfigTab4.supressTells.text:SetText("|cff5151de" .. L["SUPPRESSBIDWHISP"] .. "|r");
-    MonDKP.ConfigTab4.supressTells.text:SetFontObject("MonDKPSmall")
-    MonDKP.ConfigTab4.supressTells:SetScript("OnEnter", function(self)
+    optionsTab.supressTells = CreateFrame("CheckButton", nil, optionsTab, "UICheckButtonTemplate");
+    optionsTab.supressTells:SetPoint("LEFT", optionsTab.supressNotifications, "RIGHT", 200, 0)
+    optionsTab.supressTells:SetChecked(MonDKP_DB.defaults.SupressTells)
+    optionsTab.supressTells:SetScale(0.8)
+    optionsTab.supressTells.text:SetText("|cff999999" .. L["SUPPRESSBIDWHISP"] .. "|r");
+    optionsTab.supressTells.text:SetFontObject("MonDKPSmall")
+    optionsTab.supressTells:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
       GameTooltip:SetText(L["SUPPRESSBIDWHISP"], 0.25, 0.75, 0.90, 1, true)
       GameTooltip:AddLine(L["SUPRESSBIDWHISPTTDESC"], 1.0, 1.0, 1.0, true);
       GameTooltip:AddLine(L["SUPRESSBIDWHISPTTWARN"], 1.0, 0, 0, true);
       GameTooltip:Show()
     end)
-    MonDKP.ConfigTab4.supressTells:SetScript("OnLeave", function()
+    optionsTab.supressTells:SetScript("OnLeave", function()
       GameTooltip:Hide()
     end)
-    MonDKP.ConfigTab4.supressTells:SetScript("OnClick", function()
-      if MonDKP.ConfigTab4.supressTells:GetChecked() then
+    optionsTab.supressTells:SetScript("OnClick", function()
+      if optionsTab.supressTells:GetChecked() then
         MonDKP.Print(L["BIDWHISPARENOW"] .. " |cffff0000" .. L["HIDDEN"] .. "|r.")
         MonDKP_DB["defaults"]["SupressTells"] = true;
       else
@@ -1190,16 +1193,16 @@ function MonDKP:Options()
   end
 
   -- Save Settings Button
-  MonDKP.ConfigTab4.submitSettings = self:CreateButton("BOTTOMLEFT", MonDKP.ConfigTab4, "BOTTOMLEFT", 30, 30, L["SAVESETTINGS"]);
-  MonDKP.ConfigTab4.submitSettings:ClearAllPoints();
-  MonDKP.ConfigTab4.submitSettings:SetPoint("TOP", MonDKP.ConfigTab4.AutoOpenCheckbox, "BOTTOMLEFT", 20, -40)
-  MonDKP.ConfigTab4.submitSettings:SetSize(90, 25)
-  MonDKP.ConfigTab4.submitSettings:SetScript("OnClick", function()
+  optionsTab.submitSettings = self:CreateButton("BOTTOMLEFT", optionsTab, "BOTTOMLEFT", 30, 30, L["SAVESETTINGS"]);
+  optionsTab.submitSettings:ClearAllPoints();
+  optionsTab.submitSettings:SetPoint("TOP", optionsTab.AutoOpenCheckbox, "BOTTOMLEFT", 20, -40)
+  optionsTab.submitSettings:SetSize(90, 25)
+  optionsTab.submitSettings:SetScript("OnClick", function()
     if core.IsOfficer == true then
       for i = 1, 6 do
-        if not tonumber(MonDKP.ConfigTab4.default[i]:GetText()) then
+        if not tonumber(optionsTab.default[i]:GetText()) then
           StaticPopupDialogs["OPTIONS_VALIDATION"] = {
-            text = L["INVALIDOPTIONENTRY"] .. " " .. MonDKP.ConfigTab4.default[i].tooltipText .. ". " .. L["PLEASEUSENUMS"],
+            text = L["INVALIDOPTIONENTRY"] .. " " .. optionsTab.default[i].tooltipText .. ". " .. L["PLEASEUSENUMS"],
             button1 = L["OK"],
             timeout = 0,
             whileDead = true,
@@ -1212,9 +1215,9 @@ function MonDKP:Options()
         end
       end
       for i = 1, 17 do
-        if not tonumber(MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i]:GetText()) then
+        if not tonumber(optionsTab.DefaultMinBids.SlotBox[i]:GetText()) then
           StaticPopupDialogs["OPTIONS_VALIDATION"] = {
-            text = L["INVALIDMINBIDENTRY"] .. " " .. MonDKP.ConfigTab4.DefaultMinBids.SlotBox[i].tooltipText .. ". " .. L["PLEASEUSENUMS"],
+            text = L["INVALIDMINBIDENTRY"] .. " " .. optionsTab.DefaultMinBids.SlotBox[i].tooltipText .. ". " .. L["PLEASEUSENUMS"],
             button1 = L["OK"],
             timeout = 0,
             whileDead = true,
@@ -1233,10 +1236,10 @@ function MonDKP:Options()
   end)
 
   -- Chatframe Selection 
-  MonDKP.ConfigTab4.ChatFrame = CreateFrame("FRAME", "MonDKPChatFrameSelectDropDown", MonDKP.ConfigTab4, "MonolithDKPUIDropDownMenuTemplate")
+  optionsTab.ChatFrame = CreateFrame("FRAME", "MonDKPChatFrameSelectDropDown", optionsTab, "MonolithDKPUIDropDownMenuTemplate")
   if not MonDKP_DB.defaults.ChatFrames then MonDKP_DB.defaults.ChatFrames = {} end
 
-  UIDropDownMenu_Initialize(MonDKP.ConfigTab4.ChatFrame, function(self, level, menuList)
+  UIDropDownMenu_Initialize(optionsTab.ChatFrame, function(self, level, menuList)
     local SelectedFrame = UIDropDownMenu_CreateInfo()
     SelectedFrame.func = self.SetValue
     SelectedFrame.fontObject = "MonDKPSmallCenter"
@@ -1252,11 +1255,11 @@ function MonDKP:Options()
     end
   end)
 
-  MonDKP.ConfigTab4.ChatFrame:SetPoint("LEFT", MonDKP.ConfigTab4.CombatLogging, "RIGHT", 130, 0)
-  UIDropDownMenu_SetWidth(MonDKP.ConfigTab4.ChatFrame, 150)
-  UIDropDownMenu_SetText(MonDKP.ConfigTab4.ChatFrame, "Addon Notifications")
+  optionsTab.ChatFrame:SetPoint("LEFT", optionsTab.CombatLogging, "RIGHT", 130, 0)
+  UIDropDownMenu_SetWidth(optionsTab.ChatFrame, 150)
+  UIDropDownMenu_SetText(optionsTab.ChatFrame, "Addon Notifications")
 
-  function MonDKP.ConfigTab4.ChatFrame:SetValue(arg1)
+  function optionsTab.ChatFrame:SetValue(arg1)
     MonDKP_DB.defaults.ChatFrames[arg1] = not MonDKP_DB.defaults.ChatFrames[arg1]
     CloseDropDownMenus()
   end
@@ -1264,38 +1267,38 @@ function MonDKP:Options()
 
 
   -- Position Bid Timer Button
-  MonDKP.ConfigTab4.moveTimer = self:CreateButton("BOTTOMRIGHT", MonDKP.ConfigTab4, "BOTTOMRIGHT", -50, 30, L["MOVEBIDTIMER"]);
-  MonDKP.ConfigTab4.moveTimer:ClearAllPoints();
-  MonDKP.ConfigTab4.moveTimer:SetPoint("LEFT", MonDKP.ConfigTab4.submitSettings, "RIGHT", 200, 0)
-  MonDKP.ConfigTab4.moveTimer:SetSize(110, 25)
-  MonDKP.ConfigTab4.moveTimer:SetScript("OnClick", function()
+  optionsTab.moveTimer = self:CreateButton("BOTTOMRIGHT", optionsTab, "BOTTOMRIGHT", -50, 30, L["MOVEBIDTIMER"]);
+  optionsTab.moveTimer:ClearAllPoints();
+  optionsTab.moveTimer:SetPoint("LEFT", optionsTab.submitSettings, "RIGHT", 200, 0)
+  optionsTab.moveTimer:SetSize(110, 25)
+  optionsTab.moveTimer:SetScript("OnClick", function()
     if moveTimerToggle == 0 then
       MonDKP:StartTimer(120, L["MOVEME"])
-      MonDKP.ConfigTab4.moveTimer:SetText(L["HIDEBIDTIMER"])
+      optionsTab.moveTimer:SetText(L["HIDEBIDTIMER"])
       moveTimerToggle = 1;
     else
       MonDKP.BidTimer:SetScript("OnUpdate", nil)
       MonDKP.BidTimer:Hide()
-      MonDKP.ConfigTab4.moveTimer:SetText(L["MOVEBIDTIMER"])
+      optionsTab.moveTimer:SetText(L["MOVEBIDTIMER"])
       moveTimerToggle = 0;
     end
   end)
 
   -- wipe tables button
-  MonDKP.ConfigTab4.WipeTables = self:CreateButton("BOTTOMRIGHT", MonDKP.ConfigTab4, "BOTTOMRIGHT", -50, 30, L["WIPETABLES"]);
-  MonDKP.ConfigTab4.WipeTables:ClearAllPoints();
-  MonDKP.ConfigTab4.WipeTables:SetPoint("RIGHT", MonDKP.ConfigTab4.moveTimer, "LEFT", -40, 0)
-  MonDKP.ConfigTab4.WipeTables:SetSize(110, 25)
-  MonDKP.ConfigTab4.WipeTables:SetScript("OnEnter", function(self)
+  optionsTab.WipeTables = self:CreateButton("BOTTOMRIGHT", optionsTab, "BOTTOMRIGHT", -50, 30, L["WIPETABLES"]);
+  optionsTab.WipeTables:ClearAllPoints();
+  optionsTab.WipeTables:SetPoint("RIGHT", optionsTab.moveTimer, "LEFT", -40, 0)
+  optionsTab.WipeTables:SetSize(110, 25)
+  optionsTab.WipeTables:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetText(L["WIPETABLES"], 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine(L["WIPETABLESTTDESC"], 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
-  MonDKP.ConfigTab4.WipeTables:SetScript("OnLeave", function(self)
+  optionsTab.WipeTables:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
-  MonDKP.ConfigTab4.WipeTables:SetScript("OnClick", function()
+  optionsTab.WipeTables:SetScript("OnClick", function()
 
     StaticPopupDialogs["WIPE_TABLES"] = {
       text = L["WIPETABLESCONF"],
@@ -1332,7 +1335,7 @@ function MonDKP:Options()
   end)
 
   -- Options Footer (empty frame to push bottom of scrollframe down)
-  MonDKP.ConfigTab4.OptionsFooterFrame = CreateFrame("Frame", nil, MonDKP.ConfigTab4);
-  MonDKP.ConfigTab4.OptionsFooterFrame:SetPoint("TOPLEFT", MonDKP.ConfigTab4.moveTimer, "BOTTOMLEFT")
-  MonDKP.ConfigTab4.OptionsFooterFrame:SetSize(420, 50);
+  optionsTab.OptionsFooterFrame = CreateFrame("Frame", nil, optionsTab);
+  optionsTab.OptionsFooterFrame:SetPoint("TOPLEFT", optionsTab.moveTimer, "BOTTOMLEFT")
+  optionsTab.OptionsFooterFrame:SetSize(420, 50);
 end

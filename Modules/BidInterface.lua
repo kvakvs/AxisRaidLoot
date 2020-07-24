@@ -758,7 +758,7 @@ function MonDKP:BidInterface_Create()
   f.AutoOpenCheckbox = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
   f.AutoOpenCheckbox:SetChecked(MonDKP_DB.defaults.AutoOpenBid)
   f.AutoOpenCheckbox:SetScale(0.6);
-  f.AutoOpenCheckbox.text:SetText("|cff5151de" .. L["AUTOOPEN"] .. "|r");
+  f.AutoOpenCheckbox.text:SetText("|cff999999" .. L["AUTOOPEN"] .. "|r");
   f.AutoOpenCheckbox.text:SetScale(1.4);
   f.AutoOpenCheckbox.text:ClearAllPoints()
   f.AutoOpenCheckbox.text:SetPoint("RIGHT", f.AutoOpenCheckbox, "LEFT", -2, 0)

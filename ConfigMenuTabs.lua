@@ -187,7 +187,7 @@ function MonDKP:ConfigMenuTabs()
     if i <= 9 then classGraphTab.checkBtn[i]:SetChecked(true) else classGraphTab.checkBtn[i]:SetChecked(false) end;
     classGraphTab.checkBtn[i]:SetID(i)
     if i <= 8 then
-      classGraphTab.checkBtn[i].text:SetText("|cff5151de" .. core.LocalClass[core.classes[i]] .. "|r");
+      classGraphTab.checkBtn[i].text:SetText("|cff999999" .. core.LocalClass[core.classes[i]] .. "|r");
     end
     if i == 9 then
       classGraphTab.checkBtn[i]:SetScript("OnClick",
@@ -232,20 +232,20 @@ function MonDKP:ConfigMenuTabs()
   classGraphTab.checkBtn[8]:SetPoint("TOPLEFT", classGraphTab.checkBtn[4], "BOTTOMLEFT", 0, -10);
 
   classGraphTab.checkBtn[9]:SetPoint("BOTTOMRIGHT", classGraphTab.checkBtn[2], "TOPLEFT", 50, 0);
-  classGraphTab.checkBtn[9].text:SetText("|cff5151de" .. L["ALLCLASSES"] .. "|r");
+  classGraphTab.checkBtn[9].text:SetText("|cff999999" .. L["ALLCLASSES"] .. "|r");
   classGraphTab.checkBtn[10]:SetPoint("TOPLEFT", classGraphTab.checkBtn[5], "BOTTOMLEFT", 0, 0);
-  classGraphTab.checkBtn[10].text:SetText("|cff5151de" .. L["INPARTYRAID"] .. "|r"); -- executed in filterDKPTable (AxisRaidLoot.lua)
+  classGraphTab.checkBtn[10].text:SetText("|cff999999" .. L["INPARTYRAID"] .. "|r"); -- executed in filterDKPTable (AxisRaidLoot.lua)
 
   classGraphTab.checkBtn[11] = CreateFrame("CheckButton", nil, classGraphTab, "UICheckButtonTemplate");
   classGraphTab.checkBtn[11]:SetID(11)
-  classGraphTab.checkBtn[11].text:SetText("|cff5151de" .. L["ONLINE"] .. "|r");
+  classGraphTab.checkBtn[11].text:SetText("|cff999999" .. L["ONLINE"] .. "|r");
   classGraphTab.checkBtn[11].text:SetFontObject("MonDKPSmall")
   classGraphTab.checkBtn[11]:SetScript("OnClick", MonDKPFilterChecks)
   classGraphTab.checkBtn[11]:SetPoint("TOPLEFT", classGraphTab.checkBtn[10], "TOPRIGHT", 100, 0);
 
   classGraphTab.checkBtn[12] = CreateFrame("CheckButton", nil, classGraphTab, "UICheckButtonTemplate");
   classGraphTab.checkBtn[12]:SetID(12)
-  classGraphTab.checkBtn[12].text:SetText("|cff5151de" .. L["NOTINRAIDFILTER"] .. "|r");
+  classGraphTab.checkBtn[12].text:SetText("|cff999999" .. L["NOTINRAIDFILTER"] .. "|r");
   classGraphTab.checkBtn[12].text:SetFontObject("MonDKPSmall")
   classGraphTab.checkBtn[12]:SetScript("OnClick", function(self)
     MonDKP.ConfigTab1.checkBtn[10]:SetChecked(false);
@@ -274,7 +274,7 @@ function MonDKP:ConfigMenuTabs()
   manageTab.header:SetScale(1.2)
 
   -- Populate Manage Tab
-  MonDKP:ManageEntries()
+  MonDKP:PopulateManageTab()
 
   ---------------------------------------
   -- Loot History TAB

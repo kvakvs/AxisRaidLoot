@@ -314,7 +314,7 @@ local function ViewWhitelist()
   end
 end
 
-function MonDKP:ManageEntries()
+function MonDKP:PopulateManageTab()
   local manageTab = MonDKP.ConfigTab3
 
   -- add raid to dkp table if they don't exist

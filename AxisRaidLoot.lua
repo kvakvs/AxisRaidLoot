@@ -613,7 +613,7 @@ function MonDKP:CreateMenu()
     MonDKP.ChangeLogDisplay.DontShowCheck = CreateFrame("CheckButton", nil, MonDKP.ChangeLogDisplay, "UICheckButtonTemplate");
     MonDKP.ChangeLogDisplay.DontShowCheck:SetChecked(false)
     MonDKP.ChangeLogDisplay.DontShowCheck:SetScale(0.6);
-    MonDKP.ChangeLogDisplay.DontShowCheck.text:SetText("  |cff5151de" .. L["DONTSHOW"] .. "|r");
+    MonDKP.ChangeLogDisplay.DontShowCheck.text:SetText("  |cff999999" .. L["DONTSHOW"] .. "|r");
     MonDKP.ChangeLogDisplay.DontShowCheck.text:SetScale(1.5);
     MonDKP.ChangeLogDisplay.DontShowCheck.text:SetFontObject("MonDKPSmallLeft")
     MonDKP.ChangeLogDisplay.DontShowCheck:SetPoint("LEFT", MonDKP.ChangeLogDisplay.ChangeLogHeader, "RIGHT", 10, 0);
