@@ -3,6 +3,53 @@ local _G = _G;
 local MonDKP = core.MonDKP;
 local L = core.L;
 
+--- Stacks control 10pt under 'stackUnder' or as first topleft position in the parent
+local function StackUnder(control, parent, stackUnder)
+  -- stack under something or topleft position
+  if stackUnder ~= nil then
+    control:SetPoint("TOP", stackUnder, "BOTTOM", 0, 0);
+  else
+    control:SetPoint("TOPLEFT", parent, "TOPLEFT", 10, -10);
+  end
+end
+
+--- Create a checkbox and stack it under another
+-- args = {
+--    name = "" | nil,
+--    parent = <frame>,
+--    stackUnder = nil | <reference frame>,
+--    checked = true|false,
+--    text = "",
+--    clickFun = function(), -- what to do on click
+--    tooltipFun = function(), -- what to do on mouse enter in the tooltip
+-- }
+local function CreateCheckbox(args)
+  local control = CreateFrame("CheckButton", args.name, args.parent, "UICheckButtonTemplate");
+  control:SetChecked(args.checked)
+  control:SetScale(0.6);
+  control.text:SetText("  |cff999999" .. args.text .. "|r");
+  control.text:SetScale(1.5);
+  control.text:SetFontObject("MonDKPSmallLeft")
+
+  StackUnder(control, args.parent, args.stackUnder)
+
+  control:SetScript("OnClick", function(self)
+    args.clickFun(self);
+    PlaySound(808);
+  end)
+
+  control:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+    args.tooltipFun();
+    GameTooltip:Show();
+  end)
+
+  control:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+  end)
+
+  return control
+end
 
 function MonDKP:DKPModes_Misc()
   local f = core.ModesWindow.DKPModesMisc;
@@ -12,58 +59,42 @@ function MonDKP:DKPModes_Misc()
   f.AutoAwardContainer:SetSize(175, 50)
 
   -- AutoAward DKP Checkbox
-  -- TODO: Automate buttons creation with tooltip script
-  f.AutoAwardContainer.AutoAward = CreateFrame("CheckButton", nil, f.AutoAwardContainer, "UICheckButtonTemplate");
-  f.AutoAwardContainer.AutoAward:SetChecked(MonDKP_DB.modes.AutoAward)
-  f.AutoAwardContainer.AutoAward:SetScale(0.6);
-  f.AutoAwardContainer.AutoAward.text:SetText("  |cff999999" .. L["AUTOAWARD"] .. "|r");
-  f.AutoAwardContainer.AutoAward.text:SetScale(1.5);
-  f.AutoAwardContainer.AutoAward.text:SetFontObject("MonDKPSmallLeft")
-  f.AutoAwardContainer.AutoAward:SetPoint("TOPLEFT", f.AutoAwardContainer, "TOPLEFT", 10, -10);
-  f.AutoAwardContainer.AutoAward:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.AutoAward = self:GetChecked();
-    if self:GetChecked() == false then
-      f.AutoAwardContainer.IncStandby:SetChecked(false)
-      MonDKP_DB.DKPBonus.AutoIncStandby = false;
+  f.AutoAwardContainer.AutoAward = CreateCheckbox({
+    parent = f.AutoAwardContainer,
+    checked = MonDKP_DB.modes.AutoAward,
+    text = L["AUTOAWARD"],
+    clickFun = function(self)
+      MonDKP_DB.modes.AutoAward = self:GetChecked();
+      if self:GetChecked() == false then
+        f.AutoAwardContainer.IncStandby:SetChecked(false)
+        MonDKP_DB.DKPBonus.AutoIncStandby = false;
+      end
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["AUTOAWARD"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["AUTOAWARDTTDESC"], 1.0, 1.0, 1.0, true);
     end
-    PlaySound(808);
-  end)
-  f.AutoAwardContainer.AutoAward:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["AUTOAWARD"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["AUTOAWARDTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.AutoAwardContainer.AutoAward:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  })
 
   -- Include Standby Checkbox
-  f.AutoAwardContainer.IncStandby = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.AutoAwardContainer.IncStandby:SetChecked(MonDKP_DB.DKPBonus.AutoIncStandby)
-  f.AutoAwardContainer.IncStandby:SetScale(0.6);
-  f.AutoAwardContainer.IncStandby.text:SetText("  |cff999999" .. L["INCLUDESTANDBY"] .. "|r");
-  f.AutoAwardContainer.IncStandby.text:SetScale(1.5);
-  f.AutoAwardContainer.IncStandby.text:SetFontObject("MonDKPSmallLeft")
-  f.AutoAwardContainer.IncStandby:SetPoint("TOP", f.AutoAwardContainer.AutoAward, "BOTTOM", 0, 0);
-  f.AutoAwardContainer.IncStandby:SetScript("OnClick", function(self)
-    MonDKP_DB.DKPBonus.AutoIncStandby = self:GetChecked();
-    if self:GetChecked() == true then
-      f.AutoAwardContainer.AutoAward:SetChecked(true)
-      MonDKP_DB.modes.AutoAward = true;
+  f.AutoAwardContainer.IncStandby = CreateCheckbox({
+    parent = f.AutoAwardContainer,
+    stackUnder = f.AutoAwardContainer.AutoAward,
+    checked = MonDKP_DB.DKPBonus.AutoIncStandby,
+    text = L["INCLUDESTANDBY"],
+    clickFun = function(self)
+      MonDKP_DB.DKPBonus.AutoIncStandby = self:GetChecked();
+      if self:GetChecked() == true then
+        f.AutoAwardContainer.AutoAward:SetChecked(true)
+        MonDKP_DB.modes.AutoAward = true;
+      end
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["INCLUDESTANDBY"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["INCLUDESBYTTDESC"], 1.0, 1.0, 1.0, true);
+      GameTooltip:AddLine(L["INCLUDESBYTTWARN"], 1.0, 0, 0, true);
     end
-    PlaySound(808);
-  end)
-  f.AutoAwardContainer.IncStandby:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["INCLUDESTANDBY"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["INCLUDESBYTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:AddLine(L["INCLUDESBYTTWARN"], 1.0, 0, 0, true);
-    GameTooltip:Show();
-  end)
-  f.AutoAwardContainer.IncStandby:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  })
 
   -- Announce Highest Bidder Container
   f.AnnounceBidContainer = MonDKP:CreateContainer(f, "AnnounceBidContainer", L["HIGHESTBID"])
@@ -71,77 +102,56 @@ function MonDKP:DKPModes_Misc()
   f.AnnounceBidContainer:SetSize(175, 70)
 
   -- Announce Highest Bid
-  f.AnnounceBidContainer.AnnounceBid = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.AnnounceBidContainer.AnnounceBid:SetChecked(MonDKP_DB.modes.AnnounceBid)
-  f.AnnounceBidContainer.AnnounceBid:SetScale(0.6);
-  f.AnnounceBidContainer.AnnounceBid.text:SetText("  |cff999999" .. L["ANNOUNCEBID"] .. "|r");
-  f.AnnounceBidContainer.AnnounceBid.text:SetScale(1.5);
-  f.AnnounceBidContainer.AnnounceBid.text:SetFontObject("MonDKPSmallLeft")
-  f.AnnounceBidContainer.AnnounceBid:SetPoint("TOPLEFT", f.AnnounceBidContainer, "TOPLEFT", 10, -10);
-  f.AnnounceBidContainer.AnnounceBid:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.AnnounceBid = self:GetChecked();
-    if self:GetChecked() == false then
-      f.AnnounceBidContainer.AnnounceBidName:SetChecked(false)
-      MonDKP_DB.modes.AnnounceBidName = false;
+  f.AnnounceBidContainer.AnnounceBid = CreateCheckbox({
+    parent = f.AnnounceBidContainer,
+    checked = MonDKP_DB.modes.AnnounceBid,
+    text = L["ANNOUNCEBID"],
+    clickFun = function(self)
+      MonDKP_DB.modes.AnnounceBid = self:GetChecked();
+      if self:GetChecked() == false then
+        f.AnnounceBidContainer.AnnounceBidName:SetChecked(false)
+        MonDKP_DB.modes.AnnounceBidName = false;
+      end
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["ANNOUNCEBID"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["ANNOUNCEBIDTTDESC"], 1.0, 1.0, 1.0, true);
     end
-    PlaySound(808);
-  end)
-  f.AnnounceBidContainer.AnnounceBid:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["ANNOUNCEBID"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["ANNOUNCEBIDTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.AnnounceBidContainer.AnnounceBid:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  })
 
   -- Include Name Announce Highest Bid
-  f.AnnounceBidContainer.AnnounceBidName = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.AnnounceBidContainer.AnnounceBidName:SetChecked(MonDKP_DB.modes.AnnounceBidName)
-  f.AnnounceBidContainer.AnnounceBidName:SetScale(0.6);
-  f.AnnounceBidContainer.AnnounceBidName.text:SetText("  |cff999999" .. L["INCLUDENAME"] .. "|r");
-  f.AnnounceBidContainer.AnnounceBidName.text:SetScale(1.5);
-  f.AnnounceBidContainer.AnnounceBidName.text:SetFontObject("MonDKPSmallLeft")
-  f.AnnounceBidContainer.AnnounceBidName:SetPoint("TOP", f.AnnounceBidContainer.AnnounceBid, "BOTTOM", 0, 0);
-  f.AnnounceBidContainer.AnnounceBidName:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.AnnounceBidName = self:GetChecked();
-    if self:GetChecked() == true then
-      f.AnnounceBidContainer.AnnounceBid:SetChecked(true)
-      MonDKP_DB.modes.AnnounceBid = true;
+  f.AnnounceBidContainer.AnnounceBidName = CreateCheckbox({
+    parent = f.AnnounceBidContainer,
+    stackUnder = f.AnnounceBidContainer.AnnounceBid,
+    checked = MonDKP_DB.modes.AnnounceBidName,
+    text = L["INCLUDENAME"],
+    clickFun = function(self)
+      MonDKP_DB.modes.AnnounceBidName = self:GetChecked();
+      if self:GetChecked() == true then
+        f.AnnounceBidContainer.AnnounceBid:SetChecked(true)
+        MonDKP_DB.modes.AnnounceBid = true;
+      end
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["INCLUDENAME"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["INCLUDENAMETTDESC"], 1.0, 1.0, 1.0, true);
     end
-    PlaySound(808);
-  end)
-  f.AnnounceBidContainer.AnnounceBidName:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["INCLUDENAME"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["INCLUDENAMETTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.AnnounceBidContainer.AnnounceBidName:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  })
 
   -- Decline lower bids
-  f.AnnounceBidContainer.DeclineLowerBids = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.AnnounceBidContainer.DeclineLowerBids:SetChecked(MonDKP_DB.modes.DeclineLowerBids)
-  f.AnnounceBidContainer.DeclineLowerBids:SetScale(0.6);
-  f.AnnounceBidContainer.DeclineLowerBids.text:SetText("  |cff999999" .. L["DECLINELOWBIDS"] .. "|r");
-  f.AnnounceBidContainer.DeclineLowerBids.text:SetScale(1.5);
-  f.AnnounceBidContainer.DeclineLowerBids.text:SetFontObject("MonDKPSmallLeft")
-  f.AnnounceBidContainer.DeclineLowerBids:SetPoint("TOP", f.AnnounceBidContainer.AnnounceBidName, "BOTTOM", 0, 0);
-  f.AnnounceBidContainer.DeclineLowerBids:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.DeclineLowerBids = self:GetChecked();
-  end)
-  f.AnnounceBidContainer.DeclineLowerBids:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["DECLINELOWBIDS"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["DECLINELOWBIDSTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.AnnounceBidContainer.DeclineLowerBids:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  f.AnnounceBidContainer.DeclineLowerBids = CreateCheckbox({
+    parent = f.AnnounceBidContainer,
+    stackUnder = f.AnnounceBidContainer.AnnounceBidName,
+    checked = MonDKP_DB.modes.DeclineLowerBids,
+    text = L["DECLINELOWBIDS"],
+    clickFun = function(self)
+      MonDKP_DB.modes.DeclineLowerBids = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["DECLINELOWBIDS"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["DECLINELOWBIDSTTDESC"], 1.0, 1.0, 1.0, true);
+    end
+  })
 
   --Misc Options Container
   f.MiscContainer = MonDKP:CreateContainer(f, "MiscContainer", L["MISCSETTINGS"])
@@ -149,93 +159,64 @@ function MonDKP:DKPModes_Misc()
   f.MiscContainer:SetSize(175, 90)
 
   -- Standby On Boss Kill Checkbox
-  f.MiscContainer.Standby = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.MiscContainer.Standby:SetChecked(MonDKP_DB.modes.StandbyOptIn)
-  f.MiscContainer.Standby:SetScale(0.6);
-  f.MiscContainer.Standby.text:SetText("  |cff999999" .. L["STANDBYOPTIN"] .. "|r");
-  f.MiscContainer.Standby.text:SetScale(1.5);
-  f.MiscContainer.Standby.text:SetFontObject("MonDKPSmallLeft")
-  f.MiscContainer.Standby:SetPoint("TOPLEFT", f.MiscContainer, "TOPLEFT", 10, -10);
-  f.MiscContainer.Standby:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.StandbyOptIn = self:GetChecked();
-    PlaySound(808);
-  end)
-  f.MiscContainer.Standby:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["STANDBYOPTIN"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["STANDBYOPTINTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:AddLine(L["STANDBYOPTINTTWARN"], 1.0, 0, 0, true);
-    GameTooltip:Show();
-  end)
-  f.MiscContainer.Standby:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  f.MiscContainer.Standby = CreateCheckbox({
+    parent = f.MiscContainer,
+    checked = MonDKP_DB.modes.StandbyOptIn,
+    text = L["STANDBYOPTIN"],
+    clickFun = function(self)
+      MonDKP_DB.modes.StandbyOptIn = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["STANDBYOPTIN"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["STANDBYOPTINTTDESC"], 1.0, 1.0, 1.0, true);
+      GameTooltip:AddLine(L["STANDBYOPTINTTWARN"], 1.0, 0, 0, true);
+    end
+  })
 
   -- Announce Award to Guild
-  f.MiscContainer.AnnounceAward = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.MiscContainer.AnnounceAward:SetChecked(MonDKP_DB.modes.AnnounceAward)
-  f.MiscContainer.AnnounceAward:SetScale(0.6);
-  f.MiscContainer.AnnounceAward.text:SetText("  |cff999999" .. L["ANNOUNCEAWARD"] .. "|r");
-  f.MiscContainer.AnnounceAward.text:SetScale(1.5);
-  f.MiscContainer.AnnounceAward.text:SetFontObject("MonDKPSmallLeft")
-  f.MiscContainer.AnnounceAward:SetPoint("TOP", f.MiscContainer.Standby, "BOTTOM", 0, 0);
-  f.MiscContainer.AnnounceAward:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.AnnounceAward = self:GetChecked();
-    PlaySound(808);
-  end)
-  f.MiscContainer.AnnounceAward:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["ANNOUNCEAWARD"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["ANNOUNCEAWARDTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.MiscContainer.AnnounceAward:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  f.MiscContainer.AnnounceAward = CreateCheckbox({
+    parent = f.MiscContainer,
+    stackUnder = f.MiscContainer.Standby,
+    checked = MonDKP_DB.modes.AnnounceAward,
+    text = L["ANNOUNCEAWARD"],
+    clickFun = function(self)
+      MonDKP_DB.modes.AnnounceAward = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["ANNOUNCEAWARD"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["ANNOUNCEAWARDTTDESC"], 1.0, 1.0, 1.0, true);
+    end
+  })
 
   -- Broadcast Bid Table to Raid
-  f.MiscContainer.BroadcastBids = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.MiscContainer.BroadcastBids:SetChecked(MonDKP_DB.modes.BroadcastBids)
-  f.MiscContainer.BroadcastBids:SetScale(0.6);
-  f.MiscContainer.BroadcastBids.text:SetText("  |cff999999" .. L["BROADCASTBIDS"] .. "|r");
-  f.MiscContainer.BroadcastBids.text:SetScale(1.5);
-  f.MiscContainer.BroadcastBids.text:SetFontObject("MonDKPSmallLeft")
-  f.MiscContainer.BroadcastBids:SetPoint("TOP", f.MiscContainer.AnnounceAward, "BOTTOM", 0, 0);
-  f.MiscContainer.BroadcastBids:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.BroadcastBids = self:GetChecked();
-    PlaySound(808);
-  end)
-  f.MiscContainer.BroadcastBids:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["BROADCASTBIDS"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["BROADCASTBIDSTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.MiscContainer.BroadcastBids:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  f.MiscContainer.BroadcastBids = CreateCheckbox({
+    parent = f.MiscContainer,
+    stackUnder = f.MiscContainer.AnnounceAward,
+    checked = MonDKP_DB.modes.BroadcastBids,
+    text = L["BROADCASTBIDS"],
+    clickFun = function(self)
+      MonDKP_DB.modes.BroadcastBids = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["BROADCASTBIDS"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["BROADCASTBIDSTTDESC"], 1.0, 1.0, 1.0, true);
+    end
+  })
 
   -- Log Bids/Rolls
-  f.MiscContainer.StoreBids = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.MiscContainer.StoreBids:SetChecked(MonDKP_DB.modes.StoreBids)
-  f.MiscContainer.StoreBids:SetScale(0.6);
-  f.MiscContainer.StoreBids.text:SetText("  |cff999999" .. L["LOGBIDS"] .. "|r");
-  f.MiscContainer.StoreBids.text:SetScale(1.5);
-  f.MiscContainer.StoreBids.text:SetFontObject("MonDKPSmallLeft")
-  f.MiscContainer.StoreBids:SetPoint("TOP", f.MiscContainer.BroadcastBids, "BOTTOM", 0, 0);
-  f.MiscContainer.StoreBids:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.StoreBids = self:GetChecked();
-    PlaySound(808);
-  end)
-  f.MiscContainer.StoreBids:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["LOGBIDS"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["LOGBIDSTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.MiscContainer.StoreBids:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  f.MiscContainer.StoreBids = CreateCheckbox({
+    parent = f.MiscContainer,
+    stackUnder = f.MiscContainer.BroadcastBids,
+    checked = MonDKP_DB.modes.StoreBids,
+    text = L["LOGBIDS"],
+    clickFun = function(self)
+      MonDKP_DB.modes.StoreBids = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["LOGBIDS"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["LOGBIDSTTDESC"], 1.0, 1.0, 1.0, true);
+    end
+  })
 
   --DKP Award Options Container
   f.DKPAwardContainer = MonDKP:CreateContainer(f, "DKPAwardContainer", L["DKPSETTINGS"])
@@ -243,48 +224,36 @@ function MonDKP:DKPModes_Misc()
   f.DKPAwardContainer:SetSize(175, 50)
 
   -- Online Only Checkbox
-  if MonDKP_DB.modes.OnlineOnly == nil then MonDKP_DB.modes.OnlineOnly = false end
-  f.DKPAwardContainer.OnlineOnly = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.DKPAwardContainer.OnlineOnly:SetChecked(MonDKP_DB.modes.OnlineOnly)
-  f.DKPAwardContainer.OnlineOnly:SetScale(0.6);
-  f.DKPAwardContainer.OnlineOnly.text:SetText("  |cff999999" .. L["ONLINEONLY"] .. "|r");
-  f.DKPAwardContainer.OnlineOnly.text:SetScale(1.5);
-  f.DKPAwardContainer.OnlineOnly.text:SetFontObject("MonDKPSmallLeft")
-  f.DKPAwardContainer.OnlineOnly:SetPoint("TOPLEFT", f.DKPAwardContainer, "TOPLEFT", 10, -10);
-  f.DKPAwardContainer.OnlineOnly:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.OnlineOnly = self:GetChecked();
-    PlaySound(808);
-  end)
-  f.DKPAwardContainer.OnlineOnly:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["ONLINEONLY"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["ONLINEONLYTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.DKPAwardContainer.OnlineOnly:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  MonDKP_DB.modes.OnlineOnly = MonDKP_DB.modes.OnlineOnly or false -- default false
+
+  f.DKPAwardContainer.OnlineOnly = CreateCheckbox({
+    parent = f.DKPAwardContainer,
+    checked = MonDKP_DB.modes.OnlineOnly,
+    text = L["ONLINEONLY"],
+    clickFun = function(self)
+      MonDKP_DB.modes.OnlineOnly = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["ONLINEONLY"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["ONLINEONLYTTDESC"], 1.0, 1.0, 1.0, true);
+    end
+  })
 
   -- Same Zone Only Checkbox
-  if MonDKP_DB.modes.SameZoneOnly == nil then MonDKP_DB.modes.SameZoneOnly = false end
-  f.DKPAwardContainer.SameZoneOnly = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate");
-  f.DKPAwardContainer.SameZoneOnly:SetChecked(MonDKP_DB.modes.SameZoneOnly)
-  f.DKPAwardContainer.SameZoneOnly:SetScale(0.6);
-  f.DKPAwardContainer.SameZoneOnly.text:SetText("  |cff999999" .. L["INZONEONLY"] .. "|r");
-  f.DKPAwardContainer.SameZoneOnly.text:SetScale(1.5);
-  f.DKPAwardContainer.SameZoneOnly.text:SetFontObject("MonDKPSmallLeft")
-  f.DKPAwardContainer.SameZoneOnly:SetPoint("TOP", f.DKPAwardContainer.OnlineOnly, "BOTTOM", 0, 0);
-  f.DKPAwardContainer.SameZoneOnly:SetScript("OnClick", function(self)
-    MonDKP_DB.modes.SameZoneOnly = self:GetChecked();
-    PlaySound(808);
-  end)
-  f.DKPAwardContainer.SameZoneOnly:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-    GameTooltip:SetText(L["INZONEONLY"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["INZONEONLYTTDESC"], 1.0, 1.0, 1.0, true);
-    GameTooltip:Show();
-  end)
-  f.DKPAwardContainer.SameZoneOnly:SetScript("OnLeave", function(self)
-    GameTooltip:Hide()
-  end)
+  MonDKP_DB.modes.SameZoneOnly = MonDKP_DB.modes.SameZoneOnly or false
+
+  f.DKPAwardContainer.SameZoneOnly = CreateCheckbox({
+    parent = f.DKPAwardContainer,
+    stackUnder = f.DKPAwardContainer.OnlineOnly,
+    checked = MonDKP_DB.modes.SameZoneOnly,
+    text = L["INZONEONLY"],
+    clickFun = function(self)
+      MonDKP_DB.modes.SameZoneOnly = self:GetChecked();
+    end,
+    tooltipFun = function(self)
+      GameTooltip:SetText(L["INZONEONLY"], 0.25, 0.75, 0.90, 1, true);
+      GameTooltip:AddLine(L["INZONEONLYTTDESC"], 1.0, 1.0, 1.0, true);
+    end
+  })
+
 end
