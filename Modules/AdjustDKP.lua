@@ -11,7 +11,7 @@ function MonDKP:AdjustDKP(value)
   local c;
   local curOfficer = UnitName("player")
 
-  if not IsInRaid() then
+  if not MonDKP:IsInRaid() then
     c = MonDKP:GetCColors();
   end
 
@@ -35,7 +35,7 @@ function MonDKP:AdjustDKP(value)
         local current;
         local search = MonDKP:Table_Search(MonDKP_DKPTable, core.SelectedData[i]["player"])
         if search then
-          if not IsInRaid() then
+          if not MonDKP:IsInRaid() then
             if i < #core.SelectedData then
               tempString = tempString .. "|cff" .. c[core.SelectedData[i]["class"]].hex .. core.SelectedData[i]["player"] .. "|r, ";
             else
@@ -58,7 +58,7 @@ function MonDKP:AdjustDKP(value)
         MonDKP:DKPHistory_Update(true)
       end
       DKPTable_Update()
-      if IsInRaid() then
+      if MonDKP:IsInRaid() then
         MonDKP.Sync:SendData("MonDKPBCastMsg", L["RAIDDKPADJUSTBY"] .. " " .. value .. " " .. L["FORREASON"] .. ": " .. adjustReason)
       else
         MonDKP.Sync:SendData("MonDKPBCastMsg", L["DKPADJUSTBY"] .. " " .. value .. " " .. L["FORPLAYERS"] .. ": ")
@@ -726,7 +726,7 @@ function MonDKP:AdjustDKPTab_Create()
   adjustTab.RaidTimerContainer.StartTimer = self:CreateButton("BOTTOMLEFT", adjustTab.RaidTimerContainer, "BOTTOMLEFT", 10, 135, L["INITRAID"]);
   adjustTab.RaidTimerContainer.StartTimer:SetSize(90, 25)
   adjustTab.RaidTimerContainer.StartTimer:SetScript("OnClick", function(self)
-    if not IsInRaid() then
+    if not MonDKP:IsInRaid() then
       StaticPopupDialogs["NO_RAID_TIMER"] = {
         text = L["NOTINRAID"],
         button1 = L["OK"],

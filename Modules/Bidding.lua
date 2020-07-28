@@ -542,7 +542,9 @@ local function StartBidding()
   mode = MonDKP_DB.modes.mode;
   core.BidInProgress = true;
 
-  if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+  if mode == "Minimum Bid Values" or
+      (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")
+  then
     core.BiddingWindow.cost:SetNumber(MonDKP_round(core.BiddingWindow.minBid:GetNumber(), MonDKP_DB.modes.rounding))
     if core.BiddingWindow.maxBid:GetNumber() ~= 0 then
       MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText() .. " Min Bid: " .. core.BiddingWindow.minBid:GetText() .. " Max Bid: " .. core.BiddingWindow.maxBid:GetText(), CurrItemIcon)
@@ -566,7 +568,9 @@ local function StartBidding()
       tinsert(MonDKP_MinBids, { item = core.BiddingWindow.itemName:GetText(), minbid = core.BiddingWindow.minBid:GetNumber() })
       core.BiddingWindow.CustomMinBid:SetShown(true);
       core.BiddingWindow.CustomMinBid:SetChecked(true);
-    elseif search_min and core.BiddingWindow.minBid:GetNumber() ~= tonumber(val_min) and core.BiddingWindow.CustomMinBid:GetChecked() == true then
+    elseif search_min and core.BiddingWindow.minBid:GetNumber() ~= tonumber(val_min) and
+        core.BiddingWindow.CustomMinBid:GetChecked() == true
+    then
       if MonDKP_MinBids[search_min[1][1]].minbid ~= core.BiddingWindow.minBid:GetNumber() then
         MonDKP_MinBids[search_min[1][1]].minbid = core.BiddingWindow.minBid:GetNumber();
         core.BiddingWindow.CustomMinBid:SetShown(true);
@@ -581,10 +585,15 @@ local function StartBidding()
 
     -- Max
     if not search_max and core.BiddingWindow.maxBid:GetNumber() ~= tonumber(val_max) then
-      tinsert(MonDKP_MaxBids, { item = core.BiddingWindow.itemName:GetText(), maxbid = core.BiddingWindow.maxBid:GetNumber() })
+      tinsert(MonDKP_MaxBids, {
+        item = core.BiddingWindow.itemName:GetText(),
+        maxbid = core.BiddingWindow.maxBid:GetNumber()
+      })
       core.BiddingWindow.CustomMaxBid:SetShown(true);
       core.BiddingWindow.CustomMaxBid:SetChecked(true);
-    elseif search_max and core.BiddingWindow.maxBid:GetNumber() ~= tonumber(val_max) and core.BiddingWindow.CustomMaxBid:GetChecked() == true then
+    elseif search_max and core.BiddingWindow.maxBid:GetNumber() ~= tonumber(val_max) and
+        core.BiddingWindow.CustomMaxBid:GetChecked() == true
+    then
       if MonDKP_MaxBids[search_max[1][1]].maxbid ~= core.BiddingWindow.maxBid:GetNumber() then
         MonDKP_MaxBids[search_max[1][1]].maxbid = core.BiddingWindow.maxBid:GetNumber();
         core.BiddingWindow.CustomMaxBid:SetShown(true);
@@ -598,10 +607,19 @@ local function StartBidding()
     end
   else
     if MonDKP_DB.modes.costvalue == "Percent" then perc = "%" else perc = " DKP" end;
-    MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText() .. " Cost: " .. core.BiddingWindow.cost:GetNumber() .. perc, CurrItemIcon)
-    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo," .. core.BiddingWindow.item:GetText() .. "#" .. core.BiddingWindow.cost:GetText() .. perc .. "#" .. CurrItemIcon .. "#0")
+    MonDKP:BroadcastBidTimer(
+      core.BiddingWindow.bidTimer:GetText(),
+      core.BiddingWindow.item:GetText() .. " Cost: " .. core.BiddingWindow.cost:GetNumber() .. perc,
+      CurrItemIcon)
+    MonDKP.Sync:SendData(
+      "MonDKPCommand",
+      "BidInfo," .. core.BiddingWindow.item:GetText() .. "#" ..
+          core.BiddingWindow.cost:GetText() .. perc .. "#" .. CurrItemIcon .. "#0")
     MonDKP:BidInterface_Toggle()
-    MonDKP:CurrItem_Set(core.BiddingWindow.item:GetText(), core.BiddingWindow.cost:GetText() .. perc, CurrItemIcon, 0)
+    MonDKP:CurrItem_Set(
+      core.BiddingWindow.item:GetText(),
+      core.BiddingWindow.cost:GetText() .. perc,
+      CurrItemIcon, 0)
   end
 
   if mode == "Roll Based Bidding" then
@@ -652,7 +670,7 @@ local function ToggleTimerBtn(self)
   mode = MonDKP_DB.modes.mode;
 
   if timerToggle == 0 then
-    --if not IsInRaid() then MonDKP.Print("You are not in a raid.") return false end
+    --if not MonDKP:IsInRaid() then MonDKP.Print("You are not in a raid.") return false end
     if (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.minBid:GetText() == "" or core.BiddingWindow.maxBid:GetText() == "") then MonDKP.Print(L["NOMINBIDORITEM"]) return false end
     if (mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid")) and ((core.BiddingWindow.maxBid:GetNumber() ~= 0) and (core.BiddingWindow.minBid:GetNumber() > core.BiddingWindow.maxBid:GetNumber())) then MonDKP.Print(L["MAXGTMIN"]) return false end
     if (mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static")) and (not core.BiddingWindow.item:GetText() or core.BiddingWindow.cost:GetText() == "") then MonDKP.Print(L["NOITEMORITEMCOST"]) return false end

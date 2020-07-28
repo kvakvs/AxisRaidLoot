@@ -365,7 +365,7 @@ function MonDKP:CreateButton(point, relativeFrame, relativePoint, xOffset, yOffs
 end
 
 function MonDKP:BroadcastTimer(seconds, ...) -- broadcasts timer and starts it natively
-  if IsInRaid() and core.IsOfficer == true then
+  if MonDKP:IsInRaid() and core.IsOfficer == true then
     local title = ...;
     if not tonumber(seconds) then -- cancels the function if the command was entered improperly (eg. no number for time)
       MonDKP.Print(L["INVALIDTIMER"]);
@@ -736,4 +736,14 @@ function MonDKP:DKPTable_Set(tar, field, value, loot) -- updates field with valu
     end
   end
   DKPTable_Update()
+end
+
+--- Wrapper for global IsInRaid() with debug options
+function MonDKP:IsInRaid()
+  return self.DebugInRaid or IsInRaid();
+end
+
+--- Wrapper for global IsInGroup() with debug options
+function MonDKP:IsInGroup()
+  return self.DebugInGroup or IsInGroup();
 end

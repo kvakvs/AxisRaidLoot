@@ -360,6 +360,9 @@ local function BidWindowCreateRow(parent, id) -- Create 3 buttons for each row i
 end
 
 function MonDKP:CurrItem_Set(item, value, icon, value2)
+--  MonDKP.Print("CurrItemSet i=" .. tostring(item) .. " v=" .. tostring(value) ..
+--    "ic=" .. tostring(icon) .. " v2=" .. tostring(value2));
+
   CurrItemForBid = item;
   CurrItemIcon = icon;
 

@@ -69,9 +69,9 @@ end
 function AddRaidToDKPTable()
   local GroupType = "none";
 
-  if IsInRaid() then
+  if MonDKP:IsInRaid() then
     GroupType = "raid"
-  elseif IsInGroup() then
+  elseif MonDKP:IsInGroup() then
     GroupType = "party"
   end
 

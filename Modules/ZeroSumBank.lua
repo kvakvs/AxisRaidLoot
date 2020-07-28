@@ -4,7 +4,7 @@ local MonDKP = core.MonDKP;
 local L = core.L;
 
 local function ZeroSumDistribution()
-  if IsInRaid() and core.IsOfficer then
+  if MonDKP:IsInRaid() and core.IsOfficer then
     local curTime = time();
     local distribution, balance;
     local reason = MonDKP_DB.bossargs.CurrentRaidZone .. ": " .. MonDKP_DB.bossargs.LastKilledBoss

@@ -29,12 +29,12 @@ function MonDKP_Profile_Create(player, dkp, gained, spent)
     end
   end
 
-  if not created and (IsInRaid() or IsInGroup()) then -- if player not found in guild, checks raid/party
+  if not created and (MonDKP:IsInRaid() or MonDKP:IsInGroup()) then -- if player not found in guild, checks raid/party
     local GroupSize
 
-    if IsInRaid() then
+    if MonDKP:IsInRaid() then
       GroupSize = 40
-    elseif IsInGroup() then
+    elseif MonDKP:IsInGroup() then
       GroupSize = 5
     end
 

@@ -233,7 +233,7 @@ function MonDKP:ViewLimited(raid, standby, raiders)
     local tempTable = {}
     local GroupType = "none"
 
-    if (not IsInGroup() and not IsInRaid()) and raid then
+    if (not MonDKP:IsInGroup() and not MonDKP:IsInRaid()) and raid then
       MonDKP.Print(L["NOPARTYORRAID"])
       core.WorkingTable = CopyTable(MonDKP_DKPTable)
       core.CurView = "all"
@@ -577,7 +577,7 @@ local function RightClickMenu(self)
     text = L["ONLYPARTYRAID"],
     isNotRadio = true,
     keepShownOnClick = false,
-    disabled = not IsInRaid(),
+    disabled = not MonDKP:IsInRaid(),
     checked = MonDKP.ConfigTab1.checkBtn[10]:GetChecked(),
     func = function()
       MonDKP.ConfigTab1.checkBtn[10]:SetChecked(not MonDKP.ConfigTab1.checkBtn[10]:GetChecked())
@@ -608,7 +608,7 @@ local function RightClickMenu(self)
     text = L["NOTINRAIDFILTER"],
     isNotRadio = true,
     keepShownOnClick = false,
-    disabled = not IsInRaid(),
+    disabled = not MonDKP:IsInRaid(),
     checked = MonDKP.ConfigTab1.checkBtn[12]:GetChecked(),
     func = function()
       MonDKP.ConfigTab1.checkBtn[12]:SetChecked(not MonDKP.ConfigTab1.checkBtn[12]:GetChecked())
@@ -627,7 +627,7 @@ local function RightClickMenu(self)
     menu[6].menuList[3] = { text = L["VIEWRAIDSTANDBY"], notCheckable = true, disabled = true }
   end
 
-  if not IsInGroup() and not IsInRaid() then
+  if not MonDKP:IsInGroup() and not MonDKP:IsInRaid() then
     menu[6].menuList[1] = { text = L["VIEWRAID"], notCheckable = true, disabled = true }
     menu[6].menuList[3] = { text = L["VIEWRAIDSTANDBY"], notCheckable = true, disabled = true }
   end
